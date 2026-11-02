@@ -75,7 +75,14 @@
     /** Register a <video> element (a pre-rendered plate: Blender, a capture, footage). */
     video(el, { start = 0 } = {}) {
       el.muted = true; el.preload = "auto"; el.pause();
-      this.wait(new Promise((res) => (el.readyState >= 2 ? res() : el.addEventListener("loadeddata", res, { once: true }))));
+      this.wait(new Promise((res, rej) => {
+        // A missing or broken plate fails the render instead of hanging it (the error may have fired already)
+        const fail = () => rej(new Error(`Video plate failed to load: ${el.currentSrc || el.src}`));
+        if (el.readyState >= 2) return res();
+        if (el.error || el.networkState === HTMLMediaElement.NETWORK_NO_SOURCE) return fail();
+        el.addEventListener("loadeddata", res, { once: true });
+        el.addEventListener("error", fail, { once: true });
+      }));
       this.onSeek((t) => new Promise((res) => {
         const target = Math.max(0, Math.min(t - start, (el.duration || 0) - 0.001));
         if (Math.abs(el.currentTime - target) < 0.0005) return res();

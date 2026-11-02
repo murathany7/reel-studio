@@ -53,24 +53,33 @@ A robotics kit reel, built by capturing the product's own 3D web page and laying
 
 Mix them freely in one piece. Rules for keeping each frame a pure function of `t`: [`engines/README.md`](engines/README.md).
 
-## Quick start
+## Install
+
+**In Claude Code** (recommended), two commands:
+
+```
+/plugin marketplace add murathany7/reel-studio
+/plugin install reel-studio@reel-studio
+```
+
+Then, in the folder where your videos should live, ask:
+
+> *Set up Reel Studio here*
+
+It copies the renderer into the folder, installs it and checks Chrome and ffmpeg. You need
+**Node 18+, Google Chrome and ffmpeg** (`brew install ffmpeg`). Blender is optional, for 3D plates.
+
+**Or clone it** and work inside the repo:
 
 ```bash
 git clone https://github.com/murathany7/reel-studio && cd reel-studio
 cd core && npm install && cd ..
-brew install ffmpeg            # plus Google Chrome; Blender optional
 ```
 
-Render one frame of the demo to check your machine:
+## Use
 
-```bash
-node core/render.mjs still examples/engines-demo/index.html /tmp/frame.png --t 4.6
-```
-
-Then open the folder in [Claude Code](https://claude.com/claude-code) and ask:
-
-> *Add my product as a new brand* → runs the `new-brand` skill
-> *Make a 15 s reel for &lt;brand&gt; about &lt;feature&gt;* → runs the `make-video` skill
+> *Add my product as a new brand: https://my-product.com* → facts, colours, fonts, voice, rules
+> *Make a 15 s reel for &lt;brand&gt; about &lt;feature&gt;* → brief and storyboard, then the video once you approve
 
 ## What's inside
 
@@ -80,7 +89,7 @@ engines/       one adapter per engine
 brands/        one folder per brand  (_template to start)
 productions/   one folder per piece  (brief, composition, audio, QA, export)
 scripts/       audio mix, transcription, QA, frame tools
-.claude/skills make-video · new-brand · pick-engine · scene-3d · character-2d · capture-site
+.claude/skills setup · make-video · new-brand · pick-engine · scene-3d · character-2d · capture-site
 ```
 
 ## Contributing

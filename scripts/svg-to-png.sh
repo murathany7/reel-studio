@@ -7,7 +7,7 @@
 set -euo pipefail
 
 in="$1"; out="$2"; h="${3:-1200}"
-chrome="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+chrome="${CHROME_PATH:-/Applications/Google Chrome.app/Contents/MacOS/Google Chrome}"
 [ -x "$chrome" ] || { echo "Google Chrome not found at $chrome" >&2; exit 1; }
 
 # Aspect ratio from the viewBox (falls back to width/height attributes).

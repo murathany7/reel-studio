@@ -12,6 +12,7 @@ node_modules/
 *.mkv
 *.avi
 *.zip
+!examples/engines-demo/plates/blob.mp4
 
 # Generated QA evidence for examples (rebuild with the commands in each README)
 examples/*/qa/

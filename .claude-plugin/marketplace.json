@@ -1,0 +1,14 @@
+{
+  "name": "reel-studio",
+  "description": "Reel Studio: marketing videos made with code, run by Claude Code.",
+  "owner": { "name": "Murathan Yıldırım", "url": "https://github.com/murathany7" },
+  "plugins": [
+    {
+      "name": "reel-studio",
+      "source": "./",
+      "description": "Make marketing reels, ads and posts with code, for any brand.",
+      "category": "media",
+      "tags": ["video", "marketing", "reels"]
+    }
+  ]
+}

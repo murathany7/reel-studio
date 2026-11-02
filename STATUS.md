@@ -12,6 +12,10 @@ The memory of this repo. Read it first, update it last.
 
 - 2026-11-02: published as open source (MIT) at github.com/murathany7/reel-studio. README visuals live in
   `docs/media/` (GIFs and strips made from the exports with ffmpeg); full MP4s go on GitHub Releases, since `*.mp4` is gitignored.
+- 2026-11-02: installable as a Claude Code plugin (`.claude-plugin/`, the repo is its own marketplace). The `setup`
+  skill runs `scripts/init-project.sh`, which copies `core/`, `engines/`, `scripts/`, templates and the engines demo
+  into the user's project (compositions load `/core/...` from the project root, so the kit must live there).
+  The demo's Blender plate is now in git (38 KB) so a fresh setup can render it without Blender.
 
 ## Brands
 
@@ -53,6 +57,11 @@ The memory of this repo. Read it first, update it last.
 
 ## Learnings
 
+- **Missing video plate (2026-11-02):** a `<video>` whose file 404s fires `error` before the page script runs, so
+  `Studio.video()` waited forever. It now checks `el.error` / `networkState` up front and fails the render with the
+  plate's URL.
+- **Chrome path:** `core/render.mjs`, `engines/capture.mjs` and `scripts/svg-to-png.sh` honour `CHROME_PATH`, then
+  try the usual macOS and Linux install paths.
 - **Video plate colours (2026-11-02):** with GPU compositing (default when GPU flags are on) or with
   playwright-core 1.64, Chrome draws `<video>` ~10 levels brighter than ffmpeg decodes it, so plates come out
   washed. Fix in `core/render.mjs`: `--disable-gpu-compositing` (WebGL still on the GPU) and playwright-core pinned

@@ -12,6 +12,7 @@
  *
  * Size, fps and duration come from the composition's Studio.setup().
  */
+import { existsSync } from "node:fs";
 import { createServer } from "node:http";
 import { readFile, mkdir, stat } from "node:fs/promises";
 import { spawn } from "node:child_process";
@@ -20,7 +21,11 @@ import { fileURLToPath } from "node:url";
 import { chromium } from "playwright-core";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
+// Google Chrome: CHROME_PATH wins, else the usual install paths on macOS and Linux
+const CHROME = process.env.CHROME_PATH || [
+  "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+  "/usr/bin/google-chrome", "/usr/bin/google-chrome-stable", "/usr/bin/chromium", "/usr/bin/chromium-browser",
+].find((p) => existsSync(p)) || "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
 const TYPES = {
   ".html": "text/html", ".js": "text/javascript", ".mjs": "text/javascript", ".css": "text/css",
   ".json": "application/json", ".svg": "image/svg+xml", ".png": "image/png", ".jpg": "image/jpeg",

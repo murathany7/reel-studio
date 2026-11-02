@@ -1,0 +1,12 @@
+{
+  "name": "reel-studio",
+  "displayName": "Reel Studio",
+  "version": "0.2.0",
+  "description": "Make marketing reels, ads and posts with code, for any brand. Brief → storyboard → approval → HTML on one clock → frame-by-frame QA → MP4.",
+  "author": { "name": "Murathan Yıldırım", "url": "https://github.com/murathany7" },
+  "homepage": "https://github.com/murathany7/reel-studio",
+  "repository": "https://github.com/murathany7/reel-studio",
+  "license": "MIT",
+  "keywords": ["video", "reels", "marketing", "gsap", "threejs", "blender", "ffmpeg"],
+  "skills": "./.claude/skills/"
+}

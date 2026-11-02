@@ -16,6 +16,7 @@
  * (-g 1 = every frame a keyframe, so the composition can seek it exactly).
  * Worked example: productions/bike-logger/REEL-001-kit/capture/drive.mjs.
  */
+import { existsSync } from "node:fs";
 import { mkdir } from "node:fs/promises";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
@@ -23,7 +24,11 @@ import { createRequire } from "node:module";
 
 const require = createRequire(import.meta.url);
 const { chromium } = require("../core/node_modules/playwright-core");
-const CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
+// Google Chrome: CHROME_PATH wins, else the usual install paths on macOS and Linux
+const CHROME = process.env.CHROME_PATH || [
+  "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+  "/usr/bin/google-chrome", "/usr/bin/google-chrome-stable", "/usr/bin/chromium", "/usr/bin/chromium-browser",
+].find((p) => existsSync(p)) || "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
 
 const [url, out, ...rest] = process.argv.slice(2);
 const opt = (k, d) => { const i = rest.indexOf("--" + k); return i >= 0 ? rest[i + 1] : d; };

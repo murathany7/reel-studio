@@ -7,7 +7,7 @@ description: Make a marketing video, reel, ad, post or carousel for any brand in
 
 ## Start
 
-1. Read `STATUS.md` (open work, decisions, learnings).
+1. No `core/render.mjs` in the project → run the `setup` skill first. Read `STATUS.md` (open work, decisions, learnings).
 2. Find the brand in `brands/<slug>/`. Read its `README.md` and `compliance.md`. No brand folder yet → run the
    `new-brand` skill first. Never borrow one brand's look, facts or voice for another.
 3. Create `productions/<brand>/<ID>-<slug>/` from `productions/_TEMPLATE/`. IDs: `REEL-###`, `POST-###`, never reused.

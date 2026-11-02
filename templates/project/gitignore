@@ -1,0 +1,15 @@
+node_modules/
+.DS_Store
+**/qa/flagged/
+__pycache__/
+
+# Big media stays out of git
+*.mp4
+*.MP4
+*.mov
+*.MOV
+*.m4v
+*.webm
+*.mkv
+*.avi
+*.zip
