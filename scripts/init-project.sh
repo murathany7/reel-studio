@@ -1,16 +1,23 @@
 #!/usr/bin/env bash
 # Copy the Reel Studio kit into a project so its skills can render there.
-#   scripts/init-project.sh <kit_root> [project_dir] [--update]
+#   scripts/init-project.sh <kit_root> [project_dir] [--update] [--with-skills]
 # Copies core/, engines/, scripts/, the engines demo and the brand/production templates, adds CLAUDE.md,
 # STATUS.md and .gitignore if missing, then runs npm install in core/ and checks the tools.
-# Existing files are kept; --update refreshes core/, engines/ and scripts/ from the kit (brands and productions
-# are never touched).
+# Existing files are kept; --update refreshes core/, engines/ and scripts/ (and the skills) from the kit (brands and
+# productions are never touched). --with-skills also copies the skills into .claude/skills/ (for installs without
+# the Claude Code plugin, e.g. npx reel-studio init).
 set -euo pipefail
 
-kit="${1:?usage: init-project.sh <kit_root> [project_dir] [--update]}"
-dest="${2:-.}"
-update="${3:-}"
-[ "${2:-}" = "--update" ] && { dest="."; update="--update"; }
+update=""; skills=""; args=()
+for a in "$@"; do
+  case "$a" in
+    --update) update="--update" ;;
+    --with-skills) skills=1 ;;
+    *) args+=("$a") ;;
+  esac
+done
+kit="${args[0]:?usage: init-project.sh <kit_root> [project_dir] [--update] [--with-skills]}"
+dest="${args[1]:-.}"
 kit="$(cd "$kit" && pwd)"
 dest="$(mkdir -p "$dest" && cd "$dest" && pwd)"
 
@@ -31,6 +38,7 @@ else
   copy scripts scripts $mode
   copy brands/_template brands/_template
   copy productions/_TEMPLATE productions/_TEMPLATE
+  [ -n "$skills" ] && copy .claude/skills .claude/skills $mode
   mkdir -p "$dest/examples/engines-demo/plates"
   cp -n "$kit/examples/engines-demo/index.html" "$kit/examples/engines-demo/README.md" "$dest/examples/engines-demo/" 2>/dev/null || true
   cp -n "$kit/examples/engines-demo/plates/blob.mp4" "$dest/examples/engines-demo/plates/" 2>/dev/null || true

@@ -1,5 +1,11 @@
 <h1 align="center">🎬 Reel Studio</h1>
 
+<p align="center">
+  <a href="https://www.npmjs.com/package/reel-studio"><img src="https://img.shields.io/npm/v/reel-studio?color=e8a33d" alt="npm"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-3ecf7a" alt="MIT"></a>
+  <img src="https://img.shields.io/badge/Claude%20Code-plugin-8b93a1" alt="Claude Code plugin">
+</p>
+
 <p align="center"><b>Make marketing reels, ads and posts with code, for any brand, with Claude Code.</b><br>
 Plain HTML pages on one clock → headless Chrome → MP4. Every frame is reproducible.</p>
 
@@ -68,6 +74,12 @@ Then, in the folder where your videos should live, ask:
 
 It copies the renderer into the folder, installs it and checks Chrome and ffmpeg. You need
 **Node 18+, Google Chrome and ffmpeg** (`brew install ffmpeg`). Blender is optional, for 3D plates.
+
+**Or with npm**, in any folder (no plugin needed; the skills are copied into `.claude/skills/`):
+
+```bash
+npx reel-studio init
+```
 
 **Or clone it** and work inside the repo:
 

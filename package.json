@@ -1,0 +1,31 @@
+{
+  "name": "reel-studio",
+  "version": "0.2.0",
+  "description": "Make marketing reels, ads and posts with code, for any brand, with Claude Code. HTML on one clock → MP4.",
+  "type": "module",
+  "bin": { "reel-studio": "bin/reel-studio.mjs" },
+  "files": [
+    "bin/",
+    "core/README.md",
+    "core/package.json",
+    "core/package-lock.json",
+    "core/render.mjs",
+    "core/lib/",
+    "engines/",
+    "scripts/",
+    "templates/",
+    "brands/_template/",
+    "productions/_TEMPLATE/",
+    "examples/engines-demo/index.html",
+    "examples/engines-demo/README.md",
+    "examples/engines-demo/plates/blob.mp4",
+    ".claude/skills/"
+  ],
+  "engines": { "node": ">=18" },
+  "keywords": ["video", "reels", "marketing", "claude-code", "gsap", "threejs", "pixi", "blender", "ffmpeg", "remotion-alternative"],
+  "author": "Murathan Yıldırım (https://github.com/murathany7)",
+  "license": "MIT",
+  "homepage": "https://github.com/murathany7/reel-studio#readme",
+  "repository": { "type": "git", "url": "git+https://github.com/murathany7/reel-studio.git" },
+  "bugs": "https://github.com/murathany7/reel-studio/issues"
+}

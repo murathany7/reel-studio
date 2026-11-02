@@ -12,10 +12,16 @@ The memory of this repo. Read it first, update it last.
 
 - 2026-11-02: published as open source (MIT) at github.com/murathany7/reel-studio. README visuals live in
   `docs/media/` (GIFs and strips made from the exports with ffmpeg); full MP4s go on GitHub Releases, since `*.mp4` is gitignored.
+- 2026-11-02: `docs/media/bike-logger-reel.gif`, `bike-logger-strip.jpg` and `qa-contact-sheet.jpg` regenerated
+  from the sharp REEL-001 v2. GIF: whole reel at 1.4x speed, 8 fps, 240 px, 128 colours, no dither (4.3 MB).
+  Strip: 6 beats (2.4, 5.8, 9.8, 13.6, 17.4, 23.4 s), 270×480 tiles, 8 px #131313 gaps.
 - 2026-11-02: installable as a Claude Code plugin (`.claude-plugin/`, the repo is its own marketplace). The `setup`
   skill runs `scripts/init-project.sh`, which copies `core/`, `engines/`, `scripts/`, templates and the engines demo
   into the user's project (compositions load `/core/...` from the project root, so the kit must live there).
   The demo's Blender plate is now in git (38 KB) so a fresh setup can render it without Blender.
+- 2026-11-02: npm package `reel-studio` (root `package.json`, `bin/reel-studio.mjs`): `npx reel-studio init` runs
+  `init-project.sh --with-skills`, which also copies the skills into `.claude/skills/`. Keep `version` equal in
+  `package.json` and `.claude-plugin/plugin.json`.
 
 ## Brands
 
@@ -28,6 +34,7 @@ The memory of this repo. Read it first, update it last.
 | ID | Brand | Title | Status | Export |
 |---|---|---|---|---|
 | REEL-001 | bike-logger | Robotics starter kit (silent, 28 s) | delivered | `productions/bike-logger/REEL-001-kit/export/REEL-001-kit-en.mp4` |
+| REEL-002 | bike-logger | Engines sampler: Three.js tray, Blender camera housing, Pixi sensor streams (silent, 14.8 s) | QA passed, draft for review | `productions/bike-logger/REEL-002-engines/export/REEL-002-engines-en.mp4` |
 
 ## Engines
 
@@ -69,4 +76,8 @@ The memory of this repo. Read it first, update it last.
   render a plate frame and compare a pixel with `ffmpeg -vf select=eq(n\,N)`.
 - **Soft captures (2026-11-02):** the Bike Logger site drops to 1.5x resolution when its first frames average over
   1/40 s, which virtual 1/30 s steps always do. REEL-001 v2 settles at 1/60 s and asserts full canvas resolution.
+- **HTML labels on 3D (2026-11-02):** Three.js refreshes world matrices only inside `render()`. Before projecting
+  a point to place a tag, call `camera.updateMatrixWorld()` and the object's parent `updateMatrixWorld()`, or the
+  tag follows the previously rendered frame.
+- `qa-video.sh` flags dark-brand frames (>98 % near-black) as "black" even with content on screen: look before fixing.
 - Hard cuts show up as "jumps" in `qa-video.sh`; note them as intended in the QA report.
