@@ -1,0 +1,16 @@
+{
+  "name": "reel-studio-core",
+  "private": true,
+  "type": "module",
+  "description": "Deterministic renderer: HTML + GSAP / Lottie / Three.js / Pixi → MP4 / PNG",
+  "scripts": {
+    "render": "node render.mjs"
+  },
+  "dependencies": {
+    "gsap": "^3.12.5",
+    "lottie-web": "^5.12.2",
+    "pixi.js": "^8.6.0",
+    "playwright-core": "1.49.1",
+    "three": "^0.170.0"
+  }
+}

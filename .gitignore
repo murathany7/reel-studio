@@ -1,0 +1,18 @@
+node_modules/
+.DS_Store
+**/qa/flagged/
+
+# Big media stays out of git; keep small example plates only if needed
+*.mp4
+*.MP4
+*.mov
+*.MOV
+*.m4v
+*.webm
+*.mkv
+*.avi
+*.zip
+
+# Generated QA evidence for examples (rebuild with the commands in each README)
+examples/*/qa/
+__pycache__/

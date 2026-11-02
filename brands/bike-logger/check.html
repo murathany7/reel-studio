@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Bike Logger brand check</title>
+<link rel="stylesheet" href="/core/lib/base.css">
+<link rel="stylesheet" href="/brands/bike-logger/tokens.css">
+<style>
+  .col { position: absolute; display: grid; gap: 34px; align-content: start; }
+  .sw { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .sw div { height: 120px; border: 2px solid var(--line); border-radius: 4px; display: flex; align-items: end; padding: 10px; font: 500 20px var(--font-mono); }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="safe-organic col">
+    <div class="eyebrow">Brand check · <b>bike-logger</b></div>
+    <div class="display title">Bike<br>Logger</div>
+    <div class="sub">Turn any city bike into a rolling robotics lab.</div>
+    <div class="sw">
+      <div style="background:var(--night);color:var(--ink)">night</div>
+      <div style="background:var(--ink);color:var(--night)">ink</div>
+      <div style="background:var(--dim);color:var(--night)">dim</div>
+      <div style="background:var(--line);color:var(--ink)">line</div>
+      <div style="background:var(--lamp);color:var(--night)">lamp</div>
+      <div style="background:var(--signal);color:var(--night)">signal</div>
+      <div style="background:var(--brake);color:var(--night)">brake</div>
+    </div>
+    <div class="eyebrow">02 · Ultrasonic</div>
+    <div class="display hook">Every overtake.</div>
+    <ul class="chips"><li>Waterproof probes</li><li>Logged in metres</li><li>IP65 · 200 × 120 × 75 mm</li></ul>
+    <div class="readout">4.80<small>m</small></div>
+    <div><span class="cta">murathanyildirim.com/bike-logger</span></div>
+  </div>
+</div>
+<script src="/core/node_modules/gsap/dist/gsap.min.js"></script>
+<script src="/core/lib/runtime.js"></script>
+<script>Studio.setup({ width: 1080, height: 1920, fps: 30, duration: 1 });</script>
+</body>
+</html>

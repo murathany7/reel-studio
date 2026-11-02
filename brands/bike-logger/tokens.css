@@ -1,0 +1,40 @@
+/* Bike Logger tokens, from the live site (../bikelog/site/index.html). Load after /core/lib/base.css.
+ * Fonts come from Google Fonts, as on the site; rendering needs network until they are copied into assets/fonts/. */
+@import url("https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=IBM+Plex+Mono:wght@400;500&display=block");
+
+:root {
+  --night: #06080a;   /* background */
+  --ink: #eceae4;     /* text */
+  --dim: #868d95;     /* secondary text */
+  --line: #262b31;    /* borders, chips */
+  --lamp: #ffc46e;    /* headlight, CTA */
+  --signal: #84dcff;  /* labels, data */
+  --brake: #ff4a3d;   /* warnings, close passes */
+
+  --bg: var(--night);
+  --accent: var(--lamp);
+  --font-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+
+#stage { color: var(--ink); font-family: var(--font-display); }
+
+/* Type for 1080-wide stages (sizes from the first reel) */
+.display { font-weight: 800; font-variation-settings: "wdth" 125; letter-spacing: -0.02em; line-height: .94; }
+.hook { font-size: 112px; }
+.title { font-size: 160px; font-weight: 900; line-height: .88; }
+.sub { font-size: 44px; font-weight: 600; font-variation-settings: "wdth" 110; line-height: 1.15; }
+.eyebrow { font-family: var(--font-mono); font-size: 30px; letter-spacing: .14em; text-transform: uppercase; color: var(--signal); }
+.eyebrow b { color: var(--lamp); font-weight: 500; }
+.readout { font-weight: 800; font-variation-settings: "wdth" 62; font-size: 150px; line-height: 1; font-variant-numeric: tabular-nums; }
+.readout small { font-size: .3em; font-weight: 500; color: var(--dim); font-variation-settings: "wdth" 100; margin-left: .25em; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 12px; list-style: none; }
+.chips li { font-family: var(--font-mono); font-size: 27px; padding: 9px 16px; border: 2px solid var(--line); border-radius: 3px; color: #b9bec4; background: rgba(6, 8, 10, .72); }
+.cta { display: inline-block; font-family: var(--font-mono); font-size: 32px; color: var(--night); background: var(--lamp); padding: 16px 26px; border-radius: 4px; }
+
+/* Text over the 3D scene needs a soft shadow to stay readable */
+.on-scene { text-shadow: 0 4px 30px rgba(6, 8, 10, .6); }
+.hl { color: var(--lamp); }
+.warn { color: var(--brake); }

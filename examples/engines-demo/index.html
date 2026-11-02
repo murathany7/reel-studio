@@ -1,0 +1,108 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Engines demo</title>
+<link rel="stylesheet" href="/core/lib/base.css">
+<style>
+  :root { --bg: #fdeedd; --ink: #2a1a0e; --accent: #ed6a18; }
+  .label { position: absolute; left: 0; right: 0; text-align: center; font: 700 76px/1.05 system-ui, sans-serif; letter-spacing: -0.02em; }
+  .label small { display: block; margin-top: 18px; font: 600 38px/1.2 ui-monospace, monospace; letter-spacing: 0; color: var(--accent); }
+  #plate { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  #hero { position: absolute; left: 50%; top: 52%; width: 560px; margin-left: -280px; }
+</style>
+<script type="importmap">{ "imports": {
+  "three": "/core/node_modules/three/build/three.module.js",
+  "pixi.js": "/core/node_modules/pixi.js/dist/pixi.mjs"
+} }</script>
+</head>
+<body>
+<div id="stage">
+  <!-- 0–2 s: Blender plate (engines/blender/example_scene.py) -->
+  <div class="layer" id="s-blender"><video id="plate" src="plates/blob.mp4"></video></div>
+  <!-- 2–4 s: Three.js toon + outline -->
+  <div class="layer" id="s-three"></div>
+  <!-- 4–6 s: SVG rig character + Pixi confetti on top -->
+  <div class="layer" id="s-svg">
+    <svg id="hero" viewBox="0 0 280 300">
+      <g id="body">
+        <ellipse cx="140" cy="170" rx="120" ry="115" fill="#ed6a18"/>
+        <g id="arm-r"><ellipse cx="258" cy="140" rx="20" ry="38" fill="#ed6a18"/></g>
+        <g id="eyes"><circle cx="100" cy="150" r="16" fill="#2a1a0e"/><circle cx="180" cy="150" r="16" fill="#2a1a0e"/></g>
+        <path id="mouth-closed" d="M112 200 Q140 222 168 200" stroke="#2a1a0e" stroke-width="9" fill="none" stroke-linecap="round"/>
+        <ellipse id="mouth-open" cx="140" cy="208" rx="24" ry="20" fill="#2a1a0e"/>
+      </g>
+    </svg>
+  </div>
+  <div class="layer" id="s-pixi"></div>
+  <!-- GSAP text on top of everything -->
+  <div class="safe">
+    <div class="label" id="l1">Blender<small>engines/blender · cel-shaded plate</small></div>
+    <div class="label" id="l2">Three.js<small>engines/three.js · toon + outline</small></div>
+    <div class="label" id="l3">SVG rig + Pixi<small>engines/svg-rig.js · engines/pixi.js</small></div>
+  </div>
+</div>
+
+<script src="/core/node_modules/gsap/dist/gsap.min.js"></script>
+<script src="/core/lib/runtime.js"></script>
+<script src="/engines/svg-rig.js"></script>
+<script type="module">
+  import { threeLayer, toon, outline } from "/engines/three.js";
+  import { pixiLayer } from "/engines/pixi.js";
+
+  const tl = Studio.setup({ width: 1080, height: 1920, fps: 30, duration: 6 });
+
+  // Scenes: hard cuts at 2 s and 4 s, text pops in on each.
+  Studio.video(document.getElementById("plate"), { start: 0 });
+  gsap.set(["#s-three", "#s-svg", "#s-pixi", "#l2", "#l3"], { autoAlpha: 0 });
+  tl.set("#s-blender", { autoAlpha: 0 }, 2).set("#l1", { autoAlpha: 0 }, 2)
+    .set("#s-three", { autoAlpha: 1 }, 2).set("#l2", { autoAlpha: 1 }, 2)
+    .set("#s-three", { autoAlpha: 0 }, 4).set("#l2", { autoAlpha: 0 }, 4)
+    .set(["#s-svg", "#s-pixi", "#l3"], { autoAlpha: 1 }, 4);
+  for (const [id, at] of [["#l1", 0], ["#l2", 2], ["#l3", 4]]) {
+    tl.from(id, { y: 40, scale: 0.9, duration: 0.45, ease: "back.out(2)" }, at + 0.1);
+  }
+
+  // Three.js: a toon donut with an ink outline, spinning; pose comes from t only.
+  const { scene, camera, THREE } = threeLayer(document.getElementById("s-three"), {
+    background: 0xfdeedd,
+    update(t) {
+      const k = t - 2;
+      donut.rotation.set(0.6 + k * 0.9, k * 1.4, 0);
+      donut.position.y = -0.6 + Math.sin(k * Math.PI) * 0.4;
+    },
+  });
+  const donut = new THREE.Mesh(new THREE.TorusGeometry(1.0, 0.42, 48, 96), toon(0xed6a18));
+  outline(donut, { thickness: 0.05 });
+  scene.add(donut);
+  const sun = new THREE.DirectionalLight(0xffffff, 3);
+  sun.position.set(3, 4, 5);
+  scene.add(sun, new THREE.AmbientLight(0xffffff, 0.6));
+  camera.position.set(0, 0, 14);
+
+  // SVG rig: hop, blink, talk, wave.
+  SvgRig(document.getElementById("hero")).hop(4.1).blink([4.9, 5.7]).talk(5.0, 5.6).wave(4.9, { times: 2 });
+
+  // Pixi: seeded confetti burst from 4.1 s; positions computed from t (no state between frames).
+  const { app, PIXI } = await pixiLayer(document.getElementById("s-pixi"), {
+    update(t) {
+      const k = Math.max(0, t - 4.1);
+      for (const p of bits) {
+        p.g.x = 540 + p.vx * k;
+        p.g.y = 1100 + p.vy * k + 900 * k * k;
+        p.g.rotation = p.spin * k;
+        p.g.visible = t >= 4.1;
+      }
+    },
+  });
+  const rnd = Studio.random(7);
+  const colors = [0xed6a18, 0xffc46e, 0x84dcff, 0xff4a3d, 0x2a1a0e];
+  const bits = Array.from({ length: 90 }, () => {
+    const g = new PIXI.Graphics().rect(-10, -5, 20, 10).fill(colors[Math.floor(rnd() * colors.length)]);
+    app.stage.addChild(g);
+    const a = -Math.PI / 2 + (rnd() - 0.5) * 2.2, v = 700 + rnd() * 900;
+    return { g, vx: Math.cos(a) * v, vy: Math.sin(a) * v, spin: (rnd() - 0.5) * 20 };
+  });
+</script>
+</body>
+</html>

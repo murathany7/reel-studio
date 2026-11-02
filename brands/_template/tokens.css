@@ -1,0 +1,24 @@
+/* <Brand name> tokens. Load after /core/lib/base.css.
+ * Fonts live in brands/<slug>/assets/fonts/ and are loaded with absolute paths. */
+
+/*
+@font-face { font-family: "BrandDisplay"; src: url("/brands/<slug>/assets/fonts/Display.woff2") format("woff2"); font-weight: 400 800; }
+*/
+
+:root {
+  --bg: #ffffff;
+  --ink: #111111;
+  --accent: #ff5a1f;
+
+  --font-display: system-ui, sans-serif;
+  --font-body: system-ui, sans-serif;
+}
+
+/* Type scale for 1080-wide stages */
+.display { font-family: var(--font-display); font-weight: 700; letter-spacing: -0.02em; line-height: 1.04; }
+.hook { font-size: 96px; }
+.headline { font-size: 72px; }
+.caption { font-size: 52px; font-weight: 600; line-height: 1.2; }
+.support { font-size: 42px; font-weight: 500; line-height: 1.25; }
+.fine { font-size: 28px; line-height: 1.3; opacity: .75; }
+.hl { color: var(--accent); }

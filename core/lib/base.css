@@ -1,0 +1,31 @@
+/* Brand-neutral base for every composition. A brand adds its own tokens.css
+ * (colours, fonts, type scale) from brands/<name>/tokens.css after this file. */
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: #000; }
+body {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+  font-family: var(--font-body, system-ui, sans-serif);
+  color: var(--ink, #111);
+}
+
+/* The stage is always exactly the export size (set by runtime.js). */
+#stage { position: relative; overflow: hidden; background: var(--bg, #fff); }
+.layer { position: absolute; inset: 0; }
+.layer > canvas { display: block; width: 100%; height: 100%; }
+
+/* ---- Safe zones (9:16 Reels / Stories) ----
+   .safe          paid Reels (Meta): top 14%, bottom 35%, sides 6%
+   .safe-organic  organic Reels: top 11.5%, bottom 22%, left 6%, right 11%
+   runtime.js adds .show-safe when ?safe=1 (render with --safe). */
+.safe { position: absolute; left: 6%; right: 6%; top: 14%; bottom: 35%; }
+.safe-organic { position: absolute; left: 6%; right: 11%; top: 11.5%; bottom: 22%; }
+.show-safe #stage::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 9999;
+  background:
+    linear-gradient(rgba(255,0,0,.28), rgba(255,0,0,.28)) top / 100% 14% no-repeat,
+    linear-gradient(rgba(255,0,0,.28), rgba(255,0,0,.28)) bottom / 100% 35% no-repeat,
+    linear-gradient(rgba(255,0,0,.28), rgba(255,0,0,.28)) left / 6% 100% no-repeat,
+    linear-gradient(rgba(255,0,0,.28), rgba(255,0,0,.28)) right / 6% 100% no-repeat;
+}

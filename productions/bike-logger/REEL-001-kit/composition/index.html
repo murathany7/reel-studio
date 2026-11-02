@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Bike Logger — robotics kit reel</title>
+<link rel="stylesheet" href="/core/lib/base.css">
+<link rel="stylesheet" href="/brands/bike-logger/tokens.css">
+<style>
+  /* Colours, fonts, .eyebrow and .chips come from the brand tokens; this file only sets the reel's own layout. */
+  video.scene { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+  /* Copy block: inside the organic Reels safe zone (text ends above y 1498, right 11%) */
+  .beat { position: absolute; left: 72px; right: 150px; top: 1030px; display: grid; gap: 26px; opacity: 0; }
+  .beat.high { top: 960px; }
+  /* steady shade under the copy so it reads over bright shots */
+  .base { position: absolute; left: 0; right: 0; bottom: 0; height: 1100px; background: linear-gradient(0deg, rgba(6,8,10,.7) 0%, rgba(6,8,10,.6) 60%, rgba(6,8,10,0) 100%); }
+  .eyebrow { text-shadow: 0 2px 12px rgba(6,8,10,.9); }
+  h2 { text-shadow: 0 4px 30px rgba(6,8,10,.6); margin: 0; font-size: 112px; font-weight: 800; font-variation-settings: "wdth" 125; line-height: .94; letter-spacing: -.02em; }
+  h2 .glow { color: var(--lamp); }
+  .w { display: inline-block; }
+  .chips { gap: 14px; margin: 6px 0 0; }
+
+  /* End card */
+  .shade { position: absolute; inset: 0; background: linear-gradient(0deg, rgba(6,8,10,.96) 0%, rgba(6,8,10,.9) 46%, rgba(6,8,10,0) 70%); opacity: 0; }
+  .end { position: absolute; left: 72px; right: 150px; top: 820px; display: grid; gap: 22px; }
+  .end h1 { margin: 0; font-size: 160px; font-weight: 900; font-variation-settings: "wdth" 125; line-height: .88; letter-spacing: -.02em; }
+  .end h1 .glow { color: var(--lamp); }
+  .end .sub { font-size: 44px; font-weight: 600; font-variation-settings: "wdth" 110; line-height: 1.15; }
+  .end .parts { font-family: var(--font-mono); font-size: 25px; color: var(--dim); line-height: 1.6; }
+  .end .url { justify-self: start; margin-top: 8px; font-family: var(--font-mono); font-size: 32px; color: var(--night); background: var(--lamp); padding: 16px 26px; border-radius: 4px; }
+  .dot { display: inline-block; width: 18px; height: 18px; border-radius: 50%; background: var(--brake); box-shadow: 0 0 22px var(--brake); margin-right: 18px; vertical-align: 6px; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <video class="scene" src="scene.mp4" muted playsinline></video>
+  <div class="base"></div>
+
+  <div class="beat" id="b0">
+    <div class="eyebrow">Robotics starter kit</div>
+    <h2>Build your own <span class="glow">ride recorder.</span></h2>
+  </div>
+
+  <div class="beat" id="b1">
+    <div class="eyebrow">The brain</div>
+    <h2>One Pi. One sealed box.</h2>
+    <ul class="chips"><li>Raspberry Pi 5</li><li>GPS</li><li>BNO085</li><li>3D-printed tray</li></ul>
+  </div>
+
+  <div class="beat" id="b2">
+    <div class="eyebrow"><b>01</b> · Camera</div>
+    <h2>Wire up a rear camera.</h2>
+    <ul class="chips"><li>Camera Module 3 Wide</li><li>102° view</li></ul>
+  </div>
+
+  <div class="beat" id="b3">
+    <div class="eyebrow"><b>02</b> · Ultrasonic</div>
+    <h2>Measure every overtake.</h2>
+    <ul class="chips"><li>How close the car came</li><li>in metres</li></ul>
+  </div>
+
+  <div class="beat" id="b4">
+    <div class="eyebrow"><b>03</b> · Hall sensor</div>
+    <h2>Count every wheel turn.</h2>
+    <ul class="chips"><li>A3144 + spoke magnet</li><li>Speed without GPS</li></ul>
+  </div>
+
+  <div class="beat" id="b5">
+    <div class="eyebrow"><b>04</b> · 9-axis IMU</div>
+    <h2>Feel every lean.</h2>
+    <ul class="chips"><li>BNO085</li><li>Lean</li><li>Pitch</li><li>Acceleration</li></ul>
+  </div>
+
+  <div class="beat high" id="b6">
+    <div class="eyebrow"><b>05</b> · Code it</div>
+    <h2>Every sensor. One timeline.</h2>
+  </div>
+
+  <div class="shade"></div>
+  <div class="end">
+    <div class="eyebrow"><span class="dot"></span>Robotics starter kit</div>
+    <h1>Bike<br><span class="glow">Logger</span></h1>
+    <div class="sub">Turn any city bike into a&nbsp;rolling robotics lab.</div>
+    <div class="parts">Raspberry Pi 5 · camera · GPS · IMU<br>ultrasonic · Hall sensor · runs offline</div>
+    <div class="url">murathanyildirim.com/bike-logger</div>
+  </div>
+</div>
+
+<script src="/core/node_modules/gsap/dist/gsap.min.js"></script>
+<script src="/core/lib/runtime.js"></script>
+<script>
+  const tl = Studio.setup({ width: 1080, height: 1920, fps: 30, duration: 28 });
+  Studio.video(document.querySelector("video.scene"));
+
+  // split headlines into words so they rise in one by one, like the site's reveal
+  document.querySelectorAll("h2, .end h1").forEach((h) => {
+    const walk = (node) => [...node.childNodes].forEach((c) => {
+      if (c.nodeType === 3) {
+        const frag = document.createDocumentFragment();
+        c.textContent.split(/(\s+)/).forEach((part) => {
+          if (!part) return;
+          if (/^\s+$/.test(part)) frag.append(part);
+          else { const s = document.createElement("span"); s.className = "w"; s.textContent = part; frag.append(s); }
+        });
+        c.replaceWith(frag);
+      } else if (c.nodeType === 1 && c.tagName !== "BR") walk(c);
+    });
+    walk(h);
+  });
+
+  // [beat, in, out] — matched to the camera moves in SHOTS in ../capture/drive.mjs
+  const BEATS = [["#b0", 0.4, 3.0], ["#b1", 3.9, 7.3], ["#b2", 8.2, 10.6], ["#b3", 11.4, 15.1],
+                 ["#b4", 16.0, 18.2], ["#b5", 19.0, 21.2], ["#b6", 22.0, 24.3]];
+  for (const [sel, tIn, tOut] of BEATS) {
+    const el = document.querySelector(sel);
+    tl.set(el, { opacity: 1 }, tIn);
+    tl.from(el.querySelector(".eyebrow"), { y: 24, opacity: 0, duration: 0.45, ease: "power3.out" }, tIn);
+    tl.from(el.querySelectorAll("h2 .w"), { y: 70, opacity: 0, duration: 0.6, ease: "power3.out", stagger: 0.07 }, tIn + 0.08);
+    tl.from(el.querySelectorAll(".chips li"), { y: 26, opacity: 0, duration: 0.45, ease: "power2.out", stagger: 0.08 }, tIn + 0.45);
+    tl.to(el, { y: -40, opacity: 0, duration: 0.35, ease: "power2.in" }, tOut - 0.35);
+  }
+
+  // end card
+  const E = 24.7;
+  tl.to(".shade", { opacity: 1, duration: 0.8, ease: "sine.inOut" }, E - 0.2);
+  tl.from(".end .eyebrow", { y: 24, opacity: 0, duration: 0.45, ease: "power3.out" }, E);
+  tl.from(".end h1 .w", { y: 110, opacity: 0, duration: 0.7, ease: "power3.out", stagger: 0.12 }, E + 0.1);
+  tl.from(".end .sub", { y: 30, opacity: 0, duration: 0.5, ease: "power3.out" }, E + 0.55);
+  tl.from(".end .parts", { y: 24, opacity: 0, duration: 0.5, ease: "power2.out" }, E + 0.8);
+  tl.from(".end .url", { y: 24, opacity: 0, scale: 0.94, transformOrigin: "left center", duration: 0.5, ease: "back.out(2)" }, E + 1.05);
+  // the rear-light dot blinks, as on the site
+  for (let t = E + 0.6; t < 28; t += 1) tl.to(".dot", { opacity: 0.15, duration: 0.12, ease: "sine.inOut", yoyo: true, repeat: 1, repeatDelay: 0.3 }, t);
+</script>
+</body>
+</html>
