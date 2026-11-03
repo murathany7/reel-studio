@@ -56,7 +56,7 @@
 
   P("unboxing", { name: "What's inside", scenario: "Unboxing / kit contents", principle: "Anticipation; reveal",
     basis: "Anticipatory utility (Loewenstein 1987)", needs: ["crew", "brand"] },
-    (b, o) => [b.unbox || hook(b, o), { type: "lineup", dur: 3, eyebrow: b.lineupEyebrow, title: b.lineupTitle || "The whole crew.", actors: b.crew }, end(b)]);
+    (b, o) => [b.unbox || hook(b, o), { type: "lineup", dur: 3, eyebrow: b.lineupEyebrow, title: b.lineupTitle || "Everything inside.", actors: b.crew, labels: b.lineupLabels }, end(b)]);
 
   // ---- Psychology-driven patterns -------------------------------------------------------------
   P("curiosity", { name: "Curiosity gap", scenario: "Hook-first teaser", principle: "An information gap people want to close",
@@ -86,7 +86,7 @@
 
   P("foot", { name: "Foot in the door", scenario: "Low-commitment first step", principle: "A small first step makes the bigger one easier",
     basis: "Freedman & Fraser 1966", needs: ["foot", "brand"] },
-    (b) => [{ type: "title", dur: 2, ...b.foot.first }, feat(b.foot.feature, 2.2), { type: "lineup", dur: 2.8, ...b.foot.then, actors: b.crew }, end(b)]);
+    (b) => [{ type: "title", dur: 2, ...b.foot.first }, feat(b.foot.feature, 2.2), { type: "lineup", dur: 2.8, ...b.foot.then, actors: b.crew, labels: b.lineupLabels }, end(b)]);
 
   P("story", { name: "Mini story", scenario: "Character / narrative ad", principle: "Stories lower resistance (narrative transportation)",
     basis: "Green & Brock 2000", needs: ["story", "brand"] },

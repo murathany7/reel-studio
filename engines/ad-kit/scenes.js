@@ -268,11 +268,12 @@
   AK.scene("lineup", (c, s, t0, t1, layer) => {
     c.reveal(c.text(layer, { eyebrow: s.eyebrow, title: s.title, size: s.size }), t0 - PRE);
     const n = s.actors.length, cols = s.cols || Math.min(3, n), rows = Math.ceil(n / cols);
+    const lab = s.labels ? 44 * c.k : 0;
     const top = c.R.stageTop, h = c.R.stageBottom - top - 70 * c.k, cellW = (c.R.sr - c.R.sl) / cols, cellH = h / rows;
-    const w = Math.min(cellW * 1.05, cellH * 1.05);
+    const w = Math.min(cellW * 1.05, (cellH - lab) * 1.05);
     const actors = s.actors.map((k, i) => {
       const col = i % cols, row = Math.floor(i / cols);
-      const a = c.actor(layer, k, { w, cx: c.R.sl + cellW * (col + 0.5), bottom: top + cellH * (row + 1) - 8 * c.k });
+      const a = c.actor(layer, k, { w, cx: c.R.sl + cellW * (col + 0.5), bottom: top + cellH * (row + 1) - 8 * c.k - lab });
       c.enter(a, t0 - 0.08 + i * 0.07, "pop"); c.alive(a, t0, t1, { idle: false });
       return a;
     });
@@ -281,9 +282,22 @@
     Object.assign(bar.style, { position: "absolute", left: c.R.sl + "px", width: (c.R.sr - c.R.sl) + "px", top: by + "px", height: 6 * c.k + "px", background: "var(--ak-line, #333)", borderRadius: 3 * c.k + "px" });
     Object.assign(head.style, { position: "absolute", left: c.R.sl + "px", top: (by - 22 * c.k) + "px", width: 8 * c.k + "px", height: 50 * c.k + "px", background: "var(--accent)", borderRadius: 4 * c.k + "px" });
     c.tl.fromTo(head, { x: 0 }, { x: c.R.sr - c.R.sl - 8 * c.k, duration: t1 - t0 - 0.5, ease: "none", immediateRender: false }, t0 + 0.4);
-    const beat = s.beat || 0.5;
-    for (let t = t0 + 0.9; t < t1 - 0.3; t += beat) actors.forEach((a) =>
-      c.tl.to(a.wrap, { y: -c.S.bounce * c.k, duration: beat * 0.35, ease: "power2.out" }, t).to(a.wrap, { y: 0, duration: beat * 0.35, ease: "power2.in" }, t + beat * 0.35));
+    if (s.labels) actors.forEach((a, i) => {
+      const lb = c.el(layer, "div", "ak-eyebrow");
+      Object.assign(lb.style, { position: "absolute", left: (parseFloat(a.wrap.style.left)) + "px", width: a.w + "px", textAlign: "center",
+        top: (parseFloat(a.wrap.style.top) + a.w * 0.95 + 4 * c.k) + "px", fontSize: 22 * c.k + "px", letterSpacing: ".08em" });
+      lb.textContent = s.labels[i] || "";
+      gsap.set(lb, { autoAlpha: 0 }); c.tl.to(lb, { autoAlpha: 1, duration: 0.3 }, t0 + 0.3 + i * 0.07);
+    });
+    const beat = s.beat || 0.5, sweep = t1 - t0 - 0.5, span = c.R.sr - c.R.sl;
+    actors.forEach((a) => {
+      if (a.still) {
+        // Objects light up as the playhead passes their column: every part reporting on one timeline.
+        const at = t0 + 0.4 + sweep * ((parseFloat(a.wrap.style.left) + a.w / 2 - c.R.sl) / span);
+        c.tl.to(a.wrap, { scale: 1.08, duration: 0.25, ease: "sine.out" }, at).to(a.wrap, { scale: 1, duration: 0.45, ease: "sine.inOut" }, at + 0.25);
+      } else for (let t = t0 + 0.9; t < t1 - 0.3; t += beat)
+        c.tl.to(a.wrap, { y: -c.S.bounce * c.k, duration: beat * 0.35, ease: "power2.out" }, t).to(a.wrap, { y: 0, duration: beat * 0.35, ease: "power2.in" }, t + beat * 0.35);
+    });
   }, { dur: 3 });
 
   /** End card: { wordmark, line, cta, url, actors, eyebrow } */

@@ -10,7 +10,7 @@
 <script src="/engines/svg-rig.js"></script>
 <script src="/engines/ad-kit/ad-kit.js"></script>
 <script src="/engines/ad-kit/scenes.js"></script>
-<script src="/brands/bike-logger/assets/cartoon/crew.js"></script>
+<script src="/brands/bike-logger/assets/cartoon/parts.js"></script>
 <script src="/brands/bike-logger/assets/cartoon/bike.js"></script>
 <script src="/brands/bike-logger/assets/cartoon/brief.js"></script>
 <script>
@@ -27,9 +27,9 @@
         { at: -0.12, ...hooks[hook] },
         { at: 2.2, eyebrow: "02 · GPS", title: say("Signal gone.", "GPS: lost.") },
         { at: 4.2, eyebrow: "05 · Hall sensor", title: say("The wheel still counts.", "Hall sensor: unbothered."), chips: ["A3144", "spoke magnet", "1 pulse per turn"] },
-        { at: 7.0, title: say("Speed and distance, even without GPS.", "Speed and distance. No GPS needed.") },
+        { at: 7.0, title: say("Speed and distance, even without GPS.", "Speed and distance. No GPS needed."), size: 84 },
       ] },
     { type: "endcard", dur: 2.2, ...b.brand, actors: ["gps", "hall"] },
   ];
-  AdKit.build({ scenes, style, size: P.get("size") || "reel", cast: BL.cast, forbid: BL.forbid });
+  AdKit.build({ scenes, style, size: P.get("size") || "reel", cast: BL.cast, forbid: BL.forbid, motion: BL.motion, fps: +(P.get("fps") || 60) });
 </script></body></html>

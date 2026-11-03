@@ -98,7 +98,9 @@ async function openPage(input, safe) {
   page.on("console", (m) => m.type() === "error" && !m.text().startsWith("Failed to load resource") && errors.push(m.text()));
   page.on("response", (r) => r.status() >= 400 && !r.url().endsWith("/favicon.ico") && errors.push(`${r.status()} ${r.url()}`));
   await page.goto(`http://127.0.0.1:${port}/${rel}?render=1${safe ? "&safe=1" : ""}${query ? "&" + query : ""}`);
-  await page.evaluate(() => window.__ready);
+  // If the page threw while building, report its own errors rather than the symptom ("never called Studio.setup").
+  await page.evaluate(() => window.__ready).catch(async (e) => { await browser.close(); server.close();
+    throw new Error((errors.length ? "Page errors:\n  " + errors.join("\n  ") + "\n" : "") + e.message); });
   // A composition that threw while building (e.g. an ad-kit guardrail) fails now, not after every frame.
   if (errors.length) { await browser.close(); server.close(); throw new Error("Page errors:\n  " + errors.join("\n  ")); }
   const meta = await page.evaluate(() => window.__meta());

@@ -107,8 +107,9 @@ async function worker() {
     const r = fresh ? { code: 0, log: "up to date" } : await run("node", ["core/render.mjs", "video", `${path.relative(ROOT, comp)}?${v.query}`, path.relative(ROOT, mp4)]);
     const res = { ...v, file: path.relative(base, mp4), ok: r.code === 0, skipped: fresh };
     if (res.ok) {
-      const probe = await run("ffprobe", ["-v", "error", "-show_entries", "format=duration:stream=width,height", "-of", "json", mp4]);
-      try { const j = JSON.parse(probe.log); res.duration = +(+j.format.duration).toFixed(2); res.size = `${j.streams[0].width}x${j.streams[0].height}`; } catch {}
+      const probe = await run("ffprobe", ["-v", "error", "-select_streams", "v:0", "-show_entries", "format=duration:stream=width,height,r_frame_rate", "-of", "json", mp4]);
+      try { const j = JSON.parse(probe.log), [n, d] = j.streams[0].r_frame_rate.split("/");
+        res.duration = +(+j.format.duration).toFixed(2); res.size = `${j.streams[0].width}x${j.streams[0].height}`; res.fps = Math.round(n / d); } catch {}
       const cover = path.join(outDir, "covers", v.name + ".jpg");
       await run("ffmpeg", ["-v", "error", "-y", "-ss", String((res.duration || 4) * (cfg.coverAt ?? 0.3)), "-i", mp4, "-frames:v", "1", "-vf", "scale=270:-2", "-q:v", "3", cover]);
       res.cover = path.relative(base, cover);
@@ -116,7 +117,7 @@ async function worker() {
         const rep = await readFile(path.join(qaDir, v.name, "report.md"), "utf8").catch(() => null);
         if (rep != null) res.qa = { fails: (rep.match(/❌/g) || []).length, report: path.relative(base, path.join(qaDir, v.name, "report.md")), code: 0 };
       } else if (flag("qa")) {
-        const q = await run("bash", ["scripts/qa-video.sh", mp4, path.join(qaDir, v.name), res.size || "1080x1920"]);
+        const q = await run("bash", ["scripts/qa-video.sh", mp4, path.join(qaDir, v.name), res.size || "1080x1920", String(res.fps || 30)]);
         const rep = await readFile(path.join(qaDir, v.name, "report.md"), "utf8").catch(() => "");
         res.qa = { fails: (rep.match(/❌/g) || []).length, report: path.relative(base, path.join(qaDir, v.name, "report.md")), code: q.code };
       }
@@ -135,8 +136,8 @@ const prev = await readFile(path.join(outDir, "manifest.json"), "utf8").then(JSO
 const merged = [...prev.variants.filter((p) => !results.some((r) => r.name === p.name)), ...results];
 await writeFile(path.join(outDir, "manifest.json"), JSON.stringify({ id: cfg.id, composition: cfg.composition, variants: merged }, null, 2));
 const md = [`# ${cfg.id || ""} variants`, "", `${merged.filter((r) => r.ok).length} of ${merged.length} rendered. Rebuild: \`node scripts/variants.mjs ${path.relative(ROOT, file)}\``, "",
-  `| File | ${keys.join(" | ")} | Length | Size | QA |`, `|---|${keys.map(() => "---").join("|")}|---|---|---|`,
-  ...merged.map((r) => `| ${r.ok ? `\`${path.basename(r.file)}\`` : "✗ " + r.name} | ${keys.map((k) => r.axes[k] ?? "").join(" | ")} | ${r.duration ?? ""} s | ${r.size ?? ""} | ${r.qa ? (r.qa.fails ? `❌×${r.qa.fails}` : "✅") : ""} |`)].join("\n");
+  `| File | ${keys.join(" | ")} | Length | Size | fps | QA |`, `|---|${keys.map(() => "---").join("|")}|---|---|---|---|`,
+  ...merged.map((r) => `| ${r.ok ? `\`${path.basename(r.file)}\`` : "✗ " + r.name} | ${keys.map((k) => r.axes[k] ?? "").join(" | ")} | ${r.duration ?? ""} s | ${r.size ?? ""} | ${r.fps ?? ""} | ${r.qa ? (r.qa.fails ? `❌×${r.qa.fails}` : "✅") : ""} |`)].join("\n");
 await writeFile(path.join(outDir, "manifest.md"), md + "\n");
 const covers = merged.filter((r) => r.cover).map((r) => path.join(base, r.cover));
 if (covers.length) {

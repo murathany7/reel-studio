@@ -10,7 +10,7 @@
 <script src="/engines/svg-rig.js"></script>
 <script src="/engines/ad-kit/ad-kit.js"></script>
 <script src="/engines/ad-kit/scenes.js"></script>
-<script src="/brands/bike-logger/assets/cartoon/crew.js"></script>
+<script src="/brands/bike-logger/assets/cartoon/parts.js"></script>
 <script src="/brands/bike-logger/assets/cartoon/bike.js"></script>
 <script src="/brands/bike-logger/assets/cartoon/brief.js"></script>
 <script>
@@ -19,7 +19,7 @@
   const b = BL.brief(style), say = (f, a) => (A ? a : f);
   const hooks = {
     A: { eyebrow: "Robotics starter kit", title: say("Ride. Record. Replay.", "Ride. Record. Replay.") },
-    B: { eyebrow: "Robotics starter kit", title: say("Your bike has a crew.", "Your bike has a crew now.") },
+    B: { eyebrow: "Robotics starter kit", title: say("Five sensors on one bike.", "Five sensors. One bike.") },
     C: { eyebrow: "Robotics starter kit", title: say("Every sensor. One timeline.", "Every sensor. One timeline.") },
   };
   const scenes = [
@@ -34,5 +34,5 @@
     { type: "replay", dur: 3.2, eyebrow: "Code it", title: say("Scrub once. Everything moves.", "One timeline. Scrub once.") },
     { type: "endcard", dur: 2.4, ...b.brand, actors: ["imu", "sonar", "hall"] },
   ];
-  AdKit.build({ scenes, style, size: P.get("size") || "reel", cast: BL.cast, forbid: BL.forbid });
+  AdKit.build({ scenes, style, size: P.get("size") || "reel", cast: BL.cast, forbid: BL.forbid, motion: BL.motion, fps: +(P.get("fps") || 60) });
 </script></body></html>

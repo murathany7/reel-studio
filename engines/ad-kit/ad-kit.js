@@ -26,6 +26,8 @@
     fun:   { pop: "back.out(1.8)", ease: "power2.out", inEase: "power3.out", hop: 90, idle: 10, bounce: 34, flash: true, wobble: 1 },
     adult: { pop: "power3.out",    ease: "power2.out", inEase: "power2.out", hop: 0,  idle: 4,  bounce: 10, flash: false, wobble: .45 },
   };
+  /** Acts that only make sense for characters; skipped on objects (actors whose SVG has data-still). */
+  AK.CHARACTER_ACTS = ["wave", "talk", "hop", "nod", "shake"];
   AK.SIZES = { reel: [1080, 1920], feed: [1080, 1350], square: [1080, 1080], landscape: [1920, 1080], banner: [1200, 628] };
   /** Scenes start their entrances this long before the cut (while the layer is still hidden), so the first frame after a cut is already moving. */
   AK.PRE = 0.12;
@@ -59,13 +61,20 @@
   };
 
   AK.build = function (spec) {
-    const style = spec.style || "fun", S = AK.STYLES[style];
+    // spec.motion overrides the style's motion (e.g. { hop: 0 } for a brand whose actors are objects, not characters).
+    const style = spec.style || "fun", S = { ...AK.STYLES[style], ...(spec.motion || {}) };
     const [W, H] = AK.SIZES[spec.size || "reel"];
     const L = safeBox(W, H, spec.placement || "organic");
     AK.check(spec);
     let t = 0;
     const plan = spec.scenes.map((s) => { const d = s.dur ?? AK.scenes[s.type].dur ?? 2; const p = { s, t0: t, t1: t + d }; t += d; return p; });
     const tl = Studio.setup({ width: W, height: H, fps: spec.fps || 30, duration: +t.toFixed(3) });
+    // Entrances are pre-rolled before each cut (AK.PRE). Before the first cut that is a negative time, and GSAP
+    // answers a negative position by shifting the whole timeline later (a black opening, a late end): clamp to 0.
+    for (const m of ["to", "from", "fromTo", "set", "call"]) {
+      const orig = tl[m].bind(tl);
+      tl[m] = (...args) => { const i = args.length - 1; if (typeof args[i] === "number" && args[i] < 0) args[i] = 0; return orig(...args); };
+    }
     const stage = document.getElementById("stage");
     stage.classList.add("ak", "ak-" + style, "ak-" + (spec.size || "reel"));
     // k scales every size in px (fonts, actors, spacing) from the 1080-wide reel design.
@@ -83,8 +92,8 @@
       const layer = document.createElement("div");
       layer.className = "ak-scene ak-" + p.s.type;
       stage.appendChild(layer);
-      gsap.set(layer, { autoAlpha: 0 });
-      tl.set(layer, { autoAlpha: 1 }, p.t0);
+      // The first scene is visible from frame 0 (a zero-length set at time 0 never renders on a seek to 0).
+      if (i > 0) { gsap.set(layer, { autoAlpha: 0 }); tl.set(layer, { autoAlpha: 1 }, p.t0); }
       if (i < plan.length - 1) tl.set(layer, { autoAlpha: 0 }, p.t1);
       ctx.scene = p; ctx.layer = layer;
       AK.scenes[p.s.type](ctx, p.s, p.t0, p.t1, layer);
@@ -136,7 +145,7 @@
         gsap.set(wrap, { transformOrigin: "50% 92.7%" });
         const svg = wrap.querySelector("svg");
         const rig = svg && window.SvgRig ? SvgRig(svg) : null;
-        return { wrap, svg, rig, w, key, part: (id) => svg && svg.querySelector("#" + id) };
+        return { wrap, svg, rig, w, key, still: !!(svg && svg.dataset.still), part: (id) => svg && svg.querySelector("#" + id) };
       },
       /** Bring an actor on at t: from "bottom" | "left" | "right" | "drop" | "pop" | { y } (rise by y px from behind a prop). */
       enter(a, t, from = "pop") {
@@ -176,12 +185,13 @@
           const [name, off = 0, opts = {}] = Array.isArray(it) ? it : [it.name, it.at, it];
           const fn = AK.acts[name];
           if (!fn) throw new Error(`AdKit: unknown act "${name}"`);
+          if (a.still && AK.CHARACTER_ACTS.includes(name)) continue; // objects don't wave, talk, hop or shake
           fn(this, a, t0 + off, t1, opts);
         }
       },
       /** Idle + irregular blinks for the whole time an actor is on screen. */
       alive(a, t0, t1, { idle = true } = {}) {
-        if (!a.rig) return;
+        if (!a.rig || a.still) return; // objects (data-still) don't breathe or blink
         if (idle) a.rig.idle(t0 + 0.7, t1, { amount: S.idle * this.k });
         const r = Studio.random(Math.round(t0 * 1000) + a.w);
         const times = []; for (let t = t0 + 0.9 + r() * 0.6; t < t1 - 0.2; t += 1.7 + r() * 1.6) times.push(t);
