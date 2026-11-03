@@ -86,7 +86,17 @@
       this.onSeek((t) => new Promise((res) => {
         const target = Math.max(0, Math.min(t - start, (el.duration || 0) - 0.001));
         if (Math.abs(el.currentTime - target) < 0.0005) return res();
-        el.addEventListener("seeked", res, { once: true });
+        // "seeked" can fire before the new frame is painted, and a screenshot then catches the old one (seen on a
+        // cold CI runner): also wait for the frame to be presented. A seek within the same plate frame presents
+        // nothing new, so that wait gives up after a moment; the old frame is the right one then.
+        let seeked = false, shown = !el.requestVideoFrameCallback, timer;
+        const done = () => seeked && shown && (clearTimeout(timer), res());
+        if (!shown) el.requestVideoFrameCallback(() => { shown = true; done(); });
+        el.addEventListener("seeked", () => {
+          seeked = true;
+          timer = setTimeout(() => { shown = true; done(); }, 250);
+          done();
+        }, { once: true });
         el.currentTime = target;
       }));
       return el;

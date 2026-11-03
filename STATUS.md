@@ -108,6 +108,10 @@ The memory of this repo. Read it first, update it last.
   render a plate frame and compare a pixel with `ffmpeg -vf select=eq(n\,N)`.
 - **Soft captures (2026-11-02):** the Bike Logger site drops to 1.5x resolution when its first frames average over
   1/40 s, which virtual 1/30 s steps always do. REEL-001 v2 settles at 1/60 s and asserts full canvas resolution.
+- **Plate seek race (2026-11-03):** `seeked` can fire before the new video frame is painted, so a cold CI runner
+  (Node 20, Dependabot PR #1) screenshotted the previous plate frame and two renders of t=1 differed. `Studio.video()`
+  now also waits for `requestVideoFrameCallback`, with a 250 ms fallback for seeks inside the same plate frame.
+  Output unchanged; the demo video renders ~1 s slower.
 - **HTML labels on 3D (2026-11-02):** Three.js refreshes world matrices only inside `render()`. Before projecting
   a point to place a tag, call `camera.updateMatrixWorld()` and the object's parent `updateMatrixWorld()`, or the
   tag follows the previously rendered frame.
