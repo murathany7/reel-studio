@@ -4,6 +4,10 @@ The memory of this repo. Read it first, update it last.
 
 ## Now
 
+- 2026-11-03: release workflow (`release.yml`) removed at the maintainer's request; CI tests only. It had failed
+  on every push since 0.2.2: npm (E404 on PUT) and PyPI (`invalid-publisher`) had no trusted publisher set up for
+  the repo. npm and PyPI are at 0.2.1; 0.2.2 and 0.2.3 are unpublished. A `ghcr.io/murathany7/reel-studio:0.2.3`
+  / `:latest` image was pushed by the last run before the removal.
 - Repo scaffolded 2026-11-02: core renderer (generalised from `../marketing-reels-skill/renderer`), engine
   adapters, skills, brand and production templates, engines demo.
 - 2026-11-02: Bike Logger brand added (facts, look, voice, compliance, brand-check still).
@@ -34,13 +38,9 @@ The memory of this repo. Read it first, update it last.
   `packaging/README.md`.
 - 2026-11-03: CI (`.github/workflows/ci.yml`) runs `npm test` + `npm run test:python` on Linux (Node 20, 24) and macOS
   for every push and PR: syntax, manifests, npm package contents, `init`, render determinism (md5 of the engines demo
-  at 1, 3, 4.6 s), a full video through `qa-video.sh`. Release (`release.yml`) publishes when `package.json`'s version
-  is not on npm: `packaging/bump.sh <v>` + push. Needs one-time trusted-publisher setup on npm and PyPI and a
-  `HOMEBREW_TAP_TOKEN` secret (`packaging/README.md`). `core/render.mjs` uses SwiftShader for WebGL off macOS.
+  at 1, 3, 4.6 s), a full video through `qa-video.sh`. Releases are by hand (`packaging/README.md`). `core/render.mjs` uses SwiftShader for WebGL off macOS.
 - 2026-11-03: Docker image (`Dockerfile`: Node 22, Chromium, ffmpeg, Noto/DejaVu fonts, the kit from `npm pack`).
-  Tested locally: `reel-studio init`, md5-stable stills, the engines demo video. `release.yml` job `docker` pushes
-  `ghcr.io/murathany7/reel-studio:<v>` and `:latest` (amd64 + arm64); after its first push, set the GHCR package to
-  public once (GitHub → Packages → reel-studio → Package settings).
+  Tested locally: `reel-studio init`, md5-stable stills, the engines demo video. Not published automatically any more (release workflow removed, top of this list).
 - 2026-11-03: 0.2.3: PyPI page (`python/README.md`) rebuilt as a marketing page like npm's, Bike Logger only. PyPI
   can't resolve relative paths, so every image and link there is an absolute `raw.githubusercontent.com/.../main/` URL
   (images follow `main`). Checked with `readme-renderer`, the library PyPI uses (all images and centring survive).
