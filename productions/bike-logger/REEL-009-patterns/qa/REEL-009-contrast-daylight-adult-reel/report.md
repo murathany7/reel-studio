@@ -1,6 +1,6 @@
 # QA report — REEL-009-contrast-daylight-adult-reel.mp4
 
-Generated 2026-11-03 22:04.
+Generated 2026-11-03 22:18.
 
 ## Specs
 
@@ -16,7 +16,7 @@ Generated 2026-11-03 22:04.
 ## Motion
 
 ```json
-{"frames_compared": 611, "moving_frames": 367, "static_frames": 244, "median_pct_pixels_changed_when_moving": 0.448, "hitches": [{"frame": 14, "time": 0.233}, {"frame": 69, "time": 1.15}, {"frame": 96, "time": 1.6}, {"frame": 123, "time": 2.05}], "jumps": [{"frame": 456, "time": 7.6, "pct": 27.7}]}
+{"frames_compared": 611, "moving_frames": 367, "static_frames": 244, "median_pct_pixels_changed_when_moving": 0.449, "hitches": [{"frame": 14, "time": 0.233}, {"frame": 69, "time": 1.15}, {"frame": 96, "time": 1.6}, {"frame": 123, "time": 2.05}], "jumps": [{"frame": 456, "time": 7.6, "pct": 27.7}]}
 ```
 
 - **Hitches** (a duplicate frame during motion) cause visible stutter. Fix the timeline at those times.

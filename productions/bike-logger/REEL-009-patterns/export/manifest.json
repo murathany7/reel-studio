@@ -269,28 +269,6 @@
     {
       "axes": {
         "pattern": "curiosity",
-        "look": "daylight",
-        "style": "adult",
-        "size": "reel"
-      },
-      "name": "REEL-009-curiosity-daylight-adult-reel",
-      "query": "pattern=curiosity&look=daylight&style=adult&size=reel",
-      "file": "export/REEL-009-curiosity-daylight-adult-reel.mp4",
-      "ok": true,
-      "skipped": false,
-      "duration": 9.8,
-      "size": "1080x1920",
-      "fps": 60,
-      "cover": "export/covers/REEL-009-curiosity-daylight-adult-reel.jpg",
-      "qa": {
-        "fails": 0,
-        "report": "qa/REEL-009-curiosity-daylight-adult-reel/report.md",
-        "code": 0
-      }
-    },
-    {
-      "axes": {
-        "pattern": "curiosity",
         "look": "type",
         "style": "fun",
         "size": "reel"
@@ -511,28 +489,6 @@
     {
       "axes": {
         "pattern": "myth",
-        "look": "daylight",
-        "style": "adult",
-        "size": "reel"
-      },
-      "name": "REEL-009-myth-daylight-adult-reel",
-      "query": "pattern=myth&look=daylight&style=adult&size=reel",
-      "file": "export/REEL-009-myth-daylight-adult-reel.mp4",
-      "ok": true,
-      "skipped": false,
-      "duration": 9.9,
-      "size": "1080x1920",
-      "fps": 60,
-      "cover": "export/covers/REEL-009-myth-daylight-adult-reel.jpg",
-      "qa": {
-        "fails": 0,
-        "report": "qa/REEL-009-myth-daylight-adult-reel/report.md",
-        "code": 0
-      }
-    },
-    {
-      "axes": {
-        "pattern": "myth",
         "look": "type",
         "style": "fun",
         "size": "reel"
@@ -549,28 +505,6 @@
       "qa": {
         "fails": 0,
         "report": "qa/REEL-009-myth-type-fun-reel/report.md",
-        "code": 0
-      }
-    },
-    {
-      "axes": {
-        "pattern": "reciprocity",
-        "look": "daylight",
-        "style": "adult",
-        "size": "reel"
-      },
-      "name": "REEL-009-reciprocity-daylight-adult-reel",
-      "query": "pattern=reciprocity&look=daylight&style=adult&size=reel",
-      "file": "export/REEL-009-reciprocity-daylight-adult-reel.mp4",
-      "ok": true,
-      "skipped": false,
-      "duration": 8.8,
-      "size": "1080x1920",
-      "fps": 60,
-      "cover": "export/covers/REEL-009-reciprocity-daylight-adult-reel.jpg",
-      "qa": {
-        "fails": 0,
-        "report": "qa/REEL-009-reciprocity-daylight-adult-reel/report.md",
         "code": 0
       }
     },
@@ -753,28 +687,6 @@
     {
       "axes": {
         "pattern": "loss",
-        "look": "daylight",
-        "style": "adult",
-        "size": "reel"
-      },
-      "name": "REEL-009-loss-daylight-adult-reel",
-      "query": "pattern=loss&look=daylight&style=adult&size=reel",
-      "file": "export/REEL-009-loss-daylight-adult-reel.mp4",
-      "ok": true,
-      "skipped": false,
-      "duration": 9.8,
-      "size": "1080x1920",
-      "fps": 60,
-      "cover": "export/covers/REEL-009-loss-daylight-adult-reel.jpg",
-      "qa": {
-        "fails": 0,
-        "report": "qa/REEL-009-loss-daylight-adult-reel/report.md",
-        "code": 0
-      }
-    },
-    {
-      "axes": {
-        "pattern": "loss",
         "look": "type",
         "style": "fun",
         "size": "reel"
@@ -797,28 +709,6 @@
     {
       "axes": {
         "pattern": "contrast",
-        "look": "daylight",
-        "style": "adult",
-        "size": "reel"
-      },
-      "name": "REEL-009-contrast-daylight-adult-reel",
-      "query": "pattern=contrast&look=daylight&style=adult&size=reel",
-      "file": "export/REEL-009-contrast-daylight-adult-reel.mp4",
-      "ok": true,
-      "skipped": false,
-      "duration": 10.2,
-      "size": "1080x1920",
-      "fps": 60,
-      "cover": "export/covers/REEL-009-contrast-daylight-adult-reel.jpg",
-      "qa": {
-        "fails": 0,
-        "report": "qa/REEL-009-contrast-daylight-adult-reel/report.md",
-        "code": 0
-      }
-    },
-    {
-      "axes": {
-        "pattern": "contrast",
         "look": "type",
         "style": "fun",
         "size": "reel"
@@ -835,28 +725,6 @@
       "qa": {
         "fails": 0,
         "report": "qa/REEL-009-contrast-type-fun-reel/report.md",
-        "code": 0
-      }
-    },
-    {
-      "axes": {
-        "pattern": "specificity",
-        "look": "daylight",
-        "style": "adult",
-        "size": "reel"
-      },
-      "name": "REEL-009-specificity-daylight-adult-reel",
-      "query": "pattern=specificity&look=daylight&style=adult&size=reel",
-      "file": "export/REEL-009-specificity-daylight-adult-reel.mp4",
-      "ok": true,
-      "skipped": false,
-      "duration": 9.2,
-      "size": "1080x1920",
-      "fps": 60,
-      "cover": "export/covers/REEL-009-specificity-daylight-adult-reel.jpg",
-      "qa": {
-        "fails": 0,
-        "report": "qa/REEL-009-specificity-daylight-adult-reel/report.md",
         "code": 0
       }
     },
@@ -1121,6 +989,138 @@
       "qa": {
         "fails": 0,
         "report": "qa/REEL-009-specificity-blueprint-fun-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "curiosity",
+        "look": "daylight",
+        "style": "adult",
+        "size": "reel"
+      },
+      "name": "REEL-009-curiosity-daylight-adult-reel",
+      "query": "pattern=curiosity&look=daylight&style=adult&size=reel",
+      "file": "export/REEL-009-curiosity-daylight-adult-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 9.8,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-curiosity-daylight-adult-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-curiosity-daylight-adult-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "myth",
+        "look": "daylight",
+        "style": "adult",
+        "size": "reel"
+      },
+      "name": "REEL-009-myth-daylight-adult-reel",
+      "query": "pattern=myth&look=daylight&style=adult&size=reel",
+      "file": "export/REEL-009-myth-daylight-adult-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 9.9,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-myth-daylight-adult-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-myth-daylight-adult-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "reciprocity",
+        "look": "daylight",
+        "style": "adult",
+        "size": "reel"
+      },
+      "name": "REEL-009-reciprocity-daylight-adult-reel",
+      "query": "pattern=reciprocity&look=daylight&style=adult&size=reel",
+      "file": "export/REEL-009-reciprocity-daylight-adult-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 8.8,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-reciprocity-daylight-adult-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-reciprocity-daylight-adult-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "loss",
+        "look": "daylight",
+        "style": "adult",
+        "size": "reel"
+      },
+      "name": "REEL-009-loss-daylight-adult-reel",
+      "query": "pattern=loss&look=daylight&style=adult&size=reel",
+      "file": "export/REEL-009-loss-daylight-adult-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 9.8,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-loss-daylight-adult-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-loss-daylight-adult-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "contrast",
+        "look": "daylight",
+        "style": "adult",
+        "size": "reel"
+      },
+      "name": "REEL-009-contrast-daylight-adult-reel",
+      "query": "pattern=contrast&look=daylight&style=adult&size=reel",
+      "file": "export/REEL-009-contrast-daylight-adult-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 10.2,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-contrast-daylight-adult-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-contrast-daylight-adult-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "specificity",
+        "look": "daylight",
+        "style": "adult",
+        "size": "reel"
+      },
+      "name": "REEL-009-specificity-daylight-adult-reel",
+      "query": "pattern=specificity&look=daylight&style=adult&size=reel",
+      "file": "export/REEL-009-specificity-daylight-adult-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 9.2,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-specificity-daylight-adult-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-specificity-daylight-adult-reel/report.md",
         "code": 0
       }
     }
