@@ -11,16 +11,16 @@
   .crew #mouth-open { opacity: 0; }
   #head { position: absolute; left: 64px; right: 64px; top: 120px; }
 </style></head><body><div id="stage">
-  <div id="head"><div class="eyebrow">Draft · cast for approval</div><div class="display hook" style="font-size:96px;margin-top:16px">Meet the crew.</div></div>
+  <div id="head"><div class="eyebrow">Bike Logger · the crew</div><div class="display hook" style="font-size:96px;margin-top:16px">Meet the crew.</div></div>
   <div id="grid"></div>
 </div>
 <script src="/core/node_modules/gsap/dist/gsap.min.js"></script>
 <script src="/core/lib/runtime.js"></script>
-<script src="crew.js"></script>
+<script src="/brands/bike-logger/assets/cartoon/crew.js"></script>
 <script>
   Studio.setup({ width: 1080, height: 1920, fps: 30, duration: 1 });
   const cast = [["pi", "Brain", "Raspberry Pi 5"], ["cam", "Cam", "Camera Module 3 Wide"], ["gps", "Fix", "USB GPS · u-blox"],
                 ["imu", "Tilt", "BNO085 · 9-axis"], ["sonar", "Ping", "Ultrasonic · behind"], ["hall", "Spin", "A3144 Hall + magnet"]];
   document.getElementById("grid").innerHTML = cast.map(([k, n, p]) =>
-    `<div class="cell">${Crew[k]()}<div class="display name">${n}</div><div class="eyebrow">${p}</div></div>`).join("");
+    `<div class="cell">${Crew[k]({ style: window.STYLE || "fun" })}<div class="display name">${n}</div><div class="eyebrow">${p}</div></div>`).join("");
 </script></body></html>
