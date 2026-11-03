@@ -157,13 +157,13 @@
   AK.scene("mythFact", (c, s, t0, t1, layer) => {
     const d = t1 - t0, a = t0 + d * 0.3, b = t0 + d * 0.62;
     c.reveal(c.text(layer, { eyebrow: s.factLabel || "Fact", title: s.fact }), t0 - PRE, a);
-    const myth = c.reveal(c.text(layer, { eyebrow: s.mythLabel || "Myth", title: s.myth, size: 84 }), a + 0.05, b);
+    const myth = c.reveal(c.text(layer, { eyebrow: s.mythLabel || "Myth", title: s.myth, size: 84 }), a - 0.1, b);
     myth.querySelector(".ak-eyebrow").classList.add("ak-warn");
     const strike = c.el(myth, "div", "");
     Object.assign(strike.style, { position: "absolute", left: 0, right: 0, top: "62%", height: (12 * c.k) + "px", background: "var(--ak-warn, #ff4a3d)", transformOrigin: "0 50%" });
     gsap.set(strike, { scaleX: 0 });
     c.tl.to(strike, { scaleX: 1, duration: 0.3, ease: "power2.inOut" }, a + 0.8);
-    c.reveal(c.text(layer, { eyebrow: s.factLabel || "Fact", title: s.fact, chips: s.chips }), b + 0.05);
+    c.reveal(c.text(layer, { eyebrow: s.factLabel || "Fact", title: s.fact, chips: s.chips }), b - 0.1);
     if (s.actor) {
       const ac = c.enter(c.actor(layer, s.actor, { w: actorW(c, 0.75) }), t0 - 0.06, "pop");
       c.alive(ac, t0, t1);
