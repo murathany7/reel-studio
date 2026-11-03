@@ -4,7 +4,7 @@ class ReelStudio < Formula
   desc "Make marketing reels, ads and posts with code, for any brand, with Claude Code"
   homepage "https://github.com/murathany7/reel-studio"
   url "https://registry.npmjs.org/reel-studio/-/reel-studio-0.2.1.tgz"
-  sha256 "SET_BY_UPDATE_FORMULA"
+  sha256 "e6f9830c03ba5745af729feb50a97376079db8071dcf5bb4f978201d97e9f2fd"
   license "MIT"
 
   depends_on "ffmpeg"
