@@ -9,25 +9,43 @@ One kit, three registries. The npm package is the source of truth: the PyPI whee
 | PyPI | `pipx install reel-studio`, `uvx reel-studio init` | `python/` + `packaging/build-python.sh` |
 | Homebrew | `brew install murathany7/reel-studio/reel-studio` | `packaging/homebrew/reel-studio.rb` → tap repo `murathany7/homebrew-reel-studio` |
 
-## Release (by hand)
-
-Publishing is manual for now: there is no release workflow. CI (`.github/workflows/ci.yml`) only tests. Release from a
-clean, green `main`:
+## Release (automatic)
 
 ```sh
-packaging/bump.sh 0.2.4                     # package.json, plugin.json, pyproject.toml
-git commit -am "v0.2.4" && git push         # wait for CI to pass
-npm publish --access public                 # npm (asks for 2FA in the browser)
-packaging/build-python.sh && (cd python && uv publish)          # PyPI (a PyPI API token)
-packaging/update-formula.sh ../homebrew-reel-studio             # then commit and push the tap
-npm pack --pack-destination dist && gh release create v0.2.4 --generate-notes dist/*.tgz python/dist/*
+packaging/bump.sh 0.2.5     # package.json, plugin.json, pyproject.toml
+git commit -am "v0.2.5" && git push
 ```
 
-Docker image (optional), amd64 + arm64 on GHCR:
+On every push to `main`, `.github/workflows/release.yml` checks each target on its own (npm, PyPI, GHCR, the GitHub
+Release) for `package.json`'s version. If any is missing, it runs the full test suite, publishes only the missing
+ones, then creates the `v<version>` GitHub Release (npm tgz, wheel, sdist) and bumps the Homebrew tap. A rerun after
+a partial failure, or after a release by hand, only does what is left. Pushes that do not change the version only
+run CI (`.github/workflows/ci.yml`).
+
+## One-time setup (maintainer)
+
+Each registry needs **one** of the two ways to publish. Trusted publishing is preferred (no secrets, npm provenance).
+The 0.2.2 and 0.2.3 runs failed here: npm `E404` on PUT and PyPI `invalid-publisher` both mean this is not set up.
+
+| Where | Trusted publishing (preferred) | Or a token secret |
+|---|---|---|
+| npm | npmjs.com → reel-studio → Settings → Trusted publishing: GitHub Actions, `murathany7/reel-studio`, workflow `release.yml`, environment `npm` | `NPM_TOKEN`: a granular token with publish rights on `reel-studio`, bypassing 2FA |
+| PyPI | pypi.org → reel-studio → Publishing → Add a trusted publisher: GitHub, `murathany7/reel-studio`, workflow `release.yml`, environment `pypi` | `PYPI_API_TOKEN`: a token scoped to the `reel-studio` project |
+| Homebrew | | `HOMEBREW_TAP_TOKEN`: a fine-grained token with Contents read/write on `murathany7/homebrew-reel-studio` only |
+
+Secrets go in GitHub → murathany7/reel-studio → Settings → Secrets → Actions. Without `HOMEBREW_TAP_TOKEN` the
+release still publishes and leaves a warning; update the tap by hand. GHCR needs nothing (it uses the run's token).
+After fixing a failed run: `gh run rerun <id> --failed`, or Actions → Release → Run workflow.
+
+## Release by hand
 
 ```sh
+npm publish --access public                                     # npm (asks for 2FA in the browser)
+packaging/build-python.sh && (cd python && uv publish)          # PyPI (a PyPI API token)
+packaging/update-formula.sh ../homebrew-reel-studio             # then commit and push the tap
+npm pack --pack-destination dist && gh release create v0.2.5 --generate-notes dist/*.tgz python/dist/*
 docker buildx build --platform linux/amd64,linux/arm64 --push \
-  -t ghcr.io/murathany7/reel-studio:0.2.4 -t ghcr.io/murathany7/reel-studio:latest .
+  -t ghcr.io/murathany7/reel-studio:0.2.5 -t ghcr.io/murathany7/reel-studio:latest .
 ```
 
 ## Tests

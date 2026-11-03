@@ -4,6 +4,12 @@ The memory of this repo. Read it first, update it last.
 
 ## Now
 
+- 2026-11-04: **release workflow back** (`release.yml`, `ci.yml` callable again). Each target (npm, PyPI, GHCR,
+  GitHub Release) is checked on its own and skipped when it already has the version, so reruns and hand releases mix;
+  GitHub Release and Homebrew run when npm/PyPI were published now *or* earlier, and build their own files. npm and
+  PyPI fall back to `NPM_TOKEN` / `PYPI_API_TOKEN` secrets. Trusted publishers added on npmjs.com and pypi.org
+  2026-11-04 (npm shows "waiting validation": it must see a successful publish within 48 h or it expires). 0.2.5 is
+  the first automated release, to validate it. `HOMEBREW_TAP_TOKEN` not set yet (`packaging/README.md`).
 - 2026-11-03: **publishing is manual for now.** `release.yml` removed (its npm and PyPI steps never succeeded: no
   trusted publishers on either registry). CI (`ci.yml`) only tests: Linux Node 20/24, macOS, Homebrew formula style;
   green on `main`. Release steps by hand: `packaging/README.md`. Registries are still at 0.2.1, GHCR has 0.2.2/0.2.3

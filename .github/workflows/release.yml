@@ -1,0 +1,188 @@
+# Release on every push to main whose package.json version is missing from any target:
+# tests → npm (provenance) + PyPI + GHCR → tag + GitHub Release → Homebrew tap.
+# Each target is checked on its own and skipped when it already has the version, so a rerun after a partial failure
+# (or after a release by hand) only does what is left. To release: packaging/bump.sh 0.2.5, commit, push.
+# One-time setup (trusted publishers or token secrets): packaging/README.md.
+name: Release
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.v.outputs.version }}
+      release: ${{ steps.v.outputs.release }}
+      npm: ${{ steps.v.outputs.npm }}
+      pypi: ${{ steps.v.outputs.pypi }}
+      docker: ${{ steps.v.outputs.docker }}
+      github: ${{ steps.v.outputs.github }}
+    steps:
+      - uses: actions/checkout@v7
+      - id: v
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          v=$(node -p "require('./package.json').version")
+          echo "version=$v" >> "$GITHUB_OUTPUT"
+          missing() { echo "$1=true" >> "$GITHUB_OUTPUT"; echo "$1: reel-studio $v is missing, will publish"; any=true; }
+          have() { echo "$1=false" >> "$GITHUB_OUTPUT"; echo "$1: reel-studio $v is already there"; }
+          any=false
+          if npm view "reel-studio@$v" version >/dev/null 2>&1; then have npm; else missing npm; fi
+          if curl -fsS -o /dev/null "https://pypi.org/pypi/reel-studio/$v/json"; then have pypi; else missing pypi; fi
+          if docker manifest inspect "ghcr.io/${{ github.repository_owner }}/reel-studio:$v" >/dev/null 2>&1; then have docker; else missing docker; fi
+          if gh release view "v$v" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then have github; else missing github; fi
+          echo "release=$any" >> "$GITHUB_OUTPUT"
+
+  test:
+    needs: check
+    if: needs.check.outputs.release == 'true'
+    uses: ./.github/workflows/ci.yml
+
+  npm:
+    needs: [check, test]
+    if: needs.check.outputs.npm == 'true'
+    runs-on: ubuntu-latest
+    environment: npm
+    permissions:
+      contents: read
+      id-token: write  # npm trusted publishing + provenance
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+      - run: npm install -g npm@latest  # trusted publishing needs npm 11.5.1+
+      # Trusted publishing when npmjs.com has it set up; otherwise the NPM_TOKEN secret (an automation token).
+      - run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - if: failure()
+        run: |
+          echo "::error::npm refused the publish (E404 on PUT means no trusted publisher and no NPM_TOKEN). Add the trusted publisher on npmjs.com or an NPM_TOKEN secret (packaging/README.md, one-time setup), then rerun the failed jobs."
+
+  pypi:
+    needs: [check, test]
+    if: needs.check.outputs.pypi == 'true'
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      contents: read
+      id-token: write  # PyPI trusted publishing
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with: { node-version: 24 }
+      - uses: astral-sh/setup-uv@v7
+      - run: packaging/build-python.sh
+      # An empty password makes the action use trusted publishing.
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: python/dist
+          password: ${{ secrets.PYPI_API_TOKEN }}
+      - if: failure()
+        run: |
+          echo "::error::PyPI refused the publish (invalid-publisher means no trusted publisher matches). Add the trusted publisher on pypi.org or a PYPI_API_TOKEN secret (packaging/README.md, one-time setup), then rerun the failed jobs."
+
+  docker:
+    needs: [check, test]
+    if: needs.check.outputs.docker == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write  # ghcr.io/<owner>/reel-studio
+    steps:
+      - uses: actions/checkout@v7
+      - uses: docker/setup-qemu-action@v4
+      - uses: docker/setup-buildx-action@v4
+      - uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+      - uses: docker/build-push-action@v7
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/reel-studio:${{ needs.check.outputs.version }}
+            ghcr.io/${{ github.repository_owner }}/reel-studio:latest
+          labels: |
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+            org.opencontainers.image.description=Reel Studio with Node, Chromium, ffmpeg and fonts: render marketing reels from HTML
+            org.opencontainers.image.licenses=MIT
+
+  # Runs once npm and PyPI have the version, whether this run published them or an earlier one did.
+  github-release:
+    needs: [check, npm, pypi]
+    if: ${{ !cancelled() && !failure() && needs.check.outputs.github == 'true' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with: { node-version: 24 }
+      - uses: astral-sh/setup-uv@v7
+      - run: npm pack --pack-destination dist && packaging/build-python.sh
+      - env:
+          GH_TOKEN: ${{ github.token }}
+          V: ${{ needs.check.outputs.version }}
+        run: |
+          gh release create "v$V" dist/*.tgz python/dist/* --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" \
+            --title "v$V" --generate-notes --notes "$(cat <<EOF
+          ## Install
+
+          \`\`\`bash
+          npx reel-studio@$V init
+          pipx install reel-studio==$V && reel-studio init
+          brew install murathany7/reel-studio/reel-studio && reel-studio init
+          docker run --rm -it -v "\$PWD":/work ghcr.io/murathany7/reel-studio:$V reel-studio init
+          \`\`\`
+
+          Or in Claude Code: \`/plugin marketplace add murathany7/reel-studio\`
+          EOF
+          )"
+
+  homebrew:
+    needs: [check, npm]
+    if: ${{ !cancelled() && !failure() && needs.check.outputs.release == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Check for the tap token
+        id: token
+        env: { T: "${{ secrets.HOMEBREW_TAP_TOKEN }}" }
+        run: |
+          [ -n "$T" ] && echo "ok=true" >> "$GITHUB_OUTPUT" || echo "::warning::HOMEBREW_TAP_TOKEN is not set: update the tap by hand with packaging/update-formula.sh"
+      - if: steps.token.outputs.ok == 'true'
+        uses: actions/checkout@v7
+        with:
+          repository: murathany7/homebrew-reel-studio
+          token: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+          path: tap
+      - if: steps.token.outputs.ok == 'true'
+        env:
+          V: ${{ needs.check.outputs.version }}
+        run: |
+          # Right after a publish the plain tarball URL can serve a cached 404 for a few minutes.
+          for _ in $(seq 1 15); do curl -fsI "https://registry.npmjs.org/reel-studio/-/reel-studio-$V.tgz" >/dev/null && break; sleep 30; done
+          packaging/update-formula.sh tap
+          cd tap
+          if git diff --quiet; then echo "Tap already at $V"; exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "reel-studio $V"
+          git push
