@@ -25,3 +25,8 @@ productions/yuppo/
 # Python package build output (packaging/build-python.sh)
 python/src/reel_studio/kit/
 python/dist/
+
+# Per-variant QA evidence from scripts/variants.mjs --qa (rebuilt by the run; report.md and the variants sheet stay)
+productions/*/*/qa/*/contact_sheet_safezones.jpg
+productions/*/*/qa/*/motion.csv
+productions/*/*/qa/variants-sheet.txt

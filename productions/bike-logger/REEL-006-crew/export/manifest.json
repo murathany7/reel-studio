@@ -1,0 +1,120 @@
+{
+  "id": "REEL-006",
+  "composition": "composition/index.html",
+  "variants": [
+    {
+      "axes": {
+        "style": "fun",
+        "hook": "A"
+      },
+      "name": "REEL-006-fun-hookA",
+      "query": "style=fun&hook=A",
+      "file": "export/REEL-006-fun-hookA.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 18,
+      "size": "1080x1920",
+      "cover": "export/covers/REEL-006-fun-hookA.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-006-fun-hookA/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "style": "fun",
+        "hook": "B"
+      },
+      "name": "REEL-006-fun-hookB",
+      "query": "style=fun&hook=B",
+      "file": "export/REEL-006-fun-hookB.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 18,
+      "size": "1080x1920",
+      "cover": "export/covers/REEL-006-fun-hookB.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-006-fun-hookB/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "style": "fun",
+        "hook": "C"
+      },
+      "name": "REEL-006-fun-hookC",
+      "query": "style=fun&hook=C",
+      "file": "export/REEL-006-fun-hookC.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 18.3,
+      "size": "1080x1920",
+      "cover": "export/covers/REEL-006-fun-hookC.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-006-fun-hookC/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "style": "adult",
+        "hook": "A"
+      },
+      "name": "REEL-006-adult-hookA",
+      "query": "style=adult&hook=A",
+      "file": "export/REEL-006-adult-hookA.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 18,
+      "size": "1080x1920",
+      "cover": "export/covers/REEL-006-adult-hookA.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-006-adult-hookA/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "style": "adult",
+        "hook": "B"
+      },
+      "name": "REEL-006-adult-hookB",
+      "query": "style=adult&hook=B",
+      "file": "export/REEL-006-adult-hookB.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 18,
+      "size": "1080x1920",
+      "cover": "export/covers/REEL-006-adult-hookB.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-006-adult-hookB/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "style": "adult",
+        "hook": "C"
+      },
+      "name": "REEL-006-adult-hookC",
+      "query": "style=adult&hook=C",
+      "file": "export/REEL-006-adult-hookC.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 18.3,
+      "size": "1080x1920",
+      "cover": "export/covers/REEL-006-adult-hookC.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-006-adult-hookC/report.md",
+        "code": 0
+      }
+    }
+  ]
+}
