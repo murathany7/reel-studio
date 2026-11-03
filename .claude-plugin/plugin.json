@@ -1,7 +1,7 @@
 {
   "name": "reel-studio",
   "displayName": "Reel Studio",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "Agency-quality reels, ads and posts made by Claude Code, for any brand. Free; no per-video fees. Brief → storyboard → approval → HTML on one clock → frame-by-frame QA → MP4.",
   "author": { "name": "Murathan Yıldırım", "url": "https://github.com/murathany7" },
   "homepage": "https://github.com/murathany7/reel-studio",
