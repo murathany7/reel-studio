@@ -164,7 +164,8 @@
       exit(a, t, to = "fade") {
         if (to === "fade") tl.to(a.wrap, { autoAlpha: 0, duration: 0.2 }, t);
         else if (to === "down") tl.to(a.wrap, { y: 600 * this.k, duration: 0.35, ease: "power2.in" }, t);
-        else tl.to(a.wrap, { x: (to === "left" ? -1 : 1) * Math.max(1000 * this.k, this.W * 0.7), y: S.hop ? -100 * this.k : 0, rotation: (to === "left" ? -1 : 1) * 12 * S.wobble, duration: 0.4, ease: "power2.in" }, t);
+        // Travel exactly to the frame edge so the actor leaves on the cut, with no still frames after it.
+        else tl.to(a.wrap, { x: to === "left" ? -(parseFloat(a.wrap.style.left) + a.w + 10) : this.W - parseFloat(a.wrap.style.left) + 10, y: S.hop ? -100 * this.k : 0, rotation: (to === "left" ? -1 : 1) * 12 * S.wobble, duration: 0.4, ease: "power2.in" }, t);
         return a;
       },
       /** Run acts on an actor: "wave" | ["wave", 0.6] | [["lean", 0.2, {...}], ...]. Times relative to t0. */

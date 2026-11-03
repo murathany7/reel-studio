@@ -5,6 +5,7 @@
  *
  *   --dry    list the variants and their queries      --check  build each variant (one still) and report errors
  *   --force  re-render up-to-date MP4s                --qa     run qa-video.sh on each export
+ *   --sheets rebuild manifest, covers and contact sheet from the MP4s on disk (no rendering; QA results kept)
  *
  * variants.json (paths relative to the file):
  *   {
@@ -100,7 +101,9 @@ async function worker() {
   while (next < variants.length) {
     const v = variants[next++];
     const mp4 = path.join(outDir, v.name + ".mp4");
-    const fresh = !flag("force") && (await stat(mp4).then((s) => s.mtimeMs > srcTime, () => false));
+    const exists = await stat(mp4).then((s) => s, () => null);
+    const fresh = flag("sheets") ? !!exists : !flag("force") && !!exists && exists.mtimeMs > srcTime;
+    if (flag("sheets") && !exists) { done++; continue; }
     const r = fresh ? { code: 0, log: "up to date" } : await run("node", ["core/render.mjs", "video", `${path.relative(ROOT, comp)}?${v.query}`, path.relative(ROOT, mp4)]);
     const res = { ...v, file: path.relative(base, mp4), ok: r.code === 0, skipped: fresh };
     if (res.ok) {
@@ -109,7 +112,10 @@ async function worker() {
       const cover = path.join(outDir, "covers", v.name + ".jpg");
       await run("ffmpeg", ["-v", "error", "-y", "-ss", String((res.duration || 4) * (cfg.coverAt ?? 0.3)), "-i", mp4, "-frames:v", "1", "-vf", "scale=270:-2", "-q:v", "3", cover]);
       res.cover = path.relative(base, cover);
-      if (flag("qa")) {
+      if (flag("sheets")) {
+        const rep = await readFile(path.join(qaDir, v.name, "report.md"), "utf8").catch(() => null);
+        if (rep != null) res.qa = { fails: (rep.match(/❌/g) || []).length, report: path.relative(base, path.join(qaDir, v.name, "report.md")), code: 0 };
+      } else if (flag("qa")) {
         const q = await run("bash", ["scripts/qa-video.sh", mp4, path.join(qaDir, v.name), res.size || "1080x1920"]);
         const rep = await readFile(path.join(qaDir, v.name, "report.md"), "utf8").catch(() => "");
         res.qa = { fails: (rep.match(/❌/g) || []).length, report: path.relative(base, path.join(qaDir, v.name, "report.md")), code: q.code };
@@ -136,9 +142,12 @@ const covers = merged.filter((r) => r.cover).map((r) => path.join(base, r.cover)
 if (covers.length) {
   await mkdir(qaDir, { recursive: true });
   const cols = Math.min(8, covers.length), rows = Math.ceil(covers.length / cols);
-  const list = path.join(qaDir, "variants-sheet.txt");
-  await writeFile(list, covers.map((c) => `file '${c}'`).join("\n"));
-  await run("ffmpeg", ["-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", list, "-vf", `scale=270:480:force_original_aspect_ratio=decrease,pad=270:480:(ow-iw)/2:(oh-ih)/2:color=0x131313,tile=${cols}x${rows}:padding=8:color=0x131313`, "-frames:v", "1", path.join(qaDir, "variants-sheet.jpg")]);
+  // Covers come in several sizes (reel, feed, landscape, banner) and concat stops at a size change: pad each to one
+  // 270×480 tile first, then tile them.
+  const tiles = path.join((await import("node:os")).tmpdir(), `variants-tiles-${process.pid}`);
+  await mkdir(tiles, { recursive: true });
+  await Promise.all(covers.map((c, i) => run("ffmpeg", ["-v", "error", "-y", "-i", c, "-vf", "scale=270:480:force_original_aspect_ratio=decrease,pad=270:480:(ow-iw)/2:(oh-ih)/2:color=0x131313", path.join(tiles, `t_${String(i).padStart(4, "0")}.png`)])));
+  await run("ffmpeg", ["-v", "error", "-y", "-framerate", "1", "-i", path.join(tiles, "t_%04d.png"), "-vf", `tile=${cols}x${rows}:padding=8:color=0x131313`, "-frames:v", "1", path.join(qaDir, "variants-sheet.jpg")]);
 }
 const failed = results.filter((r) => !r.ok);
 console.log(`${results.length - failed.length}/${results.length} ok in ${((Date.now() - t0) / 1000).toFixed(0)} s. Manifest: ${path.relative(ROOT, path.join(outDir, "manifest.md"))}`);
