@@ -18,7 +18,8 @@ Fill sections 1–4 of the production README: the problem, the benefit, 3 hook v
 visual, **engine**, on-screen text, sound), caption. Pick engines with the `pick-engine` skill and say why.
 State size, length, placement and sound (VO / music / silent).
 
-**Stop and ask for approval.** No plates, audio or composition before the box is ticked.
+**Stop and ask for approval.** No plates, audio or composition before the box is ticked. The person can read the
+storyboard and approve it in the desk (`review-desk` skill); never tick the box yourself.
 
 ## 2. Produce
 

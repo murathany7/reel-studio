@@ -1,6 +1,9 @@
 node_modules/
 .DS_Store
 **/qa/flagged/
+# Desk: renders made from the desk and what it has open (review.json stays tracked)
+**/qa/desk/
+desk/.state.json
 
 # Big media stays out of git; keep small example plates only if needed
 *.mp4

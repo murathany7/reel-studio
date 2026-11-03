@@ -9,6 +9,7 @@ test("npm package ships the kit", () => {
   for (const f of [
     "bin/reel-studio.mjs", "core/render.mjs", "core/lib/runtime.js", "core/lib/base.css", "core/package-lock.json",
     "engines/three.js", "engines/pixi.js", "engines/svg-rig.js", "engines/capture.mjs", "engines/blender/run.py",
+    "desk/server.mjs", "desk/mcp.mjs", "desk/lib.mjs", "desk/index.html", "desk/app.js",
     "scripts/init-project.sh", "scripts/qa-video.sh", "scripts/mix_audio.py",
     "templates/project/CLAUDE.md", "templates/project/STATUS.md", "templates/project/gitignore",
     "brands/_template/README.md", "productions/_TEMPLATE/README.md",

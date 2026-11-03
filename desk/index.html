@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reel Studio Desk</title>
+<link rel="stylesheet" href="/desk/desk.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand"><span class="logo">●</span> Reel Studio <span class="muted">desk</span></div>
+  <div class="crumb" id="crumb">Pick a production</div>
+  <div class="status" id="status"></div>
+</header>
+
+<main class="shell">
+  <nav class="side">
+    <input id="filter" class="filter" placeholder="Filter productions" autocomplete="off">
+    <ul id="productions" class="plist"></ul>
+  </nav>
+
+  <section class="viewer">
+    <div class="stage-wrap" id="stageWrap">
+      <div class="empty" id="empty">Pick a production on the left.<br><span class="muted">Compositions play here, frame-exact, through the same clock the renderer uses.</span></div>
+      <iframe id="comp" title="Composition" hidden></iframe>
+    </div>
+    <div class="transport" id="transport" hidden>
+      <button id="play" class="icon" title="Play / pause (space)">▶</button>
+      <button id="prev" class="icon" title="Previous frame (←)">‹</button>
+      <button id="next" class="icon" title="Next frame (→)">›</button>
+      <div class="scrub" id="scrub">
+        <div class="track"><div class="fill" id="fill"></div></div>
+        <div class="marks" id="marks"></div>
+        <div class="head" id="head"></div>
+      </div>
+      <div class="time mono" id="time">0.00 s · f0</div>
+      <label class="toggle" title="Safe zones (S)"><input type="checkbox" id="safe"> Safe</label>
+    </div>
+  </section>
+
+  <aside class="panel" id="panel" hidden>
+    <div class="tabs" role="tablist">
+      <button role="tab" data-tab="notes" class="on">Notes <span class="count" id="noteCount"></span></button>
+      <button role="tab" data-tab="claude">Claude</button>
+      <button role="tab" data-tab="render">Render</button>
+      <button role="tab" data-tab="board">Storyboard</button>
+    </div>
+
+    <div class="tab" data-tab="notes">
+      <form id="noteForm" class="noteform">
+        <div class="at mono" id="noteAt">at 0.00 s</div>
+        <textarea id="noteText" rows="2" placeholder="What should change on this frame? (N)"></textarea>
+        <button class="primary">Pin note</button>
+      </form>
+      <div class="seg" id="noteFilter">
+        <button data-f="open" class="on">Open</button><button data-f="fixed">Fixed</button><button data-f="all">All</button>
+      </div>
+      <ul class="notes" id="notes"></ul>
+      <button class="primary wide" id="sendNotes">Send open notes to Claude</button>
+    </div>
+
+    <div class="tab" data-tab="claude" hidden>
+      <p class="muted small">Runs your local Claude Code (<code>claude -p</code>) on this production with your existing login, no API key.
+        It may read and edit files, render stills and run QA, nothing else. It keeps one session per production.</p>
+      <textarea id="ask" rows="3" placeholder="Ask for a change, e.g. “make the end card hold 0.5 s longer”"></textarea>
+      <label class="small"><input type="checkbox" id="withNotes" checked> Include open notes</label>
+      <div class="row">
+        <button class="primary" id="sendAsk">Send to Claude</button>
+        <button id="stopClaude" hidden>Stop</button>
+      </div>
+      <pre class="log" id="claudeLog"></pre>
+    </div>
+
+    <div class="tab" data-tab="render" hidden>
+      <p class="muted small">Desk renders go to <code>qa/desk/</code> so a delivered export is never overwritten.</p>
+      <div class="row wrap">
+        <button id="rStill">Still at this frame</button>
+        <button id="rVideo">Preview video</button>
+        <button id="rQa">QA the preview</button>
+      </div>
+      <div id="renderOut" class="renderout"></div>
+      <pre class="log" id="renderLog"></pre>
+      <h4>Exports</h4>
+      <ul class="exports" id="exports"></ul>
+      <h4>Approve</h4>
+      <p class="muted small">Approvals are yours alone. Claude can't record them.</p>
+      <input id="approver" placeholder="Your name" autocomplete="name">
+      <div class="row wrap">
+        <button id="okBoard">Approve storyboard</button>
+        <button id="okFinal">Approve final cut</button>
+      </div>
+      <ul class="approvals" id="approvals"></ul>
+    </div>
+
+    <div class="tab board" data-tab="board" hidden>
+      <div id="readme" class="md"></div>
+    </div>
+  </aside>
+</main>
+<script type="module" src="/desk/app.js"></script>
+</body>
+</html>

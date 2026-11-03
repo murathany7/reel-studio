@@ -3,6 +3,12 @@
     "elevenlabs": {
       "type": "http",
       "url": "https://api.elevenlabs.io/v1/mcp"
+    },
+    "reel-desk": {
+      "command": "node",
+      "args": [
+        "desk/mcp.mjs"
+      ]
     }
   }
 }

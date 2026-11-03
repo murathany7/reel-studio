@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Copy the Reel Studio kit into a project so its skills can render there.
 #   scripts/init-project.sh <kit_root> [project_dir] [--update] [--with-skills]
-# Copies core/, engines/, scripts/, the engines demo and the brand/production templates, adds CLAUDE.md,
-# STATUS.md and .gitignore if missing, then runs npm install in core/ and checks the tools.
+# Copies core/, engines/, scripts/, desk/, the engines demo and the brand/production templates, adds CLAUDE.md,
+# STATUS.md and .gitignore if missing, adds the reel-desk MCP server to .mcp.json, then runs npm install in core/ and checks the tools.
 # Existing files are kept; --update refreshes core/, engines/ and scripts/ (and the skills) from the kit (brands and
 # productions are never touched). --with-skills also copies the skills into .claude/skills/ (for installs without
 # the Claude Code plugin, e.g. npx reel-studio init).
@@ -36,6 +36,7 @@ else
   copy core core $mode
   copy engines engines $mode
   copy scripts scripts $mode
+  copy desk desk $mode
   copy brands/_template brands/_template
   copy productions/_TEMPLATE productions/_TEMPLATE
   [ -n "$skills" ] && copy .claude/skills .claude/skills $mode
@@ -46,6 +47,15 @@ else
     [ -e "$dest/$f" ] || sed "s/{{DATE}}/$(date +%F)/" "$kit/templates/project/$f" > "$dest/$f"
   done
   [ -e "$dest/.gitignore" ] || cp "$kit/templates/project/gitignore" "$dest/.gitignore"
+  # The desk's MCP server (reel-desk), added to .mcp.json without touching the user's other servers
+  node -e '
+    const fs = require("fs"), f = process.argv[1];
+    const m = fs.existsSync(f) ? JSON.parse(fs.readFileSync(f, "utf8")) : {};
+    m.mcpServers = m.mcpServers || {};
+    if (!m.mcpServers["reel-desk"]) {
+      m.mcpServers["reel-desk"] = { command: "node", args: ["desk/mcp.mjs"] };
+      fs.writeFileSync(f, JSON.stringify(m, null, 2) + "\n");
+    }' "$dest/.mcp.json"
   echo "Kit copied into $dest"
 fi
 

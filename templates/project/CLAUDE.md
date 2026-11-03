@@ -14,6 +14,7 @@ per brand, one folder per production.
 | 3D (Three.js, Blender) | `scene-3d` skill |
 | A cartoon character or mascot | `character-2d` skill |
 | Recording a brand's live website | `capture-site` skill |
+| Reviewing a piece: notes pinned to frames, approvals | `review-desk` skill, `desk/README.md` |
 | Render, audio and QA commands | `core/README.md` |
 | What is in progress, decided, learned | `STATUS.md` |
 
@@ -21,6 +22,7 @@ per brand, one folder per production.
 |---|---|
 | `core/` | `render.mjs` (HTML → MP4/PNG), `lib/runtime.js` (the `Studio` clock), `lib/base.css` |
 | `engines/` | One adapter per engine |
+| `desk/` | Review app (`node desk/server.mjs`): frame notes, renders, approvals; `reel-desk` MCP server |
 | `scripts/` | Audio mix, transcription, video QA, frame tools |
 | `brands/<slug>/` | Facts and their sources, look, voice, `compliance.md` (start from `brands/_template`) |
 | `productions/<brand>/<ID>-<slug>/` | One piece (start from `productions/_TEMPLATE`) |

@@ -6,6 +6,7 @@
   "bin": { "reel-studio": "bin/reel-studio.mjs" },
   "files": [
     "bin/",
+    "desk/",
     "core/README.md",
     "core/package.json",
     "core/package-lock.json",

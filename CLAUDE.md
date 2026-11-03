@@ -13,6 +13,7 @@ renderer, several engines plugged into one clock, one folder per brand, one fold
 | A cartoon character or mascot | `.claude/skills/character-2d` |
 | Recording a brand's live website | `.claude/skills/capture-site` |
 | A new brand | `.claude/skills/new-brand` |
+| Reviewing a piece: notes pinned to frames, approvals | `.claude/skills/review-desk`, `desk/README.md` |
 | Render, audio and QA commands | `core/README.md` |
 | What is in progress, decided, learned | `STATUS.md` |
 
@@ -20,6 +21,7 @@ renderer, several engines plugged into one clock, one folder per brand, one fold
 |---|---|
 | `core/` | `render.mjs` (HTML → MP4/PNG), `lib/runtime.js` (the `Studio` clock), `lib/base.css` (stage, safe zones). `npm install` here once |
 | `engines/` | One adapter per engine: `three.js`, `pixi.js`, `svg-rig.js`, `capture.mjs`, `blender/` |
+| `desk/` | Local review app: player, frame notes, renders, approvals, "Send to Claude"; `reel-desk` MCP server |
 | `scripts/` | Audio mix, transcription, video QA, frame extraction, SVG → PNG |
 | `brands/<slug>/` | Facts and their sources, look (`tokens.css`, `assets/`), voice, `compliance.md` |
 | `productions/<brand>/<ID>-<slug>/` | One piece: README (storyboard → explainer), `refs/`, `composition/`, `audio/`, `qa/`, `export/` |

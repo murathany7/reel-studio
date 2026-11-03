@@ -47,6 +47,15 @@ The memory of this repo. Read it first, update it last.
 - 2026-11-03: distribution to do by hand (the maintainer, not an agent): Claude plugin directory at
   claude.ai/directory/manage (submit any time); awesome-claude-code via its web issue form only, from 2026-11-16 (repo
   must be 14 days old, human-submitted); Show HN, Reddit, Product Hunt, one reel a week on short-video platforms.
+- 2026-11-03: **desk** (`desk/`, not released yet): a local review app, `node desk/server.mjs` or `npx reel-studio desk` →
+  http://127.0.0.1:4100. A frame-exact player driven by `__seek`, notes pinned to frames (`review.json` per
+  production, tracked), still / preview / QA renders into `qa/desk/` (gitignored), the storyboard README, and approve
+  buttons (storyboard ticks the README box; final cut adds a line). "Send to Claude" runs `claude -p` with the
+  person's Claude Code login (`ANTHROPIC_API_KEY` stripped, tools limited, one `--resume` session per production).
+  `desk/mcp.mjs` is the `reel-desk` MCP server (in `.mcp.json`; `init` adds it to a project's `.mcp.json`) with
+  `desk_state`, `list_notes`, `add_note`, `resolve_note`, `render_frame` and no approval tool. Skill: `review-desk`.
+  Tested: `test/desk.test.mjs`, the page in the browser pane on REEL-002, and one real `claude -p` run that
+  resolved a note through the MCP server (7 s). Not tested yet: on Linux/Docker, or a Claude run that edits a composition.
 
 ## Brands
 
@@ -87,6 +96,8 @@ The memory of this repo. Read it first, update it last.
 - 2026-11-03: other registries wrap the npm package instead of porting the CLI: PyPI and Homebrew only (crates.io,
   RubyGems and Go would just shell out to Node and bash).
 - 2026-11-02: productions are grouped by brand: `productions/<brand>/<ID>-<slug>/`.
+- 2026-11-03: the skills stay the product; the desk is a thin review surface over files. It drives Claude through
+  the local CLI (no API key, no Agent SDK) and only people approve: no approve tool in MCP, rule in the skills.
 - 2026-11-02: Bike Logger's audience is robotics kit learners; every piece sells learning by building, with the replay as the payoff.
 
 ## Next
@@ -96,6 +107,10 @@ The memory of this repo. Read it first, update it last.
 
 ## Learnings
 
+- **Desk preview drift (2026-11-03):** the desk first loaded compositions in a `display:none` iframe at the default
+  300×150 size, and REEL-002's headline came out "therack." (the composition's word splitter ran with no layout).
+  The renderer loads in a laid-out 1080×1920 viewport, so the desk now does the same (`visibility:hidden` while
+  loading). Any preview must load the way `core/render.mjs` does, or it shows frames the render won't make.
 - **Missing video plate (2026-11-02):** a `<video>` whose file 404s fires `error` before the page script runs, so
   `Studio.video()` waited forever. It now checks `el.error` / `networkState` up front and fails the render with the
   plate's URL.

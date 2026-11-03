@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 // npx reel-studio init [dir] [--update]: copy the Reel Studio kit and its Claude Code skills into a project.
+// npx reel-studio desk [--port 4100]: open the review desk of the project in this folder.
 import { spawnSync } from "node:child_process";
+import { existsSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -17,15 +19,27 @@ if (cmd === "init") {
     console.log(`
 Done. Open this folder in Claude Code and ask:
   "Add my product as a new brand: https://…"
-  "Make a 15 s reel for <brand> about <feature>"`);
+  "Make a 15 s reel for <brand> about <feature>"
+Review in the desk:  npx reel-studio desk  →  http://127.0.0.1:4100`);
   }
   process.exit(r.status ?? 1);
+}
+
+if (cmd === "desk") {
+  // The project's own copy, so the desk serves the project (its brands, productions and kit version)
+  const server = path.resolve("desk/server.mjs");
+  if (!existsSync(server)) {
+    console.error("No desk/ here. Run `npx reel-studio init` in this folder first (or `--update` an older project).");
+    process.exit(1);
+  }
+  process.exit(spawnSync(process.execPath, [server, ...rest], { stdio: "inherit" }).status ?? 1);
 }
 
 console.log(`Reel Studio: marketing videos made with code, run by Claude Code.
 
   npx reel-studio init [dir]           copy the kit and skills into dir (default: here) and install it
-  npx reel-studio init [dir] --update  refresh core/, engines/, scripts/ and skills from this version
+  npx reel-studio init [dir] --update  refresh core/, engines/, scripts/, desk/ and skills from this version
+  npx reel-studio desk [--port 4100]   review desk for this project: play, pin notes, send them to Claude, approve
 
 Claude Code plugin instead:  /plugin marketplace add murathany7/reel-studio
 More: https://github.com/murathany7/reel-studio`);

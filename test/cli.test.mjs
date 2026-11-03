@@ -20,7 +20,7 @@ test("init copies the kit and skills, and installs the renderer", { timeout: 180
   const r = cli("init", dir);
   assert.equal(r.code, 0, r.out);
   for (const f of [
-    "core/render.mjs", "engines/three.js", "scripts/qa-video.sh", "brands/_template/README.md",
+    "core/render.mjs", "desk/server.mjs", ".mcp.json", "engines/three.js", "scripts/qa-video.sh", "brands/_template/README.md",
     "productions/_TEMPLATE/README.md", "examples/engines-demo/plates/blob.mp4", ".claude/skills/make-video/SKILL.md",
     "CLAUDE.md", "STATUS.md", ".gitignore", "core/node_modules/playwright-core/package.json",
   ]) assert.ok(existsSync(path.join(dir, f)), `missing ${f}`);
