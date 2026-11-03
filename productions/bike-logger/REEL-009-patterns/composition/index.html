@@ -1,0 +1,22 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>REEL-009 persuasion pattern pack</title>
+<link rel="stylesheet" href="/core/lib/base.css">
+<link rel="stylesheet" href="/brands/bike-logger/tokens.css">
+<link rel="stylesheet" href="/engines/ad-kit/ad-kit.css">
+<link rel="stylesheet" href="/brands/bike-logger/assets/cartoon/theme.css">
+</head><body><div id="stage"></div>
+<script src="/core/node_modules/gsap/dist/gsap.min.js"></script>
+<script src="/core/lib/runtime.js"></script>
+<script src="/engines/svg-rig.js"></script>
+<script src="/engines/ad-kit/ad-kit.js"></script>
+<script src="/engines/ad-kit/scenes.js"></script>
+<script src="/engines/ad-kit/patterns.js"></script>
+<script src="/brands/bike-logger/assets/cartoon/crew.js"></script>
+<script src="/brands/bike-logger/assets/cartoon/bike.js"></script>
+<script src="/brands/bike-logger/assets/cartoon/brief.js"></script>
+<script>
+  // Variant axes come from the URL (scripts/variants.mjs): ?pattern=pas&style=adult&size=reel&hook=B&feature=3
+  const P = Studio.params, style = P.get("style") || "fun";
+  const spec = AdKit.pattern(P.get("pattern") || "pas", BL.brief(style), { hook: P.get("hook") || "A", feature: +(P.get("feature") || 0) });
+  window.__variant = AdKit.build({ ...spec, style, size: P.get("size") || "reel", placement: P.get("placement") || "organic", cast: BL.cast, forbid: BL.forbid }).ctx.spec;
+</script></body></html>

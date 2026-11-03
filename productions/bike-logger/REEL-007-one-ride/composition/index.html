@@ -1,0 +1,38 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>REEL-007 One ride, one timeline</title>
+<link rel="stylesheet" href="/core/lib/base.css">
+<link rel="stylesheet" href="/brands/bike-logger/tokens.css">
+<link rel="stylesheet" href="/engines/ad-kit/ad-kit.css">
+<link rel="stylesheet" href="/brands/bike-logger/assets/cartoon/theme.css">
+</head><body><div id="stage"></div>
+<script src="/core/node_modules/gsap/dist/gsap.min.js"></script>
+<script src="/core/lib/runtime.js"></script>
+<script src="/engines/svg-rig.js"></script>
+<script src="/engines/ad-kit/ad-kit.js"></script>
+<script src="/engines/ad-kit/scenes.js"></script>
+<script src="/brands/bike-logger/assets/cartoon/crew.js"></script>
+<script src="/brands/bike-logger/assets/cartoon/bike.js"></script>
+<script src="/brands/bike-logger/assets/cartoon/brief.js"></script>
+<script>
+  // REEL-007 One ride, one timeline. Variants: ?style=fun|adult &hook=A|B|C
+  const P = Studio.params, style = P.get("style") || "fun", hook = P.get("hook") || "A", A = style === "adult";
+  const b = BL.brief(style), say = (f, a) => (A ? a : f);
+  const hooks = {
+    A: { eyebrow: "Robotics starter kit", title: say("Ride. Record. Replay.", "Ride. Record. Replay.") },
+    B: { eyebrow: "Robotics starter kit", title: say("Your bike has a crew.", "Your bike has a crew now.") },
+    C: { eyebrow: "Robotics starter kit", title: say("Every sensor. One timeline.", "Every sensor. One timeline.") },
+  };
+  const scenes = [
+    { type: "ride", dur: 10.6, beats: [
+        { at: 0.1, ...hooks[hook] },
+        { at: 2.2, eyebrow: "03 · IMU", title: say("Logs every pothole.", "Noted the pothole.") },
+        { at: 4.4, eyebrow: "03 · IMU", title: say("Feels every lean.", "Noted the lean."), chips: ["lean", "pitch", "acceleration"] },
+        { at: 6.5, eyebrow: "04 · Ultrasonic", title: say("Logs every overtake.", "Noted the overtake."), chips: ["in metres"] },
+        { at: 8.6, eyebrow: "05 · Hall sensor", title: say("Counts every turn.", "Noted every turn."), chips: ["1 pulse per turn"] },
+      ],
+      events: [{ type: "pothole", at: 2.6 }, { type: "lean", at: 4.7 }, { type: "overtake", at: 6.8 }, { type: "wheel", at: 8.8 }] },
+    { type: "replay", dur: 3.2, eyebrow: "Code it", title: say("Scrub once. Everything moves.", "One timeline. Scrub once.") },
+    { type: "endcard", dur: 2.4, ...b.brand, actors: ["imu", "sonar", "hall"] },
+  ];
+  AdKit.build({ scenes, style, size: P.get("size") || "reel", cast: BL.cast, forbid: BL.forbid });
+</script></body></html>

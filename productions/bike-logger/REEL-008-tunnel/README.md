@@ -1,20 +1,20 @@
 # REEL-008 — The tunnel (cartoon gag, silent)
 
-> Storyboard for approval. Third of the cartoon series; same cast as REEL-006 (`../REEL-006-crew/refs/cast.png`).
+> Approved 2026-11-03 and produced. Third of the cartoon series; same cast as REEL-006 (`../REEL-006-crew/refs/cast.png`).
 > A short gag built on one fact: the Hall sensor gives speed and distance even without GPS.
 
 | Field | Value |
 |---|---|
 | Brand | `brands/bike-logger/` |
 | Type | Reel |
-| Status | `storyboard (awaiting approval)` |
+| Status | `QA passed` (draft for review; see *Variants*) |
 | Size | 1080×1920 (9:16) |
 | Frame rate / length | 30 fps · 11 s |
 | Language | EN |
 | Placement | Organic (`.safe-organic`); short enough for paid too if the copy moves into `.safe` |
 | Engines | **SVG rig + GSAP** (reuses REEL-007's street and bike). No other engine needed |
 | Sound | Silent |
-| Approved by / date | |
+| Approved by / date | Murathan, 2026-11-03 ("yeah do it"; cast, names and the two off-palette colours approved with it) |
 
 ## 2. Why this piece exists
 
@@ -53,8 +53,8 @@ preferred). The odometer counts turns, not a distance figure.
 
 ### ✅ Approval
 
-- [ ] Storyboard approved. *No production before this box is ticked.*
-- Requested changes:
+- [x] Storyboard approved 2026-11-03.
+- Requested changes: also make **adult versions, still cartoony** → every piece renders in a second style (below).
 
 ## 6. Fact check (planned)
 
@@ -64,3 +64,21 @@ preferred). The odometer counts turns, not a distance figure.
 | USB GPS | same |
 
 **Not claimed:** how far, how fast, battery life, safety.
+
+## Variants (2026-11-03)
+
+One composition, six exports: style `fun` | `adult` × hook `A` | `B` | `C` (section 3). The **adult** style is
+the same story and facts for a grown-up audience: the crew's adult drawing (ink outlines, half-lidded deadpan eyes,
+muted colours), no squash/overshoot or flashes, dry copy (e.g. "Takes every corner personally.").
+
+- Composition: `composition/index.html` (reads `?style=&hook=&size=`), built on the ad kit (`engines/ad-kit`) and
+  the brand's cartoon world (`brands/bike-logger/assets/cartoon/`).
+- Matrix: `variants.json` → `export/manifest.md` (files, lengths), `qa/variants-sheet.jpg`, `qa/<name>/report.md`.
+- The MP4s are not in git (`*.mp4` is ignored); they live in the Artifact gallery linked from `STATUS.md`.
+
+## 7. Rebuild
+
+```bash
+node scripts/variants.mjs productions/bike-logger/REEL-008-tunnel/variants.json --qa
+node core/render.mjs video "productions/bike-logger/REEL-008-tunnel/composition/index.html?style=adult&hook=B" /tmp/REEL-008.mp4
+```

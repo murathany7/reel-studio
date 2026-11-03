@@ -21,6 +21,9 @@ node core/render.mjs stills <composition.html> <out_dir> --at 0,0.4,1.2,3.0 --sa
 # Audio: VO + music (auto-ducked) + SFX → one track at -14 LUFS
 python3 scripts/mix_audio.py <audio/cues.json> <audio/mix.wav>
 
+# Variants: one composition, a matrix of query params (?style=adult&pattern=pas) → many MP4s, in parallel
+node scripts/variants.mjs productions/<brand>/<ID>/variants.json [--dry | --check] [--jobs 4] [--qa]
+
 # QA: specs, 30 fps CFR, loudness, hitches/jumps, frozen/black, safe-zone sheet
 scripts/qa-video.sh <video.mp4> <qa_dir> [1080x1920] [30]
 ```

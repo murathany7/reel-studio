@@ -1,0 +1,35 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>REEL-008 The tunnel</title>
+<link rel="stylesheet" href="/core/lib/base.css">
+<link rel="stylesheet" href="/brands/bike-logger/tokens.css">
+<link rel="stylesheet" href="/engines/ad-kit/ad-kit.css">
+<link rel="stylesheet" href="/brands/bike-logger/assets/cartoon/theme.css">
+</head><body><div id="stage"></div>
+<script src="/core/node_modules/gsap/dist/gsap.min.js"></script>
+<script src="/core/lib/runtime.js"></script>
+<script src="/engines/svg-rig.js"></script>
+<script src="/engines/ad-kit/ad-kit.js"></script>
+<script src="/engines/ad-kit/scenes.js"></script>
+<script src="/brands/bike-logger/assets/cartoon/crew.js"></script>
+<script src="/brands/bike-logger/assets/cartoon/bike.js"></script>
+<script src="/brands/bike-logger/assets/cartoon/brief.js"></script>
+<script>
+  // REEL-008 The tunnel. Variants: ?style=fun|adult &hook=A|B|C
+  const P = Studio.params, style = P.get("style") || "fun", hook = P.get("hook") || "A", A = style === "adult";
+  const b = BL.brief(style), say = (f, a) => (A ? a : f);
+  const hooks = {
+    A: { title: say("Tunnel ahead.", "Tunnel.") },
+    B: { title: say("No sky, no GPS.", "No sky. No GPS.") },
+    C: { title: say("Who keeps count in the dark?", "Who counts in the dark?") },
+  };
+  const scenes = [
+    { type: "tunnel", dur: 9, inAt: 1.8, outAt: 6.8, beats: [
+        { at: 0.1, ...hooks[hook] },
+        { at: 2.2, eyebrow: "02 · GPS", title: say("Signal gone.", "GPS: lost.") },
+        { at: 4.2, eyebrow: "05 · Hall sensor", title: say("The wheel still counts.", "Hall sensor: unbothered."), chips: ["A3144", "spoke magnet", "1 pulse per turn"] },
+        { at: 7.0, title: say("Speed and distance, even without GPS.", "Speed and distance. No GPS needed.") },
+      ] },
+    { type: "endcard", dur: 2.2, ...b.brand, actors: ["gps", "hall"] },
+  ];
+  AdKit.build({ scenes, style, size: P.get("size") || "reel", cast: BL.cast, forbid: BL.forbid });
+</script></body></html>

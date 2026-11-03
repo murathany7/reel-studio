@@ -15,6 +15,7 @@ That is what makes every frame deterministic and checkable, whatever drew it.
 | 3D product, CAD, camera moves, 3D cartoon (toon + outline) | **Three.js** | `three.js` (`threeLayer`, `toon`, `outline`) | ✅ tested |
 | High-end 3D cartoon, real lighting, physics, simulations | **Blender** (headless, Python) | `blender/render.sh` + a scene script → MP4 plate | ✅ tested (Blender 5.2, Eevee) |
 | A live website or web app you own (its own 3D scene, UI) | **Page capture** | `capture.mjs` → PNG sequence → MP4 plate | ✅ used for the Bike Logger reel |
+| Ad scenarios and persuasion patterns as scenes; many variants from one composition | **Ad kit** (GSAP + SVG rig) | `ad-kit/` (`AdKit.build`, `AdKit.pattern`), `scripts/variants.mjs` | ✅ tested (Bike Logger REEL-006–009) |
 | Real-looking footage | AI video generation or stock, as a plate | `Studio.video(el)` | Footage only. Never shows product facts; check the brand's compliance |
 
 **Rule of thumb:** start with GSAP. Add one engine for the hero visual. More than two engines in one piece usually means the idea is unclear.

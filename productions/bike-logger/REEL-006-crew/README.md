@@ -1,20 +1,20 @@
 # REEL-006 — Meet the crew (cartoon, silent)
 
-> Storyboard for approval. Part of a cartoon series of three (REEL-006, REEL-007, REEL-008) that share one cast:
+> Approved 2026-11-03 and produced. Part of a cartoon series of three (REEL-006, REEL-007, REEL-008) that share one cast:
 > the real parts drawn as flat characters. The cast sheet is `refs/cast.png` (drawn by `refs/crew.js`).
 
 | Field | Value |
 |---|---|
 | Brand | `brands/bike-logger/` |
 | Type | Reel |
-| Status | `storyboard (awaiting approval)` |
+| Status | `QA passed` (draft for review; see *Variants*) |
 | Size | 1080×1920 (9:16) |
 | Frame rate / length | 30 fps · 16 s |
 | Language | EN |
 | Placement | Organic (copy inside `.safe-organic`) |
 | Engines | **SVG rig** (`engines/svg-rig.js`) for the crew: hop, blink, wave, squash, all in code, no designer file needed. **GSAP** for type and chips. No 3D, no capture: the look asked for is cartoon, and flat SVG renders fast and md5-stable |
 | Sound | Silent: all meaning on screen |
-| Approved by / date | |
+| Approved by / date | Murathan, 2026-11-03 ("yeah do it"; cast, names and the two off-palette colours approved with it) |
 
 ## 1. Brief
 
@@ -69,8 +69,8 @@
 
 ### ✅ Approval
 
-- [ ] Storyboard approved. *No production before this box is ticked.*
-- Requested changes:
+- [x] Storyboard approved 2026-11-03.
+- Requested changes: also make **adult versions, still cartoony** → every piece renders in a second style (below).
 
 ## 6. Fact check (planned)
 
@@ -85,3 +85,21 @@
 | IP65 box, one timeline replay | same |
 
 **Not claimed:** price, kit contents, skill level, "easy", any distance number.
+
+## Variants (2026-11-03)
+
+One composition, six exports: style `fun` | `adult` × hook `A` | `B` | `C` (section 3). The **adult** style is
+the same story and facts for a grown-up audience: the crew's adult drawing (ink outlines, half-lidded deadpan eyes,
+muted colours), no squash/overshoot or flashes, dry copy (e.g. "Takes every corner personally.").
+
+- Composition: `composition/index.html` (reads `?style=&hook=&size=`), built on the ad kit (`engines/ad-kit`) and
+  the brand's cartoon world (`brands/bike-logger/assets/cartoon/`).
+- Matrix: `variants.json` → `export/manifest.md` (files, lengths), `qa/variants-sheet.jpg`, `qa/<name>/report.md`.
+- The MP4s are not in git (`*.mp4` is ignored); they live in the Artifact gallery linked from `STATUS.md`.
+
+## 7. Rebuild
+
+```bash
+node scripts/variants.mjs productions/bike-logger/REEL-006-crew/variants.json --qa
+node core/render.mjs video "productions/bike-logger/REEL-006-crew/composition/index.html?style=adult&hook=B" /tmp/REEL-006.mp4
+```

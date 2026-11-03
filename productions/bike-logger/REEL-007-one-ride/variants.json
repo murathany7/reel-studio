@@ -1,0 +1,6 @@
+{
+  "id": "REEL-007",
+  "composition": "composition/index.html",
+  "name": "{id}-{style}-hook{hook}",
+  "axes": { "style": ["fun", "adult"], "hook": ["A", "B", "C"] }
+}

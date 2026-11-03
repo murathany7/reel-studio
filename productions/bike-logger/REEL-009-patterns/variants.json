@@ -1,0 +1,17 @@
+{
+  "id": "REEL-009",
+  "composition": "composition/index.html",
+  "name": "{id}-{pattern}-{style}-{size}",
+  "axes": {
+    "pattern": ["pas", "bab", "listicle", "spotlight", "demo", "faq", "three", "unboxing", "curiosity", "interrupt",
+                "ikea", "progress", "myth", "reciprocity", "foot", "story", "loss", "contrast", "specificity"],
+    "style": ["fun", "adult"],
+    "size": ["reel"]
+  },
+  "include": [
+    { "pattern": "curiosity", "style": "fun", "size": "feed" },
+    { "pattern": "myth", "style": "adult", "size": "feed" },
+    { "pattern": "ikea", "style": "fun", "size": "feed" },
+    { "pattern": "three", "style": "adult", "size": "feed" }
+  ]
+}

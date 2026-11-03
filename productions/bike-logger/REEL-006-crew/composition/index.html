@@ -1,0 +1,32 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>REEL-006 Meet the crew</title>
+<link rel="stylesheet" href="/core/lib/base.css">
+<link rel="stylesheet" href="/brands/bike-logger/tokens.css">
+<link rel="stylesheet" href="/engines/ad-kit/ad-kit.css">
+<link rel="stylesheet" href="/brands/bike-logger/assets/cartoon/theme.css">
+</head><body><div id="stage"></div>
+<script src="/core/node_modules/gsap/dist/gsap.min.js"></script>
+<script src="/core/lib/runtime.js"></script>
+<script src="/engines/svg-rig.js"></script>
+<script src="/engines/ad-kit/ad-kit.js"></script>
+<script src="/engines/ad-kit/scenes.js"></script>
+<script src="/brands/bike-logger/assets/cartoon/crew.js"></script>
+<script src="/brands/bike-logger/assets/cartoon/bike.js"></script>
+<script src="/brands/bike-logger/assets/cartoon/brief.js"></script>
+<script>
+  // REEL-006 Meet the crew. Variants: ?style=fun|adult &hook=A|B|C &size=reel|feed
+  const P = Studio.params, style = P.get("style") || "fun", hook = P.get("hook") || "A", A = style === "adult";
+  const b = BL.brief(style), say = (f, a) => (A ? a : f);
+  const hooks = {
+    A: { type: "boxHook", dur: 2.1, eyebrow: "Build your own ride recorder", title: say("Meet the crew.", "They work under the rack.") },
+    B: { type: "title", dur: 2.1, eyebrow: "Robotics starter kit", title: say("Five sensors. One Pi.", "Five sensors. One sealed box."), actor: "box", act: [["rattle", 0.4], ["open", 1.3]] },
+    C: { type: "boxHook", dur: 2.4, eyebrow: "Robotics starter kit", title: say("Who's in the box?", "Something's in the box.") },
+  };
+  const nums = ["00", "01", "02", "03", "04", "05"];
+  const scenes = [hooks[hook],
+    ...b.features.map((f, i) => ({ type: "feature", dur: 1.85, ...f, eyebrow: `${nums[i]} · ${f.eyebrow}`, base: "box", baseAct: "openStill", exit: i % 2 ? "left" : "right" })),
+    { type: "lineup", dur: 2.6, title: say("Wire it. Code it. Ride.", "Wire it. Code it. Ride."), actors: b.crew },
+    { type: "endcard", dur: 2.2, ...b.brand, actors: b.endActors },
+  ];
+  AdKit.build({ scenes, style, size: P.get("size") || "reel", cast: BL.cast, forbid: BL.forbid });
+</script></body></html>

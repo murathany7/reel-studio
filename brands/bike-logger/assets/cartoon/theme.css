@@ -1,0 +1,13 @@
+/* Bike Logger theme for the ad kit (load after /engines/ad-kit/ad-kit.css and the brand tokens). */
+.ak { --ak-eyebrow: var(--signal); --ak-title-vars: "wdth" 125; --ak-wordmark-vars: "wdth" 125; --ak-line: var(--line);
+  --ak-chip: #b9bec4; --ak-chip-bg: rgba(6, 8, 10, .72); --ak-dim: var(--dim); --ak-warn: var(--brake); }
+.ak .ak-sub { font-variation-settings: "wdth" 110; }
+.ak .ak-eyebrow b { color: var(--lamp); font-weight: 500; }
+.ak-adult { --ak-title-size: 96px; }
+.ak-adult .ak-title { font-weight: 700; letter-spacing: -0.01em; }
+.ak-adult .ak-flash { display: none; }
+.bl-bubble { position: absolute; border-radius: 50%; border: 4px solid var(--line); background: #0b0f13; overflow: hidden; }
+.ak-adult .bl-bubble { border-color: var(--ink); border-width: 3px; }
+.bl-readout { position: absolute; font-family: var(--font-mono); color: var(--signal); font-size: 30px; letter-spacing: .12em; }
+.bl-readout b { color: var(--ink); font-family: var(--font-display); font-variation-settings: "wdth" 62; font-weight: 800; font-size: 84px; letter-spacing: 0; display: block; line-height: 1; }
+.bl-tag { position: absolute; font-family: var(--font-mono); font-size: 28px; color: var(--night); background: var(--brake); padding: 6px 12px; border-radius: 3px; letter-spacing: .1em; }

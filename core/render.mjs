@@ -6,6 +6,9 @@
  *   node core/render.mjs still  <composition.html> <out.png> [--t 1.5] [--safe]
  *   node core/render.mjs stills <composition.html> <out_dir> [--every 0.5 | --at 0,1.2,3] [--safe]
  *
+ * A query string after the path is passed to the page (Studio.params), so one composition can render many
+ * variants: node core/render.mjs video comp/index.html?style=adult&hook=B out.mp4  (quote it in the shell).
+ *
  * Paths are relative to the repo root (reel-studio/). The page is served from
  * the repo root over a local HTTP server so assets load with absolute paths
  * like /brands/<name>/assets/..., /core/lib/... and /engines/...
@@ -86,15 +89,18 @@ const CHROME_ARGS = ["--force-color-profile=srgb", "--hide-scrollbars", "--enabl
 async function openPage(input, safe) {
   const server = await serve();
   const { port } = server.address();
-  const rel = path.relative(ROOT, path.resolve(input)).split(path.sep).join("/");
+  const [file, query = ""] = input.split("?");
+  const rel = path.relative(ROOT, path.resolve(file)).split(path.sep).join("/");
   const browser = await chromium.launch({ executablePath: CHROME, args: CHROME_ARGS });
   const page = await browser.newPage({ viewport: { width: 1080, height: 1920 }, deviceScaleFactor: 1 });
   const errors = [];
   page.on("pageerror", (e) => errors.push(String(e)));
   page.on("console", (m) => m.type() === "error" && !m.text().startsWith("Failed to load resource") && errors.push(m.text()));
   page.on("response", (r) => r.status() >= 400 && !r.url().endsWith("/favicon.ico") && errors.push(`${r.status()} ${r.url()}`));
-  await page.goto(`http://127.0.0.1:${port}/${rel}?render=1${safe ? "&safe=1" : ""}`);
+  await page.goto(`http://127.0.0.1:${port}/${rel}?render=1${safe ? "&safe=1" : ""}${query ? "&" + query : ""}`);
   await page.evaluate(() => window.__ready);
+  // A composition that threw while building (e.g. an ad-kit guardrail) fails now, not after every frame.
+  if (errors.length) { await browser.close(); server.close(); throw new Error("Page errors:\n  " + errors.join("\n  ")); }
   const meta = await page.evaluate(() => window.__meta());
   await page.setViewportSize({ width: meta.width, height: meta.height });
   const stage = page.locator("#stage");
