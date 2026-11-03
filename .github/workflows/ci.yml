@@ -10,8 +10,10 @@ on:
 permissions:
   contents: read
 
+# PRs: a new push cancels the stale run. main: every commit gets its own run. github.workflow is the caller's name
+# when Release calls this file, so the release's test run never cancels (or waits on) the push run.
 concurrency:
-  group: ci-${{ github.ref }}-${{ github.event_name }}
+  group: ci-${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.ref || github.sha }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
