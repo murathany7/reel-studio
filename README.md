@@ -1,7 +1,10 @@
 <h1 align="center">🎬 Reel Studio</h1>
 
 <p align="center">
+  <a href="https://github.com/murathany7/reel-studio/actions/workflows/ci.yml"><img src="https://github.com/murathany7/reel-studio/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
   <a href="https://www.npmjs.com/package/reel-studio"><img src="https://img.shields.io/npm/v/reel-studio?color=e8a33d" alt="npm"></a>
+  <a href="https://pypi.org/project/reel-studio/"><img src="https://img.shields.io/pypi/v/reel-studio?color=e8a33d" alt="PyPI"></a>
+  <a href="https://github.com/murathany7/homebrew-reel-studio"><img src="https://img.shields.io/badge/homebrew-tap-e8a33d" alt="Homebrew"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-3ecf7a" alt="MIT"></a>
   <img src="https://img.shields.io/badge/Claude%20Code-plugin-8b93a1" alt="Claude Code plugin">
 </p>
@@ -117,7 +120,11 @@ scripts/       audio mix, transcription, QA, frame tools
 
 ## Contributing
 
-Open source and early. New engine adapters, brand examples and QA checks are all welcome; open an issue or a PR.
+Open source and early. New engine adapters, skill fixes and QA checks are all welcome: see
+[CONTRIBUTING.md](CONTRIBUTING.md). `npm test` re-renders the demo twice and checks every frame matches.
+
+**Made something?** [Show your reel](https://github.com/murathany7/reel-studio/issues/new?template=show-your-reel.yml):
+good examples get featured here. Questions go to [Discussions](https://github.com/murathany7/reel-studio/discussions).
 
 ## License
 

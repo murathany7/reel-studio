@@ -1,0 +1,10 @@
+name: Idea
+description: A new engine, skill, template or workflow
+labels: [enhancement]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: What should Reel Studio do?
+      description: The video or workflow you want, and what is in the way today.
+    validations: { required: true }

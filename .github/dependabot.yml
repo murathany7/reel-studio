@@ -1,0 +1,18 @@
+version: 2
+updates:
+  # The renderer's engines (GSAP, Three.js, Pixi, Lottie, Playwright). CI re-renders the demo on every PR,
+  # so an update that changes pixels fails the determinism and QA tests before it can merge.
+  - package-ecosystem: npm
+    directory: /core
+    schedule: { interval: weekly }
+    groups:
+      engines:
+        update-types: [minor, patch]
+    open-pull-requests-limit: 5
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule: { interval: monthly }
+    groups:
+      actions:
+        patterns: ["*"]

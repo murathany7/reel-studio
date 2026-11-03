@@ -1,0 +1,27 @@
+name: Bug
+description: Something renders wrong, crashes, or a skill does the wrong thing
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you ran or asked Claude Code, what you expected, what you got.
+    validations: { required: true }
+  - type: textarea
+    id: repro
+    attributes:
+      label: How to reproduce
+      description: The command, and the composition (a gist or a minimal HTML page) if it is a render problem.
+      render: shell
+  - type: input
+    id: versions
+    attributes:
+      label: Versions
+      description: "Output of: npx reel-studio --version 2>/dev/null; node -v; ffmpeg -version | head -1; uname -sm"
+    validations: { required: true }
+  - type: dropdown
+    id: install
+    attributes:
+      label: Installed with
+      options: [Claude Code plugin, npx / npm, pip / pipx / uvx, Homebrew, git clone]

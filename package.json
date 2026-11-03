@@ -21,6 +21,10 @@
     "examples/engines-demo/plates/blob.mp4",
     ".claude/skills/"
   ],
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "test:python": "packaging/build-python.sh && cd python && uv run --isolated --with . python -m unittest discover -s tests -v"
+  },
   "engines": { "node": ">=18" },
   "keywords": ["video", "reels", "marketing", "claude-code", "gsap", "threejs", "pixi", "blender", "ffmpeg", "remotion-alternative"],
   "author": "Murathan Yıldırım (https://github.com/murathany7)",

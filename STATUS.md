@@ -30,6 +30,11 @@ The memory of this repo. Read it first, update it last.
   (`packaging/homebrew/reel-studio.rb`) installs the npm tarball and needs tap repo `murathany7/homebrew-reel-studio`.
   Both tested locally (`reel-studio init` + a still render; `brew test` and `brew audit --strict` pass). Release steps:
   `packaging/README.md`.
+- 2026-11-03: CI (`.github/workflows/ci.yml`) runs `npm test` + `npm run test:python` on Linux (Node 20, 24) and macOS
+  for every push and PR: syntax, manifests, npm package contents, `init`, render determinism (md5 of the engines demo
+  at 1, 3, 4.6 s), a full video through `qa-video.sh`. Release (`release.yml`) publishes when `package.json`'s version
+  is not on npm: `packaging/bump.sh <v>` + push. Needs one-time trusted-publisher setup on npm and PyPI and a
+  `HOMEBREW_TAP_TOKEN` secret (`packaging/README.md`). `core/render.mjs` uses SwiftShader for WebGL off macOS.
 
 ## Brands
 

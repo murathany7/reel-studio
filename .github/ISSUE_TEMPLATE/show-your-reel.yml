@@ -1,0 +1,36 @@
+name: Show your reel
+description: Share something you made with Reel Studio. Good examples may be featured in the README.
+labels: [showcase]
+body:
+  - type: textarea
+    id: video
+    attributes:
+      label: The video
+      description: Drag in an MP4 or GIF (GitHub hosts it), or link to where it is posted.
+    validations: { required: true }
+  - type: input
+    id: brand
+    attributes:
+      label: Product or brand
+  - type: checkboxes
+    id: engines
+    attributes:
+      label: Engines used
+      options:
+        - label: GSAP
+        - label: SVG rig / Lottie / Rive
+        - label: Pixi
+        - label: Three.js
+        - label: Blender
+        - label: Page capture
+  - type: textarea
+    id: notes
+    attributes:
+      label: How it went
+      description: What Claude Code got right, where you had to step in, what the kit should do better.
+  - type: checkboxes
+    id: ok
+    attributes:
+      label: Permission
+      options:
+        - label: The project may show this video in its README and posts

@@ -78,8 +78,10 @@ function serve() {
 // WebGL (Three.js, Pixi) on the GPU, but compositing in software: with GPU compositing Chrome
 // draws <video> plates ~10 levels brighter than ffmpeg decodes them (measured 2026-11-02).
 // playwright-core is pinned (1.49.1) because 1.64 shifted plate colours the same way.
-const CHROME_ARGS = ["--force-color-profile=srgb", "--hide-scrollbars",
-  "--enable-gpu", "--use-angle=metal", "--ignore-gpu-blocklist", "--disable-gpu-compositing"];
+// WebGL: Metal on macOS; elsewhere (Linux, CI without a GPU) Chrome's software renderer, SwiftShader
+const CHROME_ARGS = ["--force-color-profile=srgb", "--hide-scrollbars", "--enable-gpu", "--ignore-gpu-blocklist",
+  "--disable-gpu-compositing",
+  ...(process.platform === "darwin" ? ["--use-angle=metal"] : ["--use-angle=swiftshader", "--enable-unsafe-swiftshader"])];
 
 async function openPage(input, safe) {
   const server = await serve();

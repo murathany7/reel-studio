@@ -1,0 +1,76 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  workflow_call:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}-${{ github.event_name }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  test:
+    name: test (${{ matrix.os }}, node ${{ matrix.node }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { os: ubuntu-latest, node: 20 }
+          - { os: ubuntu-latest, node: 24 }
+          - { os: macos-latest, node: 24 }
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Keep test renders in the runner's temp dir (uploaded if a test fails)
+        run: echo "TMPDIR=$RUNNER_TEMP" >> "$GITHUB_ENV"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+          cache-dependency-path: core/package-lock.json
+
+      - uses: astral-sh/setup-uv@v6
+
+      - name: Install ffmpeg
+        run: |
+          if [ "$RUNNER_OS" = Linux ]; then sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg rsync
+          else brew install ffmpeg; fi
+
+      - name: Check Chrome
+        run: |
+          for c in "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" /usr/bin/google-chrome; do
+            [ -x "$c" ] && { "$c" --version; echo "CHROME_PATH=$c" >> "$GITHUB_ENV"; exit 0; }
+          done
+          echo "::error::Google Chrome not found on the runner"; exit 1
+
+      - name: Install the renderer
+        run: npm ci --prefix core --no-audit --no-fund
+
+      - name: Tests (syntax, manifests, npm package, init, render determinism, video QA)
+        run: npm test
+
+      - name: Python package tests
+        run: npm run test:python
+
+      - name: Upload renders on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: failure-${{ matrix.os }}-node${{ matrix.node }}
+          path: ${{ runner.temp }}/rs-test-*
+          if-no-files-found: ignore
+
+  formula:
+    name: Homebrew formula style
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: brew style packaging/homebrew/reel-studio.rb

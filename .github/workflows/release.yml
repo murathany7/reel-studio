@@ -1,0 +1,131 @@
+# Release on every push to main whose package.json version is not on npm yet:
+# tests → npm (provenance) + PyPI (trusted publishing) → tag + GitHub Release → Homebrew tap.
+# To release: packaging/bump.sh 0.2.2, commit, push. One-time setup: packaging/README.md.
+name: Release
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.v.outputs.version }}
+      release: ${{ steps.v.outputs.release }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: v
+        run: |
+          v=$(node -p "require('./package.json').version")
+          echo "version=$v" >> "$GITHUB_OUTPUT"
+          if npm view "reel-studio@$v" version >/dev/null 2>&1; then
+            echo "release=false" >> "$GITHUB_OUTPUT"; echo "reel-studio $v is already on npm: nothing to release."
+          else
+            echo "release=true" >> "$GITHUB_OUTPUT"; echo "Releasing reel-studio $v."
+          fi
+
+  test:
+    needs: check
+    if: needs.check.outputs.release == 'true'
+    uses: ./.github/workflows/ci.yml
+
+  npm:
+    needs: [check, test]
+    runs-on: ubuntu-latest
+    environment: npm
+    permissions:
+      contents: read
+      id-token: write  # npm trusted publishing + provenance
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+      - run: npm install -g npm@latest  # trusted publishing needs npm 11.5.1+
+      - run: npm publish --provenance --access public
+      - run: npm pack --pack-destination dist
+      - uses: actions/upload-artifact@v4
+        with: { name: npm, path: dist/*.tgz }
+
+  pypi:
+    needs: [check, test]
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      contents: read
+      id-token: write  # PyPI trusted publishing
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 24 }
+      - uses: astral-sh/setup-uv@v6
+      - run: packaging/build-python.sh
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: python/dist
+      - uses: actions/upload-artifact@v4
+        with: { name: pypi, path: python/dist/* }
+
+  github-release:
+    needs: [check, npm, pypi]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with: { path: dist, merge-multiple: true }
+      - env:
+          GH_TOKEN: ${{ github.token }}
+          V: ${{ needs.check.outputs.version }}
+        run: |
+          gh release create "v$V" dist/* --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" \
+            --title "v$V" --generate-notes --notes "$(cat <<EOF
+          ## Install
+
+          \`\`\`bash
+          npx reel-studio@$V init
+          pipx install reel-studio==$V && reel-studio init
+          brew install murathany7/reel-studio/reel-studio && reel-studio init
+          \`\`\`
+
+          Or in Claude Code: \`/plugin marketplace add murathany7/reel-studio\`
+          EOF
+          )"
+
+  homebrew:
+    needs: [check, npm]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check for the tap token
+        id: token
+        env: { T: "${{ secrets.HOMEBREW_TAP_TOKEN }}" }
+        run: |
+          [ -n "$T" ] && echo "ok=true" >> "$GITHUB_OUTPUT" || echo "::warning::HOMEBREW_TAP_TOKEN is not set: update the tap by hand with packaging/update-formula.sh"
+      - if: steps.token.outputs.ok == 'true'
+        uses: actions/checkout@v4
+        with:
+          repository: murathany7/homebrew-reel-studio
+          token: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+          path: tap
+      - if: steps.token.outputs.ok == 'true'
+        env:
+          V: ${{ needs.check.outputs.version }}
+        run: |
+          for i in 1 2 3 4 5 6; do curl -fsI "https://registry.npmjs.org/reel-studio/-/reel-studio-$V.tgz" >/dev/null && break; sleep 20; done
+          packaging/update-formula.sh tap
+          cd tap
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "reel-studio $V"
+          git push
