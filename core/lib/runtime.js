@@ -89,9 +89,18 @@
         // "seeked" can fire before the new frame is painted, and a screenshot then catches the old one (seen on a
         // cold CI runner): also wait for the frame to be presented. A seek within the same plate frame presents
         // nothing new, so that wait gives up after a moment; the old frame is the right one then.
+        // Headless Chrome can also report the frame from *before* the seek (mediaTime 0 right after the first seek
+        // to 1 s, then no callback ever again), which let a cold runner's screenshot catch the old frame. So only a
+        // frame that can be the target's counts: not after the target, and past the old position when seeking
+        // forward. Anything else waits for the fallback.
+        const from = el.currentTime, eps = 0.0005;
         let seeked = false, shown = !el.requestVideoFrameCallback, timer;
         const done = () => seeked && shown && (clearTimeout(timer), res());
-        if (!shown) el.requestVideoFrameCallback(() => { shown = true; done(); });
+        const onFrame = (_, m) => {
+          if (m.mediaTime <= target + eps && (target < from || m.mediaTime > from + eps)) { shown = true; done(); }
+          else if (!shown) el.requestVideoFrameCallback(onFrame);
+        };
+        if (!shown) el.requestVideoFrameCallback(onFrame);
         el.addEventListener("seeked", () => {
           seeked = true;
           timer = setTimeout(() => { shown = true; done(); }, 250);

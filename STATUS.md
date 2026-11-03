@@ -13,9 +13,11 @@ The memory of this repo. Read it first, update it last.
   npm's trusted publisher only allows `npm stage publish` until "Allow npm publish" is ticked (else 403 "OIDC
   permission denied"). The GitHub Release step failed (`npm pack` into a missing `dist/`, fixed). `HOMEBREW_TAP_TOKEN`
   not set, so the tap needs `packaging/update-formula.sh` by hand.
-- 2026-11-04: **plate seek flake again**: CI run 41737408876 (Ubuntu, Node 24) rendered two different Blender plate
-  frames at t=1. The 250 ms paint fallback in `Studio.video()` gives up before a cold runner paints the new frame.
-  Not fixed yet.
+- 2026-11-04: **plate seek flake fixed** (CI run 41737408876, Ubuntu, Node 24: two different Blender plate frames at
+  t=1). Cause: headless Chrome reports the *old* frame once through `requestVideoFrameCallback` right after a fresh
+  page's first seek, then never calls back again. `Studio.video()` took that as "new frame painted". It now only
+  accepts a frame that can be the target's; otherwise the 250 ms fallback (which every later seek always used). Demo
+  stills byte-identical to before; render tests pass on macOS.
 - 2026-11-03: **publishing is manual for now.** `release.yml` removed (its npm and PyPI steps never succeeded: no
   trusted publishers on either registry). CI (`ci.yml`) only tests: Linux Node 20/24, macOS, Homebrew formula style;
   green on `main`. Release steps by hand: `packaging/README.md`. Registries are still at 0.2.1, GHCR has 0.2.2/0.2.3
@@ -142,6 +144,9 @@ The memory of this repo. Read it first, update it last.
   render a plate frame and compare a pixel with `ffmpeg -vf select=eq(n\,N)`.
 - **Soft captures (2026-11-02):** the Bike Logger site drops to 1.5x resolution when its first frames average over
   1/40 s, which virtual 1/30 s steps always do. REEL-001 v2 settles at 1/60 s and asserts full canvas resolution.
+- **`requestVideoFrameCallback` lies in headless renders (2026-11-04):** after a seek on a paused plate it fires at
+  most once, with the frame from *before* the seek (`mediaTime` 0 for a seek to 1 s), and never again. Check
+  `mediaTime` before trusting it; the 250 ms fallback is what actually waits for paint.
 - **Plate seek race (2026-11-03):** `seeked` can fire before the new video frame is painted, so a cold CI runner
   (Node 20, Dependabot PR #1) screenshotted the previous plate frame and two renders of t=1 differed. `Studio.video()`
   now also waits for `requestVideoFrameCallback`, with a 250 ms fallback for seeks inside the same plate frame.
