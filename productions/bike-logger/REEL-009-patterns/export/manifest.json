@@ -1,0 +1,204 @@
+{
+  "id": "REEL-009",
+  "composition": "composition/index.html",
+  "variants": [
+    {
+      "axes": {
+        "pattern": "pas",
+        "look": "blueprint",
+        "style": "fun",
+        "size": "reel"
+      },
+      "name": "REEL-009-pas-blueprint-fun-reel",
+      "query": "pattern=pas&look=blueprint&style=fun&size=reel",
+      "file": "export/REEL-009-pas-blueprint-fun-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 13.9,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-pas-blueprint-fun-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-pas-blueprint-fun-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "pas",
+        "look": "daylight",
+        "style": "adult",
+        "size": "reel"
+      },
+      "name": "REEL-009-pas-daylight-adult-reel",
+      "query": "pattern=pas&look=daylight&style=adult&size=reel",
+      "file": "export/REEL-009-pas-daylight-adult-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 13.9,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-pas-daylight-adult-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-pas-daylight-adult-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "pas",
+        "look": "type",
+        "style": "fun",
+        "size": "reel"
+      },
+      "name": "REEL-009-pas-type-fun-reel",
+      "query": "pattern=pas&look=type&style=fun&size=reel",
+      "file": "export/REEL-009-pas-type-fun-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 13.9,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-pas-type-fun-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-pas-type-fun-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "bab",
+        "look": "blueprint",
+        "style": "fun",
+        "size": "reel"
+      },
+      "name": "REEL-009-bab-blueprint-fun-reel",
+      "query": "pattern=bab&look=blueprint&style=fun&size=reel",
+      "file": "export/REEL-009-bab-blueprint-fun-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 12.4,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-bab-blueprint-fun-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-bab-blueprint-fun-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "bab",
+        "look": "daylight",
+        "style": "adult",
+        "size": "reel"
+      },
+      "name": "REEL-009-bab-daylight-adult-reel",
+      "query": "pattern=bab&look=daylight&style=adult&size=reel",
+      "file": "export/REEL-009-bab-daylight-adult-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 12.4,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-bab-daylight-adult-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-bab-daylight-adult-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "bab",
+        "look": "type",
+        "style": "fun",
+        "size": "reel"
+      },
+      "name": "REEL-009-bab-type-fun-reel",
+      "query": "pattern=bab&look=type&style=fun&size=reel",
+      "file": "export/REEL-009-bab-type-fun-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 12.4,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-bab-type-fun-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-bab-type-fun-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "listicle",
+        "look": "blueprint",
+        "style": "fun",
+        "size": "reel"
+      },
+      "name": "REEL-009-listicle-blueprint-fun-reel",
+      "query": "pattern=listicle&look=blueprint&style=fun&size=reel",
+      "file": "export/REEL-009-listicle-blueprint-fun-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 15.4,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-listicle-blueprint-fun-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-listicle-blueprint-fun-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "listicle",
+        "look": "daylight",
+        "style": "adult",
+        "size": "reel"
+      },
+      "name": "REEL-009-listicle-daylight-adult-reel",
+      "query": "pattern=listicle&look=daylight&style=adult&size=reel",
+      "file": "export/REEL-009-listicle-daylight-adult-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 15.4,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-listicle-daylight-adult-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-listicle-daylight-adult-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "listicle",
+        "look": "type",
+        "style": "fun",
+        "size": "reel"
+      },
+      "name": "REEL-009-listicle-type-fun-reel",
+      "query": "pattern=listicle&look=type&style=fun&size=reel",
+      "file": "export/REEL-009-listicle-type-fun-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 15.4,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-listicle-type-fun-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-listicle-type-fun-reel/report.md",
+        "code": 0
+      }
+    }
+  ]
+}
