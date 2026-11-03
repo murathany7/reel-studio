@@ -16,6 +16,7 @@
 <script>
   // REEL-007 One ride, one timeline. Variants: ?style=fun|adult &hook=A|B|C
   const P = Studio.params, style = P.get("style") || "fun", hook = P.get("hook") || "A", A = style === "adult";
+  const look = P.get("look") || "cartoon";   // cartoon | blueprint | daylight | type
   const b = BL.brief(style), say = (f, a) => (A ? a : f);
   const hooks = {
     A: { eyebrow: "Robotics starter kit", title: say("Ride. Record. Replay.", "Ride. Record. Replay.") },
@@ -34,5 +35,5 @@
     { type: "replay", dur: 3.2, eyebrow: "Code it", title: say("Scrub once. Everything moves.", "One timeline. Scrub once.") },
     { type: "endcard", dur: 2.4, ...b.brand, actors: ["imu", "sonar", "hall"] },
   ];
-  AdKit.build({ scenes, style, size: P.get("size") || "reel", cast: BL.cast, forbid: BL.forbid, motion: BL.motion, fps: +(P.get("fps") || 60) });
+  AdKit.build({ scenes, style, size: P.get("size") || "reel", cast: BL.lookCast(look), look, kinetic: look === "type", forbid: BL.forbid, motion: BL.motion, fps: +(P.get("fps") || 60) });
 </script></body></html>

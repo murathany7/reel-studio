@@ -1,0 +1,388 @@
+{
+  "id": "REEL-009",
+  "composition": "composition/index.html",
+  "out": "export",
+  "qa": "qa",
+  "name": "{id}-{pattern}-{look}-{style}-{size}",
+  "axes": {},
+  "include": [
+    {
+      "pattern": "pas",
+      "look": "blueprint",
+      "style": "fun",
+      "size": "reel"
+    },
+    {
+      "pattern": "pas",
+      "look": "daylight",
+      "style": "adult",
+      "size": "reel"
+    },
+    {
+      "pattern": "pas",
+      "look": "type",
+      "style": "fun",
+      "size": "reel"
+    },
+    {
+      "pattern": "bab",
+      "look": "blueprint",
+      "style": "fun",
+      "size": "reel"
+    },
+    {
+      "pattern": "bab",
+      "look": "daylight",
+      "style": "adult",
+      "size": "reel"
+    },
+    {
+      "pattern": "bab",
+      "look": "type",
+      "style": "fun",
+      "size": "reel"
+    },
+    {
+      "pattern": "listicle",
+      "look": "blueprint",
+      "style": "fun",
+      "size": "reel"
+    },
+    {
+      "pattern": "listicle",
+      "look": "daylight",
+      "style": "adult",
+      "size": "reel"
+    },
+    {
+      "pattern": "listicle",
+      "look": "type",
+      "style": "fun",
+      "size": "reel"
+    },
+    {
+      "pattern": "spotlight",
+      "look": "blueprint",
+      "style": "fun",
+      "size": "reel"
+    },
+    {
+      "pattern": "spotlight",
+      "look": "daylight",
+      "style": "adult",
+      "size": "reel"
+    },
+    {
+      "pattern": "spotlight",
+      "look": "type",
+      "style": "fun",
+      "size": "reel"
+    },
+    {
+      "pattern": "demo",
+      "look": "blueprint",
+      "style": "fun",
+      "size": "reel"
+    },
+    {
+      "pattern": "demo",
+      "look": "daylight",
+      "style": "adult",
+      "size": "reel"
+    },
+    {
+      "pattern": "demo",
+      "look": "type",
+      "style": "fun",
+      "size": "reel"
+    },
+    {
+      "pattern": "faq",
+      "look": "blueprint",
+      "style": "fun",
+      "size": "reel"
+    },
+    {
+      "pattern": "faq",
+      "look": "daylight",
+      "style": "adult",
+      "size": "reel"
+    },
+    {
+      "pattern": "faq",
+      "look": "type",
+      "style": "fun",
+      "size": "reel"
+    },
+    {
+      "pattern": "three",
+      "look": "blueprint",
+      "style": "fun",
+      "size": "reel"
+    },
+    {
+      "pattern": "three",
+      "look": "daylight",
+      "style": "adult",
+      "size": "reel"
+    },
+    {
+      "pattern": "three",
+      "look": "type",
+      "style": "fun",
+      "size": "reel"
+    },
+    {
+      "pattern": "unboxing",
+      "look": "blueprint",
+      "style": "fun",
+      "size": "reel"
+    },
+    {
+      "pattern": "unboxing",
+      "look": "daylight",
+      "style": "adult",
+      "size": "reel"
+    },
+    {
+      "pattern": "unboxing",
+      "look": "type",
+      "style": "fun",
+      "size": "reel"
+    },
+    {
+      "pattern": "curiosity",
+      "look": "blueprint",
+      "style": "fun",
+      "size": "reel"
+    },
+    {
+      "pattern": "curiosity",
+      "look": "daylight",
+      "style": "adult",
+      "size": "reel"
+    },
+    {
+      "pattern": "curiosity",
+      "look": "type",
+      "style": "fun",
+      "size": "reel"
+    },
+    {
+      "pattern": "interrupt",
+      "look": "blueprint",
+      "style": "fun",
+      "size": "reel"
+    },
+    {
+      "pattern": "interrupt",
+      "look": "daylight",
+      "style": "adult",
+      "size": "reel"
+    },
+    {
+      "pattern": "interrupt",
+      "look": "type",
+      "style": "fun",
+      "size": "reel"
+    },
+    {
+      "pattern": "ikea",
+      "look": "blueprint",
+      "style": "fun",
+      "size": "reel"
+    },
+    {
+      "pattern": "ikea",
+      "look": "daylight",
+      "style": "adult",
+      "size": "reel"
+    },
+    {
+      "pattern": "ikea",
+      "look": "type",
+      "style": "fun",
+      "size": "reel"
+    },
+    {
+      "pattern": "progress",
+      "look": "blueprint",
+      "style": "fun",
+      "size": "reel"
+    },
+    {
+      "pattern": "progress",
+      "look": "daylight",
+      "style": "adult",
+      "size": "reel"
+    },
+    {
+      "pattern": "progress",
+      "look": "type",
+      "style": "fun",
+      "size": "reel"
+    },
+    {
+      "pattern": "myth",
+      "look": "blueprint",
+      "style": "fun",
+      "size": "reel"
+    },
+    {
+      "pattern": "myth",
+      "look": "daylight",
+      "style": "adult",
+      "size": "reel"
+    },
+    {
+      "pattern": "myth",
+      "look": "type",
+      "style": "fun",
+      "size": "reel"
+    },
+    {
+      "pattern": "reciprocity",
+      "look": "blueprint",
+      "style": "fun",
+      "size": "reel"
+    },
+    {
+      "pattern": "reciprocity",
+      "look": "daylight",
+      "style": "adult",
+      "size": "reel"
+    },
+    {
+      "pattern": "reciprocity",
+      "look": "type",
+      "style": "fun",
+      "size": "reel"
+    },
+    {
+      "pattern": "foot",
+      "look": "blueprint",
+      "style": "fun",
+      "size": "reel"
+    },
+    {
+      "pattern": "foot",
+      "look": "daylight",
+      "style": "adult",
+      "size": "reel"
+    },
+    {
+      "pattern": "foot",
+      "look": "type",
+      "style": "fun",
+      "size": "reel"
+    },
+    {
+      "pattern": "story",
+      "look": "blueprint",
+      "style": "fun",
+      "size": "reel"
+    },
+    {
+      "pattern": "story",
+      "look": "daylight",
+      "style": "adult",
+      "size": "reel"
+    },
+    {
+      "pattern": "story",
+      "look": "type",
+      "style": "fun",
+      "size": "reel"
+    },
+    {
+      "pattern": "loss",
+      "look": "blueprint",
+      "style": "fun",
+      "size": "reel"
+    },
+    {
+      "pattern": "loss",
+      "look": "daylight",
+      "style": "adult",
+      "size": "reel"
+    },
+    {
+      "pattern": "loss",
+      "look": "type",
+      "style": "fun",
+      "size": "reel"
+    },
+    {
+      "pattern": "contrast",
+      "look": "blueprint",
+      "style": "fun",
+      "size": "reel"
+    },
+    {
+      "pattern": "contrast",
+      "look": "daylight",
+      "style": "adult",
+      "size": "reel"
+    },
+    {
+      "pattern": "contrast",
+      "look": "type",
+      "style": "fun",
+      "size": "reel"
+    },
+    {
+      "pattern": "specificity",
+      "look": "blueprint",
+      "style": "fun",
+      "size": "reel"
+    },
+    {
+      "pattern": "specificity",
+      "look": "daylight",
+      "style": "adult",
+      "size": "reel"
+    },
+    {
+      "pattern": "specificity",
+      "look": "type",
+      "style": "fun",
+      "size": "reel"
+    },
+    {
+      "pattern": "ikea",
+      "look": "blueprint",
+      "style": "fun",
+      "size": "landscape"
+    },
+    {
+      "pattern": "curiosity",
+      "look": "blueprint",
+      "style": "adult",
+      "size": "landscape"
+    },
+    {
+      "pattern": "demo",
+      "look": "blueprint",
+      "style": "fun",
+      "size": "landscape"
+    },
+    {
+      "pattern": "three",
+      "look": "daylight",
+      "style": "fun",
+      "size": "square"
+    },
+    {
+      "pattern": "contrast",
+      "look": "daylight",
+      "style": "adult",
+      "size": "square"
+    },
+    {
+      "pattern": "myth",
+      "look": "type",
+      "style": "fun",
+      "size": "banner"
+    }
+  ]
+}

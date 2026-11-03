@@ -1,0 +1,12 @@
+{
+  "id": "REEL-011",
+  "composition": "composition/index.html",
+  "name": "{id}-{look}-{style}-hook{hook}-{size}",
+  "axes": { "look": ["cartoon", "daylight"], "style": ["fun", "adult"], "hook": ["A", "B", "C"], "size": ["reel"] },
+  "include": [
+    { "look": "cartoon", "style": "fun", "hook": "A", "size": "landscape" },
+    { "look": "cartoon", "style": "adult", "hook": "B", "size": "landscape" },
+    { "look": "cartoon", "style": "fun", "hook": "C", "size": "square" },
+    { "look": "daylight", "style": "adult", "hook": "A", "size": "banner" }
+  ]
+}

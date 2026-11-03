@@ -1,0 +1,39 @@
+{
+  "id": "REEL-007",
+  "composition": "composition/index.html",
+  "out": "export",
+  "qa": "qa",
+  "name": "{id}-{look}-{style}-hook{hook}-{size}",
+  "axes": {
+    "look": [
+      "blueprint",
+      "daylight",
+      "type"
+    ],
+    "style": [
+      "fun",
+      "adult"
+    ],
+    "hook": [
+      "A",
+      "B"
+    ],
+    "size": [
+      "reel"
+    ]
+  },
+  "include": [
+    {
+      "look": "blueprint",
+      "style": "adult",
+      "hook": "A",
+      "size": "landscape"
+    },
+    {
+      "look": "daylight",
+      "style": "fun",
+      "hook": "A",
+      "size": "landscape"
+    }
+  ]
+}

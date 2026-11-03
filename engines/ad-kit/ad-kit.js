@@ -77,6 +77,7 @@
     }
     const stage = document.getElementById("stage");
     stage.classList.add("ak", "ak-" + style, "ak-" + (spec.size || "reel"));
+    if (spec.look) stage.classList.add("look-" + spec.look);   // a brand theme can restyle everything per look
     // k scales every size in px (fonts, actors, spacing) from the 1080-wide reel design.
     const landscape = W > H, k = landscape ? H / 1080 : W / 1080;
     stage.style.setProperty("--ak-s", k.toFixed(4));
@@ -113,7 +114,11 @@
         const { L, R } = this, left = full ? L.l : R.tl, w = width || (full ? L.r - L.l : R.tr - R.tl);
         Object.assign(box.style, { left: left + "px", width: w + "px", top: (R.textTop + y * this.k) + "px", textAlign: align });
         if (eyebrow) el(box, "div", "ak-eyebrow", eyebrow);
-        if (title) { const tt = el(box, "div", "ak-title", title); if (size) tt.style.fontSize = (size * this.k) + "px"; }
+        if (title) {
+          const tt = el(box, "div", "ak-title", title); if (size) tt.style.fontSize = (size * this.k) + "px";
+          // Kinetic type: each word in its own mask, revealed one after another.
+          if (this.spec.kinetic) tt.innerHTML = tt.textContent.split(/\s+/).filter(Boolean).map((w) => `<span class="ak-wm"><span class="ak-w">${w}</span></span>`).join(" ");
+        }
         if (sub) el(box, "div", "ak-sub", sub);
         if (chips && chips.length) { const ul = el(box, "ul", "ak-chips"); if (align === "center") ul.style.justifyContent = "center"; chips.forEach((c) => el(ul, "li", "", c)); }
         return box;
@@ -124,6 +129,11 @@
         gsap.set(box, { autoAlpha: 0 });
         tl.set(box, { autoAlpha: 1 }, t);
         kids.forEach((k, i) => {
+          const words = k.querySelectorAll && k.querySelectorAll(".ak-w");
+          if (words && words.length) {
+            tl.fromTo(words, { yPercent: 110 }, { yPercent: 0, duration: 0.42, ease: "power3.out", stagger: 0.07, immediateRender: false }, t + i * 0.09);
+            return;
+          }
           const items = k.tagName === "UL" ? [...k.children] : [k];
           tl.fromTo(items, { autoAlpha: 0, y: 36 }, { autoAlpha: 1, y: 0, duration: 0.38, ease: S.inEase, stagger: 0.07, immediateRender: false }, t + i * 0.09);
         });

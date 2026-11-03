@@ -42,7 +42,7 @@ const jobs = +flag("jobs", Math.max(1, Math.min(6, Math.floor(cpus().length / 2)
 
 // ---- expand the matrix ----
 export function expand({ axes = {}, exclude = [], include = [] }) {
-  let combos = [{}];
+  let combos = Object.keys(axes).length ? [{}] : [];   // only "include" when there are no axes
   for (const [k, vals] of Object.entries(axes)) combos = combos.flatMap((c) => vals.map((v) => ({ ...c, [k]: v })));
   const match = (c, rule) => Object.entries(rule).every(([k, v]) => (Array.isArray(v) ? v.includes(c[k]) : c[k] === v));
   combos = combos.filter((c) => !exclude.some((r) => match(c, r)));

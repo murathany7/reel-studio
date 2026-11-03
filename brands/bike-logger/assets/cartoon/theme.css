@@ -13,3 +13,32 @@
 .bl-tag { position: absolute; font-family: var(--font-mono); font-size: 28px; color: var(--night); background: var(--brake); padding: 6px 12px; border-radius: 3px; letter-spacing: .1em; }
 /* Landscape and banner: text sits over the street, so give it a scrim and a shadow */
 .ak-landscape .ak-text, .ak-banner .ak-text { text-shadow: 0 4px 28px rgba(6, 8, 10, .95), 0 0 2px rgba(6, 8, 10, .8); }
+
+/* ---------------- Looks (?look=): one story, different treatments ---------------- */
+/* Blueprint: white line art on a drafting grid, like a wiring diagram. */
+#stage.look-blueprint { --night: #0c2744; --bg: #0c2744; --ink: #e8f3ff; --dim: #8fb3d9; --line: #3a6896; --signal: #a8dcff; --lamp: #ffd27a;
+  --ak-line: #4f7fae; --ak-chip: #d7ecff; --ak-chip-bg: rgba(12, 39, 68, .85); --ak-eyebrow: #a8dcff;
+  background-color: #0c2744;
+  background-image: linear-gradient(rgba(168, 220, 255, .13) 1px, transparent 1px), linear-gradient(90deg, rgba(168, 220, 255, .13) 1px, transparent 1px),
+    linear-gradient(rgba(168, 220, 255, .06) 1px, transparent 1px), linear-gradient(90deg, rgba(168, 220, 255, .06) 1px, transparent 1px);
+  background-size: 120px 120px, 120px 120px, 24px 24px, 24px 24px; }
+.look-blueprint svg.part *, .look-blueprint svg.bl-bike *, .look-blueprint .bl-street svg *, .look-blueprint .bl-car svg *, .look-blueprint .bl-tunnel svg *, .look-blueprint .bl-phone svg * {
+  fill: none !important; stroke: #d7ecff !important; stroke-width: 1.6px !important; vector-effect: non-scaling-stroke; }
+.look-blueprint svg text { fill: #d7ecff !important; stroke: none !important; }
+.look-blueprint svg [fill="#000"] { display: none; }
+.look-blueprint svg .arc, .look-blueprint svg .ping, .look-blueprint svg #cone path, .look-blueprint svg #bcone path, .look-blueprint svg #axes path { stroke: #ffd27a !important; stroke-width: 2.4px !important; }
+.look-blueprint svg #bpulse, .look-blueprint svg #pulse { stroke: #ffd27a !important; stroke-width: 3px !important; }
+.look-blueprint .bl-street:first-of-type, .look-blueprint .bl-phone, .look-blueprint .bl-phone .bl-vid, .look-blueprint .bl-bubble { background: transparent !important; }
+.look-blueprint .bl-phone, .look-blueprint .bl-bubble { border-color: #d7ecff !important; border-width: 2px !important; }
+.look-blueprint .bl-tag { background: #ffd27a; }
+.look-blueprint .ak-cta { background: #ffd27a; color: #0c2744; }
+
+/* Daylight: the same frames for light feeds and sites, inverted with hues kept. */
+#stage.look-daylight { filter: invert(1) hue-rotate(180deg); }
+.look-daylight .ak-cta, .look-daylight .bl-tag { filter: invert(1) hue-rotate(180deg); }  /* keep the brand's lamp CTA */
+
+/* Type: kinetic typography, no part illustrations; bigger words carry the piece. */
+.look-type { --ak-title-size: 116px; }
+.look-type.ak-adult { --ak-title-size: 106px; }
+.look-type .ak-title { font-weight: 900; line-height: .9; }
+.look-type .ak-wm:nth-child(3n) .ak-w { color: var(--lamp); }

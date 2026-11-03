@@ -17,6 +17,7 @@
 <script>
   // Variant axes come from the URL (scripts/variants.mjs): ?pattern=pas&style=adult&size=reel&hook=B&feature=3
   const P = Studio.params, style = P.get("style") || "fun";
+  const look = P.get("look") || "cartoon";   // cartoon | blueprint | daylight | type
   const spec = AdKit.pattern(P.get("pattern") || "pas", BL.brief(style), { hook: P.get("hook") || "A", feature: +(P.get("feature") || 0) });
-  window.__variant = AdKit.build({ ...spec, style, size: P.get("size") || "reel", placement: P.get("placement") || "organic", cast: BL.cast, forbid: BL.forbid, motion: BL.motion, fps: +(P.get("fps") || 60) }).ctx.spec;
+  window.__variant = AdKit.build({ ...spec, style, size: P.get("size") || "reel", placement: P.get("placement") || "organic", cast: BL.lookCast(look), look, kinetic: look === "type", forbid: BL.forbid, motion: BL.motion, fps: +(P.get("fps") || 60) }).ctx.spec;
 </script></body></html>

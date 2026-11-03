@@ -16,6 +16,7 @@
 <script>
   // REEL-008 The tunnel. Variants: ?style=fun|adult &hook=A|B|C
   const P = Studio.params, style = P.get("style") || "fun", hook = P.get("hook") || "A", A = style === "adult";
+  const look = P.get("look") || "cartoon";   // cartoon | blueprint | daylight | type
   const b = BL.brief(style), say = (f, a) => (A ? a : f);
   const hooks = {
     A: { title: say("Tunnel ahead.", "Tunnel.") },
@@ -31,5 +32,5 @@
       ] },
     { type: "endcard", dur: 2.2, ...b.brand, actors: ["gps", "hall"] },
   ];
-  AdKit.build({ scenes, style, size: P.get("size") || "reel", cast: BL.cast, forbid: BL.forbid, motion: BL.motion, fps: +(P.get("fps") || 60) });
+  AdKit.build({ scenes, style, size: P.get("size") || "reel", cast: BL.lookCast(look), look, kinetic: look === "type", forbid: BL.forbid, motion: BL.motion, fps: +(P.get("fps") || 60) });
 </script></body></html>

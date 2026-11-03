@@ -1,0 +1,39 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>REEL-011 The box in 3D</title>
+<link rel="stylesheet" href="/core/lib/base.css">
+<link rel="stylesheet" href="/brands/bike-logger/tokens.css">
+<link rel="stylesheet" href="/engines/ad-kit/ad-kit.css">
+<link rel="stylesheet" href="/brands/bike-logger/assets/cartoon/theme.css">
+<script type="importmap">{ "imports": { "three": "/core/node_modules/three/build/three.module.js" } }</script>
+</head><body><div id="stage"></div>
+<script src="/core/node_modules/gsap/dist/gsap.min.js"></script>
+<script src="/core/lib/runtime.js"></script>
+<script src="/engines/svg-rig.js"></script>
+<script src="/engines/ad-kit/ad-kit.js"></script>
+<script src="/engines/ad-kit/scenes.js"></script>
+<script src="/brands/bike-logger/assets/cartoon/parts.js"></script>
+<script src="/brands/bike-logger/assets/cartoon/bike.js"></script>
+<script src="/brands/bike-logger/assets/cartoon/brief.js"></script>
+<script type="module">
+  // REEL-011 The box in 3D. Variants: ?look=cartoon|daylight &style=fun|adult &hook=A|B|C &size= &fps=
+  import { registerBox3d } from "/brands/bike-logger/assets/cartoon/box3d.mjs";
+  registerBox3d();
+  const P = Studio.params, style = P.get("style") || "fun", hook = P.get("hook") || "A", A = style === "adult";
+  const look = P.get("look") || "cartoon";
+  const b = BL.brief(style), say = (f, a) => (A ? a : f);
+  const hooks = {
+    A: { eyebrow: "Robotics starter kit", title: say("Open the box.", "Open the box.") },
+    B: { eyebrow: "IP65 · 200 × 120 × 75 mm", title: say("Sealed outside. A Pi inside.", "Sealed outside. A Pi inside.") },
+    C: { eyebrow: "Robotics starter kit", title: say("One Pi. One sealed box.", "One Pi. One sealed box.") },
+  };
+  const scenes = [
+    { type: "box3d", dur: 9.4, openAt: 1.6, beats: [
+        { at: -0.12, ...hooks[hook] },
+        { at: 2.6, eyebrow: "Inside", title: say("A Raspberry Pi 5.", "A Raspberry Pi 5."), chips: ["8 GB", "active cooler"] },
+        { at: 5.0, eyebrow: "Inside the IP65 box", title: say("Cooler on. Camera at the window.", "Cooler on. Camera at the window."), chips: ["active cooler", "Camera Module 3 Wide", "sealed window"] },
+        { at: 7.4, eyebrow: "Under the rack", title: say("Nothing changes but the rack.", "Nothing changes but the rack.") },
+      ] },
+    { type: "endcard", dur: 2.4, ...b.brand, actors: ["pi", "gps", "cam"] },
+  ];
+  AdKit.build({ scenes, style, size: P.get("size") || "reel", cast: BL.lookCast(look), look, forbid: BL.forbid, motion: BL.motion, fps: +(P.get("fps") || 60) });
+</script></body></html>

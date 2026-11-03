@@ -22,3 +22,5 @@
 .ak-num { flex: none; width: calc(var(--ak-s, 1) * 92px); height: calc(var(--ak-s, 1) * 92px); border-radius: 50%; display: grid; place-items: center; background: var(--accent);
   color: var(--bg); font-family: var(--font-display, system-ui); font-weight: 900; font-size: calc(var(--ak-s, 1) * 54px); }
 .ak-flash { position: absolute; inset: 0; background: var(--ink); opacity: 0; pointer-events: none; }
+.ak-wm { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .06em; margin-bottom: -.06em; }
+.ak-w { display: inline-block; }

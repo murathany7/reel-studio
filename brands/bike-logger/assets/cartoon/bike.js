@@ -8,6 +8,8 @@
   const C = Parts.C, AK = window.AdKit;
   const BL = (window.BL = {});
   BL.cast = (key, style) => (Parts[key] ? Parts[key]({ style, id: key }) : "");
+  /** Cast for a look: the type look keeps only the box (words carry the piece). */
+  BL.lookCast = (look) => (look === "type" ? (key, style) => (key === "box" ? BL.cast(key, style) : "") : BL.cast);
   BL.forbid = [/!/, "smart", "dashcam", "easy", "beginners?", "revolutionary", "AI-powered", /keeps? you safe/i, /prevents? accidents?/i, /insurance/i];
   /** Objects, not characters: no hops or squash; a gentle settle instead of a bounce. */
   BL.motion = { hop: 0, pop: "back.out(1.25)", inEase: "power3.out", bounce: 0, wobble: 0.5 };
@@ -82,7 +84,7 @@
   /* ---------------- street: skyline, lamps, road, bike lane; all from t ---------------- */
   BL.street = function (c, layer, { roadY, speed = 520, t0 = 0, cars = [] } = {}) {
     const W = c.W, rnd = Studio.random(31);
-    const mk = (html, z = 0) => { const d = c.el(layer, "div", "", html); Object.assign(d.style, { position: "absolute", left: 0, top: 0, zIndex: z }); return d; };
+    const mk = (html, z = 0) => { const d = c.el(layer, "div", "bl-street", html); Object.assign(d.style, { position: "absolute", left: 0, top: 0, zIndex: z }); return d; };
     const tileW = 1400;
     const bld = Array.from({ length: 12 }, (_, i) => {
       const w = 90 + rnd() * 70, h = 160 + rnd() * 300, x = i * (tileW / 12);
@@ -93,7 +95,7 @@
     const lamps = mk(`<svg width="${360 * 8}" height="${roadY}">${Array.from({ length: 8 }, (_, i) => `<g transform="translate(${i * 360} 0)"><rect x="0" y="${roadY - 420}" width="10" height="320" fill="#20262d"/><path d="M5 ${roadY - 420} q0 -24 40 -24 h20" stroke="#20262d" stroke-width="10" fill="none"/><ellipse cx="66" cy="${roadY - 440}" rx="20" ry="8" fill="${C.lamp}"/><path d="M50 ${roadY - 436} L10 ${roadY - 100} H130 L84 ${roadY - 436} Z" fill="${C.lamp}" opacity=".06"/></g>`).join("")}</svg>`);
     mk(`<svg width="${W}" height="${c.H}"><rect x="0" y="${roadY - 110}" width="${W}" height="${c.H}" fill="#101418"/><rect x="0" y="${roadY - 110}" width="${W}" height="6" fill="#2a3037"/><rect x="0" y="${roadY + 22}" width="${W}" height="4" fill="#3a4048"/></svg>`);
     const dashes = mk(`<svg width="${W + 400}" height="${c.H}">${Array.from({ length: Math.ceil(W / 160) + 4 }, (_, i) => `<rect x="${i * 160}" y="${roadY - 52}" width="80" height="8" fill="${C.ink}" opacity=".7"/>`).join("")}<path d="M0 ${roadY + 8} H${W + 400}" stroke="${C.signal}" stroke-width="4" opacity=".35"/></svg>`);
-    const carEls = cars.map((car) => { const d = mk(BL.car(car)); d.style.top = (roadY - 64 - 216) + "px"; d.style.width = "620px"; return { d, car }; });
+    const carEls = cars.map((car) => { const d = mk(BL.car(car)); d.className = "bl-car"; d.style.top = (roadY - 64 - 216) + "px"; d.style.width = "620px"; return { d, car }; });
     const update = (t) => {
       const dist = Math.max(0, t - t0) * speed;
       sky.style.transform = `translateX(${-((dist * 0.15) % tileW).toFixed(1)}px)`;
@@ -217,7 +219,7 @@
       if (e.type === "overtake") BL.pingBike(c, bike.svg, at - 0.5, at + 0.6);
     });
     const holes = evs.filter((e) => e.type === "pothole").map((e) => {
-      const hEl = c.el(layer, "div", "", `<svg width="120" height="30"><ellipse cx="60" cy="15" rx="56" ry="11" fill="#05070a"/><ellipse cx="60" cy="12" rx="48" ry="7" fill="#0a0d10"/></svg>`);
+      const hEl = c.el(layer, "div", "bl-street", `<svg width="120" height="30"><ellipse cx="60" cy="15" rx="56" ry="11" fill="#05070a"/><ellipse cx="60" cy="12" rx="48" ry="7" fill="#0a0d10"/></svg>`);
       Object.assign(hEl.style, { position: "absolute", top: (roadY - 6) + "px", left: 0, zIndex: 1 }); return { hEl, at: t0 + e.at };
     });
     const frontX = bike.at(FA)[0];
@@ -236,7 +238,7 @@
     c = c.unscaled(layer); layer = c.layer;
     if (s.beats) c.beats(layer, s.beats, t0, t1); else c.reveal(c.text(layer, s), t0 - AK.PRE);
     const top = c.R.stageTop, h = c.R.stageBottom - top - 10, pw = Math.min(600, h * 0.7, (c.R.sr - c.R.sl) * 0.9), ph = h, px = c.R.cx - pw / 2;
-    const phone = c.el(layer, "div", "");
+    const phone = c.el(layer, "div", "bl-phone");
     Object.assign(phone.style, { position: "absolute", left: px + "px", top: top + "px", width: pw + "px", height: ph + "px", borderRadius: "46px", background: "#0b0f13", border: `${c.style === "adult" ? 4 : 10}px solid ${c.style === "adult" ? C.ink : "#2a3037"}`, overflow: "hidden", zIndex: 2 });
     gsap.set(phone, { y: 40, autoAlpha: 0 });
     c.tl.to(phone, { y: 0, autoAlpha: 1, duration: 0.45, ease: "power3.out" }, t0 - 0.1);
@@ -289,7 +291,7 @@
     const bw = Math.min(680, (c.R.sr - c.R.sl) * (c.landscape ? 0.8 : 0.64)), cx = c.R.cx + (c.landscape ? 30 : 60);
     const bike = BL.placeBike(c, layer, { cx, contactY: roadY + 10, w: bw });
     const startX = cx + (inAt - t0) * speed, len = (outAt - inAt) * speed;
-    const tun = c.el(layer, "div", "", `<svg width="${len + 300}" height="${c.H}"><path d="M0 ${roadY - 110} V${c.R.stageTop - 140} H${len + 300} V${roadY - 110}" fill="#07090c"/>
+    const tun = c.el(layer, "div", "bl-tunnel", `<svg width="${len + 300}" height="${c.H}"><path d="M0 ${roadY - 110} V${c.R.stageTop - 140} H${len + 300} V${roadY - 110}" fill="#07090c"/>
       <rect x="0" y="${c.R.stageTop - 140}" width="60" height="${roadY - c.R.stageTop + 30}" fill="#2a3037"/><rect x="${len + 240}" y="${c.R.stageTop - 140}" width="60" height="${roadY - c.R.stageTop + 30}" fill="#2a3037"/>
       ${Array.from({ length: Math.ceil(len / 260) }, (_, i) => `<rect x="${120 + i * 260}" y="${c.R.stageTop - 110}" width="120" height="14" rx="7" fill="${C.lamp}" opacity=".85"/>`).join("")}</svg>`);
     Object.assign(tun.style, { position: "absolute", left: 0, top: 0, zIndex: 1 });
