@@ -11,6 +11,15 @@ Requirements: Node 18+, Google Chrome, ffmpeg. Run `npm install` in `core/` once
 # Video (size, fps, duration from Studio.setup), optional mixed audio track
 node core/render.mjs video  productions/<brand>/<ID>/composition/index.html productions/<brand>/<ID>/export/<ID>.mp4 --audio <mix.wav>
 
+# Every format the composition declares (Studio.setup({ formats })) → <ID>-9x16.mp4, <ID>-4x5.mp4 …; or one: --format 4x5
+node core/render.mjs video  <composition.html> export/<ID>.mp4 --formats all
+
+# Parallel pages (default: auto, up to 4). The output is the same for any N
+node core/render.mjs video  <composition.html> <out.mp4> --workers 4
+
+# Linux (CI, Docker): capture with HeadlessExperimental.beginFrame in chrome-headless-shell (or REEL_CAPTURE=beginframe)
+node core/render.mjs video  <composition.html> <out.mp4> --capture beginframe
+
 # One frame (post, cover, or a beat to check). --safe draws the Reels safe zones
 node core/render.mjs still  <composition.html> <out.png> --t 2.4 [--safe]
 
@@ -21,12 +30,20 @@ node core/render.mjs stills <composition.html> <out_dir> --at 0,0.4,1.2,3.0 --sa
 # Audio: VO + music (auto-ducked) + SFX → one track at -14 LUFS
 python3 scripts/mix_audio.py <audio/cues.json> <audio/mix.wav>
 
+# Beat grid of the music, for Studio.beats: bpm, beats, downbeats, onsets
+node scripts/beats.mjs <audio/music.mp3> <audio/beats.json> [--bpm 128]
+
 # QA: specs, 30 fps CFR, loudness, hitches/jumps, frozen/black, safe-zone sheet
 scripts/qa-video.sh <video.mp4> <qa_dir> [1080x1920] [30]
 ```
 
 Preview live: serve the repo root (`python3 -m http.server 8080`) and open the composition.
-Add `?t=2.5` to freeze a frame, `?safe=1` for the safe-zone overlay.
+Add `?t=2.5` to freeze a frame, `?safe=1` for the safe-zone overlay, `?format=4x5` for another format.
+
+Video plates (`Studio.video`) are decoded to PNG frames with ffmpeg the first time a render needs them and cached
+in `$REEL_PLATE_CACHE` (default `<tmp>/reel-studio-plates`, about 0.4 MB a frame at 1080×1920). Delete it any time.
+In a render every frame is painted from scratch, so a frame is the same whether it is rendered alone, in a video or
+by another worker.
 
 ## Writing a composition
 
@@ -56,3 +73,12 @@ Engines (Three.js, Pixi, SVG rig, Lottie, plates): see `engines/README.md` and t
 | `Studio.random(seed)` | Seeded random number generator |
 | `Studio.lottie(el, path, { start, loop, speed })` | Lottie layer |
 | `Studio.video(el, { start })` | Pre-rendered plate (Blender, capture, footage) |
+| `Studio.onSeek(fn, { late: true })` | Run after every other layer has drawn (reads their pixels) |
+| `Studio.setup({ …, formats: ["4x5", "1x1", "16x9"] })` | Other formats this layout supports; `<html>` gets `fmt-<name>` |
+| `Studio.format`, `Studio.pick({ "16x9": a, default: b })` | The format being rendered; a value per format |
+| `Studio.captions(el, words, { style, offset, maxChars, lines, gap, upper })` | Word-by-word captions from `[{ text, start, end }]` or whisper.cpp JSON (`scripts/transcribe.sh`). Styles: `karaoke`, `pop`, `highlight`, `plain`. Tokens: `--caption-size`, `--caption-ink`, `--caption-accent`, `--caption-stroke`, `--caption-font` |
+| `await Studio.beats(src, { offset })` | Load a beat grid (`scripts/beats.mjs`, or `{ bpm, offset }`) |
+| `Studio.beat(n)`, `Studio.bar(n)`, `Studio.onset(n)`, `Studio.snap(t)`, `Studio.beatPhase(t)` | Times of beats, downbeats and hits; the nearest beat; 0→1 between beats (for pulses) |
+| `Studio.transition(from, to, { at, duration, type, ease })` | `fade`, `wipe-left/right/up/down`, `iris`, `diamond`, `blinds`, `push-*`, `slide-*`, `zoom`, `whip-left/right`, `flash`. Owns both layers' visibility, and their clip-path, transform, filter and opacity while it runs |
+| `Studio.swap(from, to, at)` | A hard cut: `from` until `at`, `to` after |
+| `Studio.pixels(el)` | The canvas, img or video to read a layer's pixels from |

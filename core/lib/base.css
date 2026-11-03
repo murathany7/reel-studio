@@ -29,3 +29,34 @@ body {
     linear-gradient(rgba(255,0,0,.28), rgba(255,0,0,.28)) left / 6% 100% no-repeat,
     linear-gradient(rgba(255,0,0,.28), rgba(255,0,0,.28)) right / 6% 100% no-repeat;
 }
+
+/* Other formats (Studio.setup({ formats }), ?format=): feeds and YouTube have no Reels UI on top, so one even
+   margin. 4:5 and 1:1 keep 6%; 16:9 keeps the title-safe 5% sides, 8% top and bottom. */
+.fmt-4x5 .safe, .fmt-1x1 .safe, .fmt-4x5 .safe-organic, .fmt-1x1 .safe-organic { inset: 6%; }
+.fmt-16x9 .safe, .fmt-16x9 .safe-organic { inset: 8% 5%; }
+.show-safe:is(.fmt-4x5, .fmt-1x1, .fmt-16x9) #stage::after { background: none; border: solid rgba(255,0,0,.28); }
+.show-safe.fmt-4x5 #stage::after { border-width: 81px 65px; }
+.show-safe.fmt-1x1 #stage::after { border-width: 65px; }
+.show-safe.fmt-16x9 #stage::after { border-width: 86px 96px; }
+
+/* Cuts and transitions (Studio.swap, Studio.transition): a layer that is off wins over GSAP's inline visibility. */
+.st-off { visibility: hidden !important; }
+.st-flash { position: absolute; inset: 0; background: var(--flash, #fff); opacity: 0; pointer-events: none; z-index: 9000; }
+
+/* Captions (Studio.captions). Brands set --caption-* in tokens.css; place .captions where the piece needs it.
+   The default sits inside the paid Reels safe zone (above its bottom 35%). */
+.captions {
+  position: absolute; left: 6%; right: 6%; bottom: 36%; text-align: center;
+  font: var(--caption-weight, 800) var(--caption-size, 76px)/1.12 var(--caption-font, var(--font-display, var(--font-body, system-ui, sans-serif)));
+  letter-spacing: -0.01em; color: var(--caption-ink, #fff);
+  text-shadow: 0 0 2px var(--caption-stroke, rgba(0,0,0,.9)), 0 4px 0 var(--caption-stroke, rgba(0,0,0,.9)), 0 6px 18px rgba(0,0,0,.45);
+}
+.fmt-16x9 .captions { bottom: 10%; left: 12%; right: 12%; }
+.fmt-4x5 .captions, .fmt-1x1 .captions { bottom: 9%; }
+.cap-line { display: block; }
+.cap-word { display: inline-block; transform-origin: 50% 70%; }
+.captions-karaoke .cap-word.is-said { color: var(--caption-accent, var(--accent, #ffd400)); }
+.captions-pop .cap-word:not(.is-said) { visibility: hidden; }
+.captions-pop .cap-word.is-now { color: var(--caption-accent, var(--accent, #ffd400)); }
+.captions-highlight .cap-word { padding: 0 .12em; border-radius: .14em; }
+.captions-highlight .cap-word.is-now { background: var(--caption-accent, var(--accent, #ffd400)); color: var(--caption-on-accent, #111); text-shadow: none; }

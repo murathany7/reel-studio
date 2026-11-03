@@ -16,7 +16,8 @@ description: Make a marketing video, reel, ad, post or carousel for any brand in
 
 Fill sections 1–4 of the production README: the problem, the benefit, 3 hook variants, one row per beat (time,
 visual, **engine**, on-screen text, sound), caption. Pick engines with the `pick-engine` skill and say why.
-State size, length, placement and sound (VO / music / silent).
+State size, length, placement and sound (VO / music / silent), and the other formats wanted (4:5 feed, 1:1, 16:9):
+one composition renders them all.
 
 **Stop and ask for approval** in chat. No plates, audio or composition before the box is ticked. (If the person uses
 the optional desk, they may approve there instead: `review-desk` skill. Never tick the box on your own.)
@@ -28,8 +29,11 @@ the optional desk, they may approve there instead: `review-desk` skill. Never ti
 | Plates | 3D: `scene-3d` skill (Three.js live, or Blender → MP4). Live site: `capture-site` skill. Footage: `Studio.video` |
 | Character | `character-2d` skill (SVG rig, Lottie, Rive) |
 | Audio | ElevenLabs MCP (`.mcp.json`) for VO, SFX and music → `audio/`. Cue sheet `audio/cues.json` → `python3 scripts/mix_audio.py audio/cues.json audio/mix.wav`. Word timings for captions or lip flap: `scripts/transcribe.sh` |
-| Composition | `composition/index.html`. Load `/core/lib/base.css`, then `/brands/<slug>/tokens.css`. Copy the pattern from `examples/engines-demo/index.html`. Text and CTA inside `.safe` (paid) or `.safe-organic` |
-| Render | `node core/render.mjs video <comp> export/<ID>-<lang>.mp4 --audio audio/mix.wav` (posts: `still`) |
+| Beat grid | Music → `node scripts/beats.mjs audio/music.mp3 audio/beats.json`. In the composition `await Studio.beats("../audio/beats.json", { offset: <music start> })`, then cut on `Studio.bar(n)` / `Studio.beat(n)`. Check the BPM it prints against the track |
+| Captions | VO pieces: `Studio.captions(el, "../audio/vo.json", { offset: <VO start>, style: "karaoke" \| "pop" \| "highlight" })` from the whisper JSON. Check the words against the script (whisper mishears names) |
+| Composition | `composition/index.html`. Load `/core/lib/base.css`, then `/brands/<slug>/tokens.css`. Copy the pattern from `examples/engines-demo/index.html`, and `examples/reel-layer/index.html` for captions, beats, transitions and formats. Text and CTA inside `.safe` (paid) or `.safe-organic` |
+| Formats | `Studio.setup({ …, formats: ["4x5", "1x1", "16x9"] })`; per-format CSS under `.fmt-4x5` etc., values with `Studio.pick({...})` |
+| Render | `node core/render.mjs video <comp> export/<ID>-<lang>.mp4 --audio audio/mix.wav` (posts: `still`). Other formats: `--formats all` → `export/<ID>-<lang>-4x5.mp4` … QA each one |
 
 ## 3. QA (never skip)
 
@@ -55,3 +59,5 @@ the production row, anything learned (what worked, an engine quirk) in *Learning
 | Safe zone, paid Reels | top 14%, bottom 35%, sides 6% (`.safe`) |
 | Safe zone, organic Reels | top 11.5%, bottom 22%, left 6%, right 11% (`.safe-organic`) |
 | Silent pieces | All meaning on screen; captions ≥ 42 px; each line held ≥ 1.5 s |
+| VO pieces | Burned-in captions (`Studio.captions`): many people watch with the sound off |
+| Other formats | 4:5 feed 1080×1350, 1:1 1080×1080, 16:9 1920×1080; `.safe` is a 6% margin (16:9: 8% top/bottom, 5% sides) |

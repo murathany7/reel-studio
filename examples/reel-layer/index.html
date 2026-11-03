@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Reel layer demo</title>
+<link rel="stylesheet" href="/core/lib/base.css">
+<style>
+  :root { --bg: #14121f; --ink: #f6f1ff; --accent: #ffcf3d; --font-display: system-ui, sans-serif;
+          --caption-size: 70px; }
+  .card { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+  #s1 { background: #2b1d5c; }
+  #s2 { background: #ffcf3d; color: #14121f; }
+  #s3 { background: #fdeedd; }
+  #s4 { background: #fdeedd; }
+  .title { font: 800 150px/0.95 var(--font-display); letter-spacing: -0.04em; }
+  .title small { display: block; margin-top: 28px; font: 600 40px/1.2 ui-monospace, monospace; letter-spacing: 0; opacity: .75; }
+  .chips { display: flex; gap: 18px; margin-top: 50px; }
+  .chip { font: 700 40px/1 ui-monospace, monospace; padding: 16px 22px; border: 4px solid currentColor; border-radius: 16px; }
+  #plate { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  /* Per-format layout: the title is smaller in short frames; in 9:16 the card sits higher, clear of the captions */
+  .fmt-16x9 .title, .fmt-1x1 .title { font-size: 120px; }
+  .fmt-9x16 .card { justify-content: flex-start; padding-top: 30%; }
+</style>
+<script type="importmap">{ "imports": { "three": "/core/node_modules/three/build/three.module.js" } }</script>
+</head>
+<body>
+<div id="stage">
+  <div class="layer card" id="s1"><div class="title" id="t1">One clock<small>Studio.beats · Studio.captions</small></div></div>
+  <div class="layer card" id="s2">
+    <div class="title" id="t2">Every format<small>Studio.setup({ formats })</small></div>
+    <div class="chips"><span class="chip">9:16</span><span class="chip">4:5</span><span class="chip">1:1</span><span class="chip">16:9</span></div>
+  </div>
+  <div class="layer" id="s3"></div>
+  <div class="layer" id="s4"><video id="plate" src="/examples/engines-demo/plates/blob.mp4"></video></div>
+  <div class="layer" id="fx"></div>
+  <div id="cap"></div>
+</div>
+
+<script src="/core/node_modules/gsap/dist/gsap.min.js"></script>
+<script src="/core/lib/runtime.js"></script>
+<script type="module">
+  import { threeLayer, toon, outline } from "/engines/three.js";
+  import { glTransition } from "/engines/gl-transitions.js";
+
+  const tl = Studio.setup({ width: 1080, height: 1920, fps: 30, duration: 8, formats: ["4x5", "1x1", "16x9"] });
+  const beats = await Studio.beats("audio/beats.json");
+
+  // Cuts on the downbeats of bars 1, 2 and 3: an iris, a push, then a GL ripple from the 3D layer into the plate
+  Studio.transition("#s1", "#s2", { at: Studio.bar(1) - 0.2, duration: 0.4, type: "iris" });
+  Studio.transition("#s2", "#s3", { at: Studio.bar(2) - 0.25, duration: 0.5, type: "push-left", ease: "power3.inOut" });
+  glTransition(document.getElementById("fx"), { from: "#s3", to: "#s4", at: Studio.bar(3) - 0.3, duration: 0.6, effect: "ripple" });
+
+  // Titles pop on their bar and pulse on every beat
+  for (const [id, bar] of [["#t1", 0], ["#t2", 1]]) tl.from(id, { y: 50, scale: 0.85, duration: 0.45, ease: "back.out(2)" }, Studio.bar(bar));
+  Studio.onSeek((t) => {
+    const s = 1 + 0.035 * (1 - Studio.beatPhase(t)) ** 3;
+    for (const id of ["#t1", "#t2"]) document.querySelector(id).style.scale = s.toFixed(4);
+  });
+
+  // Captions from word timings (scripts/transcribe.sh would write these from a voiceover)
+  Studio.captions(document.getElementById("cap"), "audio/words.json", { style: "pop", maxChars: Studio.pick({ "16x9": 30, default: 18 }) });
+
+  // Three.js: a toon donut, posed from t
+  const { scene, camera, THREE } = threeLayer(document.getElementById("s3"), {
+    background: 0xfdeedd,
+    update(t) { donut.rotation.set(0.6 + t * 0.9, t * 1.4, 0); },
+  });
+  const donut = new THREE.Mesh(new THREE.TorusGeometry(1.0, 0.42, 48, 96), toon(0xed6a18));
+  outline(donut, { thickness: 0.05 });
+  scene.add(donut);
+  const sun = new THREE.DirectionalLight(0xffffff, 3);
+  sun.position.set(3, 4, 5);
+  scene.add(sun, new THREE.AmbientLight(0xffffff, 0.6));
+  camera.position.set(0, 0, Studio.pick({ "16x9": 8, "1x1": 9, default: 14 }));
+
+  // The Blender plate from the engines demo, from the 3rd downbeat
+  Studio.video(document.getElementById("plate"), { start: Studio.bar(3) - 0.3 });
+</script>
+</body>
+</html>

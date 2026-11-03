@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Copy the Reel Studio kit into a project so its skills can render there.
 #   scripts/init-project.sh <kit_root> [project_dir] [--update] [--with-skills]
-# Copies core/, engines/, scripts/, desk/ (the optional review app), the engines demo and the brand/production templates, adds CLAUDE.md,
+# Copies core/, engines/, scripts/, desk/ (the optional review app), the engines and reel-layer demos and the brand/production templates, adds CLAUDE.md,
 # STATUS.md and .gitignore if missing, then runs npm install in core/ and checks the tools.
 # Existing files are kept; --update refreshes core/, engines/ and scripts/ (and the skills) from the kit (brands and
 # productions are never touched). --with-skills also copies the skills into .claude/skills/ (for installs without
@@ -43,6 +43,8 @@ else
   mkdir -p "$dest/examples/engines-demo/plates"
   cp -n "$kit/examples/engines-demo/index.html" "$kit/examples/engines-demo/README.md" "$dest/examples/engines-demo/" 2>/dev/null || true
   cp -n "$kit/examples/engines-demo/plates/blob.mp4" "$dest/examples/engines-demo/plates/" 2>/dev/null || true
+  # The reel-layer demo (captions, beats, transitions, formats); not its fetched Rive sample
+  rsync -a --ignore-existing --exclude assets "$kit/examples/reel-layer/" "$dest/examples/reel-layer/" 2>/dev/null || true
   for f in CLAUDE.md STATUS.md; do
     [ -e "$dest/$f" ] || sed "s/{{DATE}}/$(date +%F)/" "$kit/templates/project/$f" > "$dest/$f"
   done

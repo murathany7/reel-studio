@@ -26,6 +26,7 @@ renderer, several engines plugged into one clock, one folder per brand, one fold
 | `brands/<slug>/` | Facts and their sources, look (`tokens.css`, `assets/`), voice, `compliance.md` |
 | `productions/<brand>/<ID>-<slug>/` | One piece: README (storyboard → explainer), `refs/`, `composition/`, `audio/`, `qa/`, `export/` |
 | `examples/engines-demo/` | A 6 s reel using every tested engine; rebuild it to check a machine |
+| `examples/reel-layer/` | 8 s reel for captions, beat cuts, transitions and the four formats |
 
 ## Golden rules
 

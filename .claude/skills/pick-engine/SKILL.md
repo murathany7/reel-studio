@@ -12,7 +12,7 @@ The full table and the determinism rules are in `engines/README.md`. Read it fir
 1. **Is it mostly text, UI or layout?** → GSAP only. Most ads are this. Stop here unless a hero visual is needed.
 2. **Is there a character?**
    - A designer gave a Lottie (`.json`) → Lottie.
-   - A designer gave a Rive (`.riv`) → Rive (not built yet: say so and plan the adapter, see `engines/README.md`).
+   - A designer gave a Rive (`.riv`) → Rive (`engines/rive.js`; state machines take timed inputs).
    - No designer file → SVG rig (`engines/svg-rig.js`). Draw it from simple shapes in the brand colours.
 3. **Is the hero a physical product or a 3D object?**
    - Real CAD or a GLB model, or camera moves around an object → Three.js.
@@ -21,6 +21,9 @@ The full table and the determinism rules are in `engines/README.md`. Read it fir
 4. **Does the brand already have a live web page with the visual (a 3D scene, a web app)?** → page capture. It reuses
    real work and shows the real product.
 5. **Lots of small moving things (confetti, particles, crowds)?** → Pixi on top.
+5b. **Between scenes:** a hard cut on the beat (`Studio.swap`, `Studio.bar(n)`) is the default. `Studio.transition`
+   (wipe, iris, push, slide, zoom, whip, blinds, flash) works on any layer; `engines/gl-transitions.js` (dissolve,
+   ripple, zoom blur, glitch, pixelate) only between layers with pixels (Three.js, Pixi, plates, images).
 6. **Real people or places?** → footage plate (stock or AI video). Check the brand's compliance on AI disclosure.
    Never use generated footage to show product features.
 

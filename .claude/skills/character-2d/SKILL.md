@@ -26,10 +26,11 @@ expressions or effects lottie-web cannot draw (render a still, compare with the 
 
 ## Rive (designer file)
 
-Not built yet. When the first `.riv` arrives: write `engines/rive.js` with the low-level runtime
-(`@rive-app/canvas-advanced`): load the file, then on each seek reset the artboard and advance the animation or
-state machine to `t` (state machines cannot jump, so step from 0 at a fixed rate). Test with two md5-matching
-renders, then update `engines/README.md`.
+`riveLayer(el, "/brands/<slug>/assets/<file>.riv", { animation | stateMachine, start, loop, inputs })` from
+`engines/rive.js`. A timeline (`animation`) is posed straight from `t`. A state machine is stepped from 0 at the frame
+rate, so give its inputs as times: `inputs: [{ at: 1.2, name: "wave" }, { at: 2, name: "mood", value: 2 }]` (no value
+= trigger). Render a few stills in two orders (`--workers 1`, then `--workers 2` with the times reversed) and check
+the md5s match. `examples/reel-layer/rive.html` is a working check page.
 
 ## Character craft
 
