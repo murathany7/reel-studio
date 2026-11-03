@@ -3,8 +3,8 @@
 class ReelStudio < Formula
   desc "Agency-quality marketing reels, ads and posts made by Claude Code"
   homepage "https://github.com/murathany7/reel-studio"
-  url "https://registry.npmjs.org/reel-studio/-/reel-studio-0.2.4.tgz"
-  sha256 "4247d4b4f3ef69b389bccde08676645132871f5acd113d5457771e815ef51c1a"
+  url "https://registry.npmjs.org/reel-studio/-/reel-studio-0.2.5.tgz"
+  sha256 "b618ef2e78546e31b552b6280283ceada591bb10ebdd5fa91e0a0846f4c6c09c"
   license "MIT"
 
   depends_on "ffmpeg"
