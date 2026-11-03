@@ -1,0 +1,141 @@
+<title>Bike Logger Reels</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a night-road contact sheet. Header + filter rail, then a dense grid of 9:16 tiles; the piece colour runs as a
+   timeline marker on each tile, the same colours the reels use for sensor events. Single dark look, the brand's own. */
+:root {
+  color-scheme: dark;
+  --night: #06080a; --panel: #0d1115; --line: #232931; --ink: #eceae4; --dim: #8a9199;
+  --lamp: #ffc46e; --signal: #84dcff; --brake: #ff4a3d; --imu: #9b85e6;
+  --display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--night); color: var(--ink); font: 400 15px/1.5 var(--display); }
+.wrap { max-width: 1320px; margin: 0 auto; padding-block: 40px 72px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.eyebrow { font: 500 12px/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--signal); }
+h1 { font-weight: 850; font-variation-settings: "wdth" 125; font-size: clamp(40px, 7vw, 76px); line-height: .92; letter-spacing: -.02em; margin: 12px 0 14px; text-wrap: balance; }
+.lede { max-width: 62ch; color: var(--dim); font-size: 16px; margin: 0; }
+.lede b { color: var(--ink); font-weight: 600; }
+.stats { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-top: 18px; font: 400 13px/1.4 var(--mono); color: var(--dim); }
+.stats span b { color: var(--ink); font-weight: 500; font-variant-numeric: tabular-nums; }
+.rail { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--night); margin: 28px 0 22px; padding-block: 12px;
+  border-bottom: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 10px 26px; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--night); }
+.group { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; min-width: 0; }
+.group > span { font: 500 11px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--dim); margin-right: 4px; }
+.chip { font: 500 13px/1 var(--mono); color: var(--ink); background: transparent; border: 1px solid var(--line); border-radius: 3px; padding: 8px 11px; cursor: pointer; }
+.chip:hover { border-color: var(--dim); }
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--night); border-color: var(--ink); }
+.chip:focus-visible, .tile button:focus-visible { outline: 2px solid var(--lamp); outline-offset: 2px; }
+.chip i { font-style: normal; display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 7px; vertical-align: 0; }
+.section { margin-top: 34px; }
+.section h2 { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin: 0 0 4px; font-weight: 800; font-variation-settings: "wdth" 112; font-size: 26px; letter-spacing: -.01em; }
+.section h2 small { font: 400 12px/1 var(--mono); color: var(--dim); letter-spacing: .08em; }
+.section p { margin: 0 0 16px; color: var(--dim); max-width: 70ch; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(176px, 1fr)); gap: 18px 14px; }
+.tile { min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.tile button { all: unset; cursor: pointer; display: block; position: relative; aspect-ratio: 9 / 16; max-width: 100%; border-radius: 6px; overflow: hidden; background: var(--panel); border: 1px solid var(--line); }
+.tile.feed button { aspect-ratio: 4 / 5; }
+.tile img, .tile video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.tile .play { position: absolute; inset: auto 10px 10px auto; width: 34px; height: 34px; border-radius: 50%; background: rgba(6,8,10,.75); border: 1px solid var(--line); display: grid; place-items: center; }
+.tile .play::before { content: ""; border-left: 11px solid var(--ink); border-top: 7px solid transparent; border-bottom: 7px solid transparent; margin-left: 3px; }
+.tile .none { position: absolute; inset: auto 8px 8px 8px; font: 400 11px/1.3 var(--mono); color: var(--dim); }
+.marker { height: 3px; border-radius: 2px; background: var(--line); position: relative; }
+.marker::after { content: ""; position: absolute; top: -3px; left: var(--at, 20%); width: 9px; height: 9px; border-radius: 50%; background: var(--c); }
+.meta { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.meta strong { font-weight: 700; font-variation-settings: "wdth" 100; font-size: 15px; line-height: 1.2; }
+.meta em { font: 400 11.5px/1.35 var(--mono); font-style: normal; color: var(--dim); overflow-wrap: anywhere; }
+.tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 2px; }
+.tags span { font: 500 10.5px/1 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--dim); border: 1px solid var(--line); border-radius: 2px; padding: 4px 6px; font-variant-numeric: tabular-nums; }
+.tags .adult { color: var(--ink); border-color: var(--dim); }
+.tags .ok { color: var(--signal); }
+.empty { color: var(--dim); font: 400 14px var(--mono); padding: 30px 0; }
+footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--line); color: var(--dim); font: 400 12.5px/1.6 var(--mono); max-width: 90ch; }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+</style>
+
+<div class="wrap">
+  <div class="eyebrow">Bike Logger · cartoon reels · silent</div>
+  <h1>The crew, {{COUNT}} ways.</h1>
+  <p class="lede">Every reel is cut from <b>one composition per piece</b> and the same sourced facts: the Raspberry Pi 5,
+    camera, GPS, BNO085, ultrasonic and Hall sensor drawn as a cartoon crew. Each comes in a <b>fun</b> style and a dry
+    <b>adult</b> one. Tap a tile to play it.</p>
+  <div class="stats" id="stats"></div>
+
+  <div class="rail" role="toolbar" aria-label="Filter reels">
+    <div class="group" id="f-piece"><span>Piece</span></div>
+    <div class="group" id="f-style"><span>Style</span></div>
+    <div class="group" id="f-size"><span>Size</span></div>
+  </div>
+  <div id="list"></div>
+  <footer>Rendered frame by frame with Reel Studio (core/render.mjs) and the ad kit (engines/ad-kit); each file passed
+    scripts/qa-video.sh (30 fps CFR, H.264, safe zones). Not claimed anywhere: price, kit contents, skill level, any
+    speed or distance value. Social proof, authority and scarcity patterns are left out because no sourced proof exists yet.</footer>
+</div>
+
+<script>
+const DATA = /*DATA*/[];
+const PIECES = /*PIECES*/{};
+const COLOR = { "REEL-006": "var(--lamp)", "REEL-007": "var(--brake)", "REEL-008": "var(--signal)", "REEL-009": "var(--imu)" };
+const state = { piece: "all", style: "all", size: "all" };
+try { Object.assign(state, JSON.parse(localStorage.getItem("blr-filter") || "{}")); } catch (e) {}
+
+function chips(id, key, opts) {
+  const g = document.getElementById(id);
+  for (const [v, label, dot] of opts) {
+    const b = document.createElement("button");
+    b.className = "chip"; b.type = "button"; b.dataset.v = v;
+    b.innerHTML = (dot ? `<i style="background:${dot}"></i>` : "") + label;
+    b.addEventListener("click", () => { state[key] = v; try { localStorage.setItem("blr-filter", JSON.stringify(state)); } catch (e) {} render(); });
+    g.appendChild(b);
+  }
+}
+chips("f-piece", "piece", [["all", "All"], ...Object.keys(PIECES).map((k) => [k, k.replace("REEL-", "") + " " + PIECES[k][0], COLOR[k]])]);
+chips("f-style", "style", [["all", "All"], ["fun", "Fun"], ["adult", "Adult"]]);
+chips("f-size", "size", [["all", "All"], ["reel", "9:16"], ["feed", "4:5"]]);
+
+const fmt = (s) => (s == null ? "" : s.toFixed(1) + " s");
+function tile(it, i) {
+  const el = document.createElement("div");
+  el.className = "tile" + (it.size === "feed" ? " feed" : "");
+  const at = 8 + ((i * 37) % 80);
+  el.innerHTML = `<button type="button" aria-label="Play ${it.name}">${it.cover ? `<img alt="" loading="lazy" src="${it.cover}">` : ""}${it.url ? `<span class="play"></span>` : `<span class="none">Video uploading</span>`}</button>
+    <div class="marker" style="--c:${COLOR[it.piece]};--at:${at}%"></div>
+    <div class="meta"><strong></strong><em></em>
+      <div class="tags"><span>${it.piece.replace("REEL-", "")}</span><span class="${it.style === "adult" ? "adult" : ""}">${it.style}</span>${it.size === "feed" ? "<span>4:5</span>" : ""}<span>${fmt(it.dur)}</span>${it.qa === 0 ? '<span class="ok">QA ✓</span>' : ""}</div></div>`;
+  el.querySelector("strong").textContent = it.label;
+  el.querySelector("em").textContent = it.basis;
+  const btn = el.querySelector("button");
+  btn.addEventListener("click", () => {
+    if (!it.url || btn.querySelector("video")) return;
+    const v = document.createElement("video");
+    v.src = it.url; v.controls = true; v.playsInline = true; v.muted = true; v.autoplay = true; v.poster = it.cover || "";
+    btn.replaceChildren(v); v.play().catch(() => {});
+  });
+  return el;
+}
+function render() {
+  for (const [id, key] of [["f-piece", "piece"], ["f-style", "style"], ["f-size", "size"]])
+    document.querySelectorAll(`#${id} .chip`).forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.v === state[key])));
+  const shown = DATA.filter((d) => (state.piece === "all" || d.piece === state.piece) && (state.style === "all" || d.style === state.style) && (state.size === "all" || d.size === state.size));
+  const list = document.getElementById("list"); list.replaceChildren();
+  for (const k of Object.keys(PIECES)) {
+    const rows = shown.filter((d) => d.piece === k); if (!rows.length) continue;
+    const sec = document.createElement("section"); sec.className = "section";
+    sec.innerHTML = `<h2></h2><p></p><div class="grid"></div>`;
+    sec.querySelector("h2").innerHTML = `<span></span><small>${k} · ${rows.length} reel${rows.length === 1 ? "" : "s"}</small>`;
+    sec.querySelector("h2 span").textContent = PIECES[k][0];
+    sec.querySelector("p").textContent = PIECES[k][1];
+    rows.forEach((r, i) => sec.querySelector(".grid").appendChild(tile(r, i)));
+    list.appendChild(sec);
+  }
+  if (!shown.length) list.innerHTML = '<p class="empty">No reels match these filters. Pick "All" in one of the rows above.</p>';
+  const secs = DATA.reduce((a, d) => a + (d.dur || 0), 0);
+  document.getElementById("stats").innerHTML = `<span><b>${DATA.length}</b> reels</span><span><b>${DATA.filter((d) => d.style === "adult").length}</b> adult</span><span><b>${new Set(DATA.filter((d) => d.pattern).map((d) => d.pattern)).size}</b> ad patterns</span><span><b>${Math.round(secs / 60)}</b> min of footage</span><span>showing <b>${shown.length}</b></span>`;
+}
+render();
+</script>
