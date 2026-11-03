@@ -44,6 +44,10 @@ The memory of this repo. Read it first, update it last.
 - 2026-11-03: 0.2.3: PyPI page (`python/README.md`) rebuilt as a marketing page like npm's, Bike Logger only. PyPI
   can't resolve relative paths, so every image and link there is an absolute `raw.githubusercontent.com/.../main/` URL
   (images follow `main`). Checked with `readme-renderer`, the library PyPI uses (all images and centring survive).
+- 2026-11-03: cartoon series for Bike Logger (REEL-006–008) storyboarded with a draft cast (Brain, Cam, Fix, Tilt,
+  Ping, Spin; `productions/bike-logger/REEL-006-crew/refs/crew.js`). Waiting on approval of the storyboards, the cast
+  (brand has no mascot yet) and two off-palette colours. The live site was not reachable from the cloud session
+  (proxy 403); facts come from the brand README.
 - 2026-11-03: distribution to do by hand (the maintainer, not an agent): Claude plugin directory at
   claude.ai/directory/manage (submit any time); awesome-claude-code via its web issue form only, from 2026-11-16 (repo
   must be 14 days old, human-submitted); Show HN, Reddit, Product Hunt, one reel a week on short-video platforms.
@@ -64,6 +68,9 @@ The memory of this repo. Read it first, update it last.
 | REEL-004 | yuppo | 3 a.m. question? Ask Po (Pixi night sky + Lottie Po + GSAP, silent, 16 s) | QA passed, silent cut (VO + music pending) | `productions/yuppo/REEL-004-ask-po-3am/export/REEL-004-ask-po-3am-en.mp4` |
 | REEL-005 | yuppo | What Star parents get, 7-day trial ad (Blender physics plate + GSAP, silent, 14 s) | QA passed, silent cut (music + SFX pending) | `productions/yuppo/REEL-005-star-trial/export/REEL-005-star-trial-en.mp4` |
 | REEL-002 | bike-logger | Engines sampler: Three.js tray, Blender camera housing, Pixi sensor streams (silent, 14.8 s) | QA passed, draft for review | `productions/bike-logger/REEL-002-engines/export/REEL-002-engines-en.mp4` |
+| REEL-006 | bike-logger | Meet the crew: cartoon cast of the real parts pops out of the box (SVG rig + GSAP, silent, 16 s) | storyboard (awaiting approval); cast sheet `refs/cast.png` | |
+| REEL-007 | bike-logger | One ride, one timeline: cartoon city ride → synced replay (SVG rig + GSAP + Pixi, silent, 16 s) | storyboard (awaiting approval) | |
+| REEL-008 | bike-logger | The tunnel: GPS drops out, the Hall sensor keeps counting (SVG rig + GSAP, silent, 11 s) | storyboard (awaiting approval) | |
 
 ## Engines
 
