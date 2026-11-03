@@ -41,6 +41,9 @@ The memory of this repo. Read it first, update it last.
   Tested locally: `reel-studio init`, md5-stable stills, the engines demo video. `release.yml` job `docker` pushes
   `ghcr.io/murathany7/reel-studio:<v>` and `:latest` (amd64 + arm64); after its first push, set the GHCR package to
   public once (GitHub → Packages → reel-studio → Package settings).
+- 2026-11-03: 0.2.3: PyPI page (`python/README.md`) rebuilt as a marketing page like npm's, Bike Logger only. PyPI
+  can't resolve relative paths, so every image and link there is an absolute `raw.githubusercontent.com/.../main/` URL
+  (images follow `main`). Checked with `readme-renderer`, the library PyPI uses (all images and centring survive).
 - 2026-11-03: distribution to do by hand (the maintainer, not an agent): Claude plugin directory at
   claude.ai/directory/manage (submit any time); awesome-claude-code via its web issue form only, from 2026-11-16 (repo
   must be 14 days old, human-submitted); Show HN, Reddit, Product Hunt, one reel a week on short-video platforms.
