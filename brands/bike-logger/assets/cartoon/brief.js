@@ -67,7 +67,7 @@
       },
       story: [
         { type: "boxHook", dur: 2.2, eyebrow: "Under the rack", title: say("Every crew has a job.", "Every crew has a job.") },
-        { type: "ride", dur: 6.4, beats: [{ at: 0.1, eyebrow: "A pothole", title: say("Tilt felt it.", "Tilt felt that.") }, { at: 2.2, eyebrow: "A car", title: say("Ping measured it.", "Ping took notes.") }, { at: 4.3, eyebrow: "The wheel", title: say("Spin kept count.", "Spin kept count.") }],
+        { type: "ride", dur: 6.4, beats: [{ at: -0.12, eyebrow: "A pothole", title: say("Tilt felt it.", "Tilt felt that.") }, { at: 2.2, eyebrow: "A car", title: say("Ping measured it.", "Ping took notes.") }, { at: 4.3, eyebrow: "The wheel", title: say("Spin kept count.", "Spin kept count.") }],
           events: [{ type: "pothole", at: 0.6 }, { type: "overtake", at: 2.6 }, { type: "wheel", at: 4.6 }] },
         replay,
       ],

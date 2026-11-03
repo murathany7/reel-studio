@@ -30,3 +30,4 @@ python/dist/
 productions/*/*/qa/*/contact_sheet_safezones.jpg
 productions/*/*/qa/*/motion.csv
 productions/*/*/qa/variants-sheet.txt
+productions/*/*/qa/*/flagged/

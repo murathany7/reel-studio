@@ -3,15 +3,115 @@
   "composition": "composition/index.html",
   "name": "{id}-{pattern}-{style}-{size}",
   "axes": {
-    "pattern": ["pas", "bab", "listicle", "spotlight", "demo", "faq", "three", "unboxing", "curiosity", "interrupt",
-                "ikea", "progress", "myth", "reciprocity", "foot", "story", "loss", "contrast", "specificity"],
-    "style": ["fun", "adult"],
-    "size": ["reel"]
+    "pattern": [
+      "pas",
+      "bab",
+      "listicle",
+      "spotlight",
+      "demo",
+      "faq",
+      "three",
+      "unboxing",
+      "curiosity",
+      "interrupt",
+      "ikea",
+      "progress",
+      "myth",
+      "reciprocity",
+      "foot",
+      "story",
+      "loss",
+      "contrast",
+      "specificity"
+    ],
+    "style": [
+      "fun",
+      "adult"
+    ],
+    "size": [
+      "reel"
+    ]
   },
   "include": [
-    { "pattern": "curiosity", "style": "fun", "size": "feed" },
-    { "pattern": "myth", "style": "adult", "size": "feed" },
-    { "pattern": "ikea", "style": "fun", "size": "feed" },
-    { "pattern": "three", "style": "adult", "size": "feed" }
+    {
+      "pattern": "curiosity",
+      "style": "fun",
+      "size": "feed"
+    },
+    {
+      "pattern": "myth",
+      "style": "adult",
+      "size": "feed"
+    },
+    {
+      "pattern": "ikea",
+      "style": "fun",
+      "size": "feed"
+    },
+    {
+      "pattern": "three",
+      "style": "adult",
+      "size": "feed"
+    },
+    {
+      "pattern": "demo",
+      "style": "fun",
+      "size": "landscape"
+    },
+    {
+      "pattern": "ikea",
+      "style": "adult",
+      "size": "landscape"
+    },
+    {
+      "pattern": "three",
+      "style": "fun",
+      "size": "landscape"
+    },
+    {
+      "pattern": "curiosity",
+      "style": "adult",
+      "size": "landscape"
+    },
+    {
+      "pattern": "bab",
+      "style": "fun",
+      "size": "landscape"
+    },
+    {
+      "pattern": "story",
+      "style": "adult",
+      "size": "landscape"
+    },
+    {
+      "pattern": "curiosity",
+      "style": "fun",
+      "size": "banner"
+    },
+    {
+      "pattern": "specificity",
+      "style": "adult",
+      "size": "banner"
+    },
+    {
+      "pattern": "myth",
+      "style": "fun",
+      "size": "banner"
+    },
+    {
+      "pattern": "ikea",
+      "style": "adult",
+      "size": "square"
+    },
+    {
+      "pattern": "listicle",
+      "style": "fun",
+      "size": "square"
+    },
+    {
+      "pattern": "contrast",
+      "style": "fun",
+      "size": "square"
+    }
   ]
 }

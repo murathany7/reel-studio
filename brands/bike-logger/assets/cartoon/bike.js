@@ -147,13 +147,15 @@
   });
   AK.act("open", (c, a, t) => { const lid = a.part("lid"); if (lid) c.tl.to(lid, { rotation: -108, svgOrigin: "12 121", duration: 0.4, ease: c.S.pop }, t); });
   AK.act("openStill", (c, a) => { const lid = a.part("lid"); if (lid) gsap.set(lid, { rotation: -108, svgOrigin: "12 121" }); });
-  AK.act("rattle", (c, a, t) => c.tl.to(a.wrap, { rotation: 3 * (c.S.wobble + 0.3), duration: 0.05, yoyo: true, repeat: 5, ease: "none" }, t).set(a.wrap, { rotation: 0 }, t + 0.3));
+  AK.act("rattle", (c, a, t) => { const d = 1 / 15, r = 3 * (c.S.wobble + 0.3);
+    c.tl.fromTo(a.wrap, { rotation: -r }, { rotation: r, duration: d, yoyo: true, repeat: 3, ease: "sine.inOut", immediateRender: false }, t).to(a.wrap, { rotation: 0, duration: d }, t + 4 * d); });
 
   /* ---------------- brand scenes ---------------- */
   /** The sealed box rattles, then opens. { eyebrow, title, chips } */
   AK.scene("boxHook", (c, s, t0, t1, layer) => {
-    c.reveal(c.text(layer, s), t0 + 0.1);
-    const w = Math.min(560, (c.R.stageBottom - c.R.stageTop) * 0.85);
+    c = c.unscaled(layer); layer = c.layer;
+    c.reveal(c.text(layer, s), t0 - AK.PRE);
+    const w = Math.min(560, (c.R.stageBottom - c.R.stageTop) * 0.85, (c.R.sr - c.R.sl) * 0.9);
     const box = c.actor(layer, "box", { w, bottom: c.R.stageBottom - 30 });
     c.acts(box, [["rattle", 0.35], ["rattle", 0.85], ["open", (t1 - t0) - 0.65]], t0, t1);
     // eyes in the dark gap once the lid lifts
@@ -166,17 +168,18 @@
 
   /** Side-on city ride with sensor events. { beats, events: [{ type: pothole|lean|overtake|wheel, at, actor }], speed } */
   AK.scene("ride", (c, s, t0, t1, layer) => {
+    c = c.unscaled(layer); layer = c.layer;
     if (s.beats) c.beats(layer, s.beats, t0, t1);
     const roadY = c.R.stageBottom - 90, speed = s.speed || 520;
     const cars = (s.events || []).filter((e) => e.type === "overtake").map((e) => ({ at: t0 + e.at - 0.3, dur: 1.7, style: c.style }));
     const st = BL.street(c, layer, { roadY, speed, t0, cars });
-    const bw = Math.min(700, c.W * 0.62), cx = c.R.cx + 90;
+    const bw = Math.min(700, (c.R.sr - c.R.sl) * (c.landscape ? 0.8 : 0.66)), cx = c.R.cx + (c.landscape ? 40 : 90);
     const bike = BL.placeBike(c, layer, { cx, contactY: roadY + 10, w: bw });
     const peek = bike.svg.querySelector("#peek");
     // bubble callout above the box
     const bub = c.el(layer, "div", "bl-bubble"), bs = Math.min(300, c.R.stageTop > 0 ? (bike.y - c.R.stageTop) + 150 : 280);
     const [bxv, byv] = bike.at([170, 20]);
-    Object.assign(bub.style, { width: bs + "px", height: bs + "px", left: Math.max(c.L.l, bxv - bs * 0.85) + "px", top: (byv - bs - 10) + "px", zIndex: 3 });
+    Object.assign(bub.style, { width: bs + "px", height: bs + "px", left: Math.max(c.R.sl, bxv - bs * 0.85) + "px", top: (byv - bs - 10) + "px", zIndex: 3 });
     gsap.set(bub, { autoAlpha: 0, scale: 0.3, transformOrigin: "80% 100%" });
     const evs = s.events || [];
     if (evs.length) c.tl.to(bub, { autoAlpha: 1, scale: 1, duration: 0.3, ease: c.S.pop }, t0 + evs[0].at - 0.25);
@@ -219,7 +222,8 @@
 
   /** The replay: phone with video, map and three charts, scrubbed; crew reacts. { beats } */
   AK.scene("replay", (c, s, t0, t1, layer) => {
-    if (s.beats) c.beats(layer, s.beats, t0, t1); else c.reveal(c.text(layer, s), t0 + 0.1);
+    c = c.unscaled(layer); layer = c.layer;
+    if (s.beats) c.beats(layer, s.beats, t0, t1); else c.reveal(c.text(layer, s), t0 - AK.PRE);
     const top = c.R.stageTop, h = c.R.stageBottom - top - 10, pw = Math.min(560, h * 0.68), ph = h, px = c.R.cx - pw / 2;
     const phone = c.el(layer, "div", "");
     Object.assign(phone.style, { position: "absolute", left: px + "px", top: top + "px", width: pw + "px", height: ph + "px", borderRadius: "46px", background: "#0b0f13", border: `${c.style === "adult" ? 4 : 10}px solid ${c.style === "adult" ? C.ink : "#2a3037"}`, overflow: "hidden", zIndex: 2 });
@@ -250,10 +254,10 @@
     const p = (t) => { const k = (t - t0) / (t1 - t0); if (k < 0.45) return 0.05 + k * 1.5; if (k < 0.6) return 0.725 - ((k - 0.45) / 0.15) * 0.45; return 0.275 + (k - 0.6) * 0.9; };
     const bikeSvg = mini.querySelector("svg");
     // crew in the corners react on the scrub
-    const sw = Math.min(200, (c.W - pw) / 2 + 40);
-    const left = c.actor(layer, "pi", { w: sw, cx: Math.max(c.L.l + sw * 0.4, px - sw * 0.25), bottom: c.R.stageBottom - 4, z: 3 });
-    const right = c.actor(layer, "cam", { w: sw, cx: Math.min(c.L.r - sw * 0.4, px + pw + sw * 0.25), bottom: c.R.stageBottom - 4, z: 3 });
-    [left, right].forEach((a, i) => { c.enter(a, t0 + 0.3 + i * 0.1, "pop"); c.alive(a, t0, t1, { idle: false }); c.acts(a, [["hop", (t1 - t0) * 0.45], ["hop", (t1 - t0) * 0.6]], t0, t1); });
+    const sw = Math.min(200, (c.R.sr - c.R.sl - pw) / 2 + 40);
+    const left = c.actor(layer, "pi", { w: sw, cx: Math.max(c.R.sl + sw * 0.4, px - sw * 0.25), bottom: c.R.stageBottom - 4, z: 3 });
+    const right = c.actor(layer, "cam", { w: sw, cx: Math.min(c.R.sr - sw * 0.4, px + pw + sw * 0.25), bottom: c.R.stageBottom - 4, z: 3 });
+    [left, right].forEach((a, i) => { c.enter(a, t0 - 0.06 + i * 0.1, "pop"); c.alive(a, t0, t1, { idle: false }); c.acts(a, [["hop", (t1 - t0) * 0.45], ["hop", (t1 - t0) * 0.6]], t0, t1); });
     Studio.onSeek((t) => {
       if (t < t0 - 0.01 || t > t1 + 0.01) return;
       const q = Math.max(0, Math.min(1, p(t)));
@@ -267,10 +271,11 @@
 
   /** Tunnel gag: GPS loses its fix, the Hall sensor keeps counting. { beats, inAt, outAt } */
   AK.scene("tunnel", (c, s, t0, t1, layer) => {
+    c = c.unscaled(layer); layer = c.layer;
     const inAt = t0 + (s.inAt ?? 1.6), outAt = t0 + (s.outAt ?? 6.6), speed = s.speed || 480;
     const roadY = c.R.stageBottom - 90;
     const st = BL.street(c, layer, { roadY, speed, t0 });
-    const bw = Math.min(680, c.W * 0.6), cx = c.R.cx + 60;
+    const bw = Math.min(680, (c.R.sr - c.R.sl) * (c.landscape ? 0.8 : 0.64)), cx = c.R.cx + (c.landscape ? 30 : 60);
     const bike = BL.placeBike(c, layer, { cx, contactY: roadY + 10, w: bw });
     // tunnel body: from the portal (reaches the bike at inAt) to the exit (passes the bike at outAt)
     const bikeX = cx, startX = bikeX + (inAt - t0) * speed, len = (outAt - inAt) * speed;
@@ -286,7 +291,7 @@
     const [fx, fy] = bike.at([170, 30]), [sx, sy] = bike.at([210, 300]);
     const fix = c.actor(layer, "gps", { w: bw * 0.34, cx: fx, bottom: fy + 8, z: 4 });
     const spin = c.actor(layer, "hall", { w: bw * 0.28, cx: sx - 120, bottom: roadY - 6, z: 4 });
-    c.enter(fix, t0 + 0.2, "pop"); c.alive(fix, t0, t1, { idle: false });
+    c.enter(fix, t0 - 0.06, "pop"); c.alive(fix, t0, t1, { idle: false });
     c.enter(spin, inAt + 1.2, "pop"); c.alive(spin, inAt + 1.2, t1, { idle: false });
     c.acts(fix, [["arcs", 0.3, { times: 2 }], ["arcsLost", inAt - t0 + 0.2], ["shake", inAt - t0 + 1.0, { amount: 8 }], ["arcsBack", outAt - t0 + 0.2], ["hop", outAt - t0 + 0.6]], t0, t1);
     c.acts(spin, [["count", 0.3, { readout: false, rate: 1.8 }], ["hop", outAt - inAt - 1.2 + 0.6]], inAt + 1.2, t1);
@@ -295,7 +300,7 @@
     gsap.set(tag, { autoAlpha: 0 }); c.tl.to(tag, { autoAlpha: 1, duration: 0.1 }, inAt + 0.9).to(tag, { autoAlpha: 0, duration: 0.1 }, outAt + 0.1);
     // readout keeps counting in the dark: turns from the wheel, not from GPS
     const ro = c.el(layer, "div", "bl-readout", "WHEEL TURNS<b>0</b>");
-    Object.assign(ro.style, { left: c.L.l + "px", top: (c.R.stageTop - 10) + "px", zIndex: 5 });
+    Object.assign(ro.style, { left: c.R.sl + "px", top: (c.landscape ? c.R.stageTop + 20 : c.R.stageTop - 10) + "px", zIndex: 5 });
     const rb = ro.querySelector("b");
     gsap.set(ro, { autoAlpha: 0 }); c.tl.to(ro, { autoAlpha: 1, duration: 0.2 }, inAt + 1.3);
     if (s.beats) c.beats(layer, s.beats, t0, t1);

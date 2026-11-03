@@ -1,24 +1,24 @@
 /* Ad kit base styles. Brand tokens set the variables; a brand can override any class in its own theme file. */
 .ak-scene { position: absolute; inset: 0; overflow: hidden; }
-.ak-text { position: absolute; }
-.ak-eyebrow { font-family: var(--font-mono, ui-monospace, monospace); font-size: var(--ak-eyebrow-size, 30px); letter-spacing: .14em;
+.ak-text { position: absolute; z-index: 6; }
+.ak-eyebrow { font-family: var(--font-mono, ui-monospace, monospace); font-size: calc(var(--ak-s, 1) * var(--ak-eyebrow-size, 30px)); letter-spacing: .14em;
   text-transform: uppercase; color: var(--ak-eyebrow, var(--accent)); }
-.ak-title { font-family: var(--font-display, system-ui, sans-serif); font-size: var(--ak-title-size, 104px); font-weight: var(--ak-title-weight, 800);
-  font-variation-settings: var(--ak-title-vars, normal); letter-spacing: -0.02em; line-height: .96; color: var(--ink); margin-top: 14px; }
-.ak-sub { font-family: var(--font-body, system-ui, sans-serif); font-size: 44px; font-weight: 600; line-height: 1.15; color: var(--ak-dim, var(--ink)); margin-top: 18px; }
-.ak-chips { display: flex; flex-wrap: wrap; gap: 12px; list-style: none; margin-top: 26px; }
-.ak-chips li { font-family: var(--font-mono, ui-monospace, monospace); font-size: 27px; padding: 9px 16px; border: 2px solid var(--ak-line, rgba(127,127,127,.4));
+.ak-title { font-family: var(--font-display, system-ui, sans-serif); font-size: calc(var(--ak-s, 1) * var(--ak-title-size, 104px)); font-weight: var(--ak-title-weight, 800);
+  font-variation-settings: var(--ak-title-vars, normal); letter-spacing: -0.02em; line-height: .96; color: var(--ink); margin-top: calc(var(--ak-s, 1) * 14px); }
+.ak-sub { font-family: var(--font-body, system-ui, sans-serif); font-size: calc(var(--ak-s, 1) * 44px); font-weight: 600; line-height: 1.15; color: var(--ak-dim, var(--ink)); margin-top: calc(var(--ak-s, 1) * 18px); }
+.ak-chips { display: flex; flex-wrap: wrap; gap: calc(var(--ak-s, 1) * 12px); list-style: none; margin-top: calc(var(--ak-s, 1) * 26px); }
+.ak-chips li { font-family: var(--font-mono, ui-monospace, monospace); font-size: calc(var(--ak-s, 1) * 27px); padding: calc(var(--ak-s, 1) * 9px) calc(var(--ak-s, 1) * 16px); border: 2px solid var(--ak-line, rgba(127,127,127,.4));
   border-radius: 3px; color: var(--ak-chip, var(--ink)); background: var(--ak-chip-bg, transparent); }
-.ak-cta { display: inline-block; font-family: var(--font-mono, ui-monospace, monospace); font-size: 32px; color: var(--bg); background: var(--accent);
-  padding: 16px 26px; border-radius: 4px; }
+.ak-cta { display: inline-block; font-family: var(--font-mono, ui-monospace, monospace); font-size: calc(var(--ak-s, 1) * 32px); color: var(--bg); background: var(--accent);
+  padding: calc(var(--ak-s, 1) * 16px) calc(var(--ak-s, 1) * 26px); border-radius: 4px; }
 .ak-mono { font-family: var(--font-mono, ui-monospace, monospace); }
 .ak-actor { position: absolute; }
 .ak-actor svg { width: 100%; height: 100%; display: block; overflow: visible; }
 .ak-hl { color: var(--accent); }
 .ak-warn { color: var(--ak-warn, #ff4a3d); }
 .ak-wordmark { font-family: var(--font-display, system-ui, sans-serif); font-weight: 900; font-variation-settings: var(--ak-wordmark-vars, normal);
-  font-size: 128px; line-height: .9; letter-spacing: -0.02em; color: var(--ink); }
-.ak-row { display: flex; align-items: center; gap: 28px; }
-.ak-num { flex: none; width: 92px; height: 92px; border-radius: 50%; display: grid; place-items: center; background: var(--accent);
-  color: var(--bg); font-family: var(--font-display, system-ui); font-weight: 900; font-size: 54px; }
+  font-size: calc(var(--ak-s, 1) * 128px); line-height: .9; letter-spacing: -0.02em; color: var(--ink); }
+.ak-row { display: flex; align-items: center; gap: calc(var(--ak-s, 1) * 28px); }
+.ak-num { flex: none; width: calc(var(--ak-s, 1) * 92px); height: calc(var(--ak-s, 1) * 92px); border-radius: 50%; display: grid; place-items: center; background: var(--accent);
+  color: var(--bg); font-family: var(--font-display, system-ui); font-weight: 900; font-size: calc(var(--ak-s, 1) * 54px); }
 .ak-flash { position: absolute; inset: 0; background: var(--ink); opacity: 0; pointer-events: none; }

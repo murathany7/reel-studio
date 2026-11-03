@@ -11,3 +11,5 @@
 .bl-readout { position: absolute; font-family: var(--font-mono); color: var(--signal); font-size: 30px; letter-spacing: .12em; }
 .bl-readout b { color: var(--ink); font-family: var(--font-display); font-variation-settings: "wdth" 62; font-weight: 800; font-size: 84px; letter-spacing: 0; display: block; line-height: 1; }
 .bl-tag { position: absolute; font-family: var(--font-mono); font-size: 28px; color: var(--night); background: var(--brake); padding: 6px 12px; border-radius: 3px; letter-spacing: .1em; }
+/* Landscape and banner: text sits over the street, so give it a scrim and a shadow */
+.ak-landscape .ak-text, .ak-banner .ak-text { text-shadow: 0 4px 28px rgba(6, 8, 10, .95), 0 0 2px rgba(6, 8, 10, .8); }

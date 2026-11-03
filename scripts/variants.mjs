@@ -110,7 +110,7 @@ async function worker() {
       await run("ffmpeg", ["-v", "error", "-y", "-ss", String((res.duration || 4) * (cfg.coverAt ?? 0.3)), "-i", mp4, "-frames:v", "1", "-vf", "scale=270:-2", "-q:v", "3", cover]);
       res.cover = path.relative(base, cover);
       if (flag("qa")) {
-        const q = await run("bash", ["scripts/qa-video.sh", mp4, path.join(qaDir, v.name)]);
+        const q = await run("bash", ["scripts/qa-video.sh", mp4, path.join(qaDir, v.name), res.size || "1080x1920"]);
         const rep = await readFile(path.join(qaDir, v.name, "report.md"), "utf8").catch(() => "");
         res.qa = { fails: (rep.match(/❌/g) || []).length, report: path.relative(base, path.join(qaDir, v.name, "report.md")), code: q.code };
       }

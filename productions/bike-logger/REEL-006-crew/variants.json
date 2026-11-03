@@ -1,6 +1,41 @@
 {
   "id": "REEL-006",
   "composition": "composition/index.html",
-  "name": "{id}-{style}-hook{hook}",
-  "axes": { "style": ["fun", "adult"], "hook": ["A", "B", "C"] }
+  "name": "{id}-{style}-hook{hook}-{size}",
+  "axes": {
+    "style": [
+      "fun",
+      "adult"
+    ],
+    "hook": [
+      "A",
+      "B",
+      "C"
+    ],
+    "size": [
+      "reel"
+    ]
+  },
+  "include": [
+    {
+      "style": "fun",
+      "hook": "A",
+      "size": "landscape"
+    },
+    {
+      "style": "adult",
+      "hook": "A",
+      "size": "landscape"
+    },
+    {
+      "style": "fun",
+      "hook": "C",
+      "size": "square"
+    },
+    {
+      "style": "adult",
+      "hook": "B",
+      "size": "banner"
+    }
+  ]
 }
