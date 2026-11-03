@@ -12,3 +12,19 @@ Generated 2026-11-03 21:39.
 | Video codec / pixel format | h264 / yuv420p | ✅ |
 | Audio | none  | ⚠️ no audio |
 | Duration | 13.900000s | — |
+
+## Motion
+
+```json
+{"frames_compared": 833, "moving_frames": 491, "static_frames": 342, "median_pct_pixels_changed_when_moving": 0.481, "hitches": [], "jumps": [{"frame": 450, "time": 7.5, "pct": 19.1}]}
+```
+
+- **Hitches** (a duplicate frame during motion) cause visible stutter. Fix the timeline at those times.
+- **Jumps** are frames that change much more than their neighbours. Fine if it's an intended hard cut; otherwise add easing or a transition. Evidence is in `flagged/`.
+- Frozen sections (≥1.5 s): freeze_start: 0.483333 freeze_duration: 1.61667 freeze_start: 2.46667 freeze_duration: 1.53333 freeze_start: 12.1833
+- Black sections: none
+
+## Visual review
+
+- `contact_sheet_safezones.jpg`: every 0.5 s (left→right, top→bottom; tile k = k×0.5 s) with paid-Reels unsafe areas in red. No text, logo, mascot or CTA may sit in red.
+- Then review the key beats frame by frame (`render.mjs stills --at …`) and listen once with sound.
