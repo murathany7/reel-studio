@@ -104,7 +104,7 @@ Free and MIT licensed: github.com/murathany7/reel-studio
 
 ## Places to submit (each needs your OK or your account)
 
-- npm and Homebrew: 0.2.1 published. PyPI: needs a token (`packaging/build-python.sh && cd python && uv publish`). Steps: `packaging/README.md`
+- npm, PyPI and Homebrew: 0.2.1 published 2026-11-03. Release steps: `packaging/README.md`
 - awesome-claude-code style lists on GitHub: one PR adding a line
 - Anthropic's plugin directory: submit from the docs' "Submit to Anthropic's directory" page
 - Product Hunt: later, once there are 2–3 brand examples
