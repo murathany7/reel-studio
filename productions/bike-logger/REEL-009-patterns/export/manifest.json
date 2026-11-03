@@ -1,0 +1,1140 @@
+{
+  "id": "REEL-009",
+  "composition": "composition/index.html",
+  "variants": [
+    {
+      "axes": {
+        "pattern": "pas",
+        "style": "fun",
+        "size": "reel"
+      },
+      "name": "REEL-009-pas-fun-reel",
+      "query": "pattern=pas&style=fun&size=reel",
+      "file": "export/REEL-009-pas-fun-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 13.9,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-pas-fun-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-pas-fun-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "pas",
+        "style": "adult",
+        "size": "reel"
+      },
+      "name": "REEL-009-pas-adult-reel",
+      "query": "pattern=pas&style=adult&size=reel",
+      "file": "export/REEL-009-pas-adult-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 13.9,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-pas-adult-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-pas-adult-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "bab",
+        "style": "fun",
+        "size": "reel"
+      },
+      "name": "REEL-009-bab-fun-reel",
+      "query": "pattern=bab&style=fun&size=reel",
+      "file": "export/REEL-009-bab-fun-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 12.4,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-bab-fun-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-bab-fun-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "bab",
+        "style": "adult",
+        "size": "reel"
+      },
+      "name": "REEL-009-bab-adult-reel",
+      "query": "pattern=bab&style=adult&size=reel",
+      "file": "export/REEL-009-bab-adult-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 12.4,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-bab-adult-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-bab-adult-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "listicle",
+        "style": "fun",
+        "size": "reel"
+      },
+      "name": "REEL-009-listicle-fun-reel",
+      "query": "pattern=listicle&style=fun&size=reel",
+      "file": "export/REEL-009-listicle-fun-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 15.4,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-listicle-fun-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-listicle-fun-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "listicle",
+        "style": "adult",
+        "size": "reel"
+      },
+      "name": "REEL-009-listicle-adult-reel",
+      "query": "pattern=listicle&style=adult&size=reel",
+      "file": "export/REEL-009-listicle-adult-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 15.4,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-listicle-adult-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-listicle-adult-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "spotlight",
+        "style": "fun",
+        "size": "reel"
+      },
+      "name": "REEL-009-spotlight-fun-reel",
+      "query": "pattern=spotlight&style=fun&size=reel",
+      "file": "export/REEL-009-spotlight-fun-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 7.8,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-spotlight-fun-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-spotlight-fun-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "spotlight",
+        "style": "adult",
+        "size": "reel"
+      },
+      "name": "REEL-009-spotlight-adult-reel",
+      "query": "pattern=spotlight&style=adult&size=reel",
+      "file": "export/REEL-009-spotlight-adult-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 7.8,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-spotlight-adult-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-spotlight-adult-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "demo",
+        "style": "fun",
+        "size": "reel"
+      },
+      "name": "REEL-009-demo-fun-reel",
+      "query": "pattern=demo&style=fun&size=reel",
+      "file": "export/REEL-009-demo-fun-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 8,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-demo-fun-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-demo-fun-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "demo",
+        "style": "adult",
+        "size": "reel"
+      },
+      "name": "REEL-009-demo-adult-reel",
+      "query": "pattern=demo&style=adult&size=reel",
+      "file": "export/REEL-009-demo-adult-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 8,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-demo-adult-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-demo-adult-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "faq",
+        "style": "fun",
+        "size": "reel"
+      },
+      "name": "REEL-009-faq-fun-reel",
+      "query": "pattern=faq&style=fun&size=reel",
+      "file": "export/REEL-009-faq-fun-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 10.6,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-faq-fun-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-faq-fun-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "faq",
+        "style": "adult",
+        "size": "reel"
+      },
+      "name": "REEL-009-faq-adult-reel",
+      "query": "pattern=faq&style=adult&size=reel",
+      "file": "export/REEL-009-faq-adult-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 10.6,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-faq-adult-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-faq-adult-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "three",
+        "style": "fun",
+        "size": "reel"
+      },
+      "name": "REEL-009-three-fun-reel",
+      "query": "pattern=three&style=fun&size=reel",
+      "file": "export/REEL-009-three-fun-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 12.2,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-three-fun-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-three-fun-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "three",
+        "style": "adult",
+        "size": "reel"
+      },
+      "name": "REEL-009-three-adult-reel",
+      "query": "pattern=three&style=adult&size=reel",
+      "file": "export/REEL-009-three-adult-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 12.2,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-three-adult-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-three-adult-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "unboxing",
+        "style": "fun",
+        "size": "reel"
+      },
+      "name": "REEL-009-unboxing-fun-reel",
+      "query": "pattern=unboxing&style=fun&size=reel",
+      "file": "export/REEL-009-unboxing-fun-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 7.8,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-unboxing-fun-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-unboxing-fun-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "unboxing",
+        "style": "adult",
+        "size": "reel"
+      },
+      "name": "REEL-009-unboxing-adult-reel",
+      "query": "pattern=unboxing&style=adult&size=reel",
+      "file": "export/REEL-009-unboxing-adult-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 7.8,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-unboxing-adult-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-unboxing-adult-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "curiosity",
+        "style": "fun",
+        "size": "reel"
+      },
+      "name": "REEL-009-curiosity-fun-reel",
+      "query": "pattern=curiosity&style=fun&size=reel",
+      "file": "export/REEL-009-curiosity-fun-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 9.8,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-curiosity-fun-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-curiosity-fun-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "curiosity",
+        "style": "adult",
+        "size": "reel"
+      },
+      "name": "REEL-009-curiosity-adult-reel",
+      "query": "pattern=curiosity&style=adult&size=reel",
+      "file": "export/REEL-009-curiosity-adult-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 9.8,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-curiosity-adult-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-curiosity-adult-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "interrupt",
+        "style": "fun",
+        "size": "reel"
+      },
+      "name": "REEL-009-interrupt-fun-reel",
+      "query": "pattern=interrupt&style=fun&size=reel",
+      "file": "export/REEL-009-interrupt-fun-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 9.8,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-interrupt-fun-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-interrupt-fun-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "interrupt",
+        "style": "adult",
+        "size": "reel"
+      },
+      "name": "REEL-009-interrupt-adult-reel",
+      "query": "pattern=interrupt&style=adult&size=reel",
+      "file": "export/REEL-009-interrupt-adult-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 9.8,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-interrupt-adult-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-interrupt-adult-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "ikea",
+        "style": "fun",
+        "size": "reel"
+      },
+      "name": "REEL-009-ikea-fun-reel",
+      "query": "pattern=ikea&style=fun&size=reel",
+      "file": "export/REEL-009-ikea-fun-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 14,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-ikea-fun-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-ikea-fun-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "ikea",
+        "style": "adult",
+        "size": "reel"
+      },
+      "name": "REEL-009-ikea-adult-reel",
+      "query": "pattern=ikea&style=adult&size=reel",
+      "file": "export/REEL-009-ikea-adult-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 14,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-ikea-adult-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-ikea-adult-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "progress",
+        "style": "fun",
+        "size": "reel"
+      },
+      "name": "REEL-009-progress-fun-reel",
+      "query": "pattern=progress&style=fun&size=reel",
+      "file": "export/REEL-009-progress-fun-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 10.8,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-progress-fun-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-progress-fun-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "progress",
+        "style": "adult",
+        "size": "reel"
+      },
+      "name": "REEL-009-progress-adult-reel",
+      "query": "pattern=progress&style=adult&size=reel",
+      "file": "export/REEL-009-progress-adult-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 10.8,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-progress-adult-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-progress-adult-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "myth",
+        "style": "fun",
+        "size": "reel"
+      },
+      "name": "REEL-009-myth-fun-reel",
+      "query": "pattern=myth&style=fun&size=reel",
+      "file": "export/REEL-009-myth-fun-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 9.9,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-myth-fun-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-myth-fun-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "myth",
+        "style": "adult",
+        "size": "reel"
+      },
+      "name": "REEL-009-myth-adult-reel",
+      "query": "pattern=myth&style=adult&size=reel",
+      "file": "export/REEL-009-myth-adult-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 9.9,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-myth-adult-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-myth-adult-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "reciprocity",
+        "style": "fun",
+        "size": "reel"
+      },
+      "name": "REEL-009-reciprocity-fun-reel",
+      "query": "pattern=reciprocity&style=fun&size=reel",
+      "file": "export/REEL-009-reciprocity-fun-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 8.8,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-reciprocity-fun-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-reciprocity-fun-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "reciprocity",
+        "style": "adult",
+        "size": "reel"
+      },
+      "name": "REEL-009-reciprocity-adult-reel",
+      "query": "pattern=reciprocity&style=adult&size=reel",
+      "file": "export/REEL-009-reciprocity-adult-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 8.8,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-reciprocity-adult-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-reciprocity-adult-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "foot",
+        "style": "fun",
+        "size": "reel"
+      },
+      "name": "REEL-009-foot-fun-reel",
+      "query": "pattern=foot&style=fun&size=reel",
+      "file": "export/REEL-009-foot-fun-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 9.6,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-foot-fun-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-foot-fun-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "foot",
+        "style": "adult",
+        "size": "reel"
+      },
+      "name": "REEL-009-foot-adult-reel",
+      "query": "pattern=foot&style=adult&size=reel",
+      "file": "export/REEL-009-foot-adult-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 9.6,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-foot-adult-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-foot-adult-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "story",
+        "style": "fun",
+        "size": "reel"
+      },
+      "name": "REEL-009-story-fun-reel",
+      "query": "pattern=story&style=fun&size=reel",
+      "file": "export/REEL-009-story-fun-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 14.6,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-story-fun-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-story-fun-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "story",
+        "style": "adult",
+        "size": "reel"
+      },
+      "name": "REEL-009-story-adult-reel",
+      "query": "pattern=story&style=adult&size=reel",
+      "file": "export/REEL-009-story-adult-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 14.6,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-story-adult-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-story-adult-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "loss",
+        "style": "fun",
+        "size": "reel"
+      },
+      "name": "REEL-009-loss-fun-reel",
+      "query": "pattern=loss&style=fun&size=reel",
+      "file": "export/REEL-009-loss-fun-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 9.8,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-loss-fun-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-loss-fun-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "loss",
+        "style": "adult",
+        "size": "reel"
+      },
+      "name": "REEL-009-loss-adult-reel",
+      "query": "pattern=loss&style=adult&size=reel",
+      "file": "export/REEL-009-loss-adult-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 9.8,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-loss-adult-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-loss-adult-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "contrast",
+        "style": "fun",
+        "size": "reel"
+      },
+      "name": "REEL-009-contrast-fun-reel",
+      "query": "pattern=contrast&style=fun&size=reel",
+      "file": "export/REEL-009-contrast-fun-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 10.2,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-contrast-fun-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-contrast-fun-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "contrast",
+        "style": "adult",
+        "size": "reel"
+      },
+      "name": "REEL-009-contrast-adult-reel",
+      "query": "pattern=contrast&style=adult&size=reel",
+      "file": "export/REEL-009-contrast-adult-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 10.2,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-contrast-adult-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-contrast-adult-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "specificity",
+        "style": "fun",
+        "size": "reel"
+      },
+      "name": "REEL-009-specificity-fun-reel",
+      "query": "pattern=specificity&style=fun&size=reel",
+      "file": "export/REEL-009-specificity-fun-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 9.2,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-specificity-fun-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-specificity-fun-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "specificity",
+        "style": "adult",
+        "size": "reel"
+      },
+      "name": "REEL-009-specificity-adult-reel",
+      "query": "pattern=specificity&style=adult&size=reel",
+      "file": "export/REEL-009-specificity-adult-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 9.2,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-specificity-adult-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-specificity-adult-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "curiosity",
+        "style": "fun",
+        "size": "feed"
+      },
+      "name": "REEL-009-curiosity-fun-feed",
+      "query": "pattern=curiosity&style=fun&size=feed",
+      "file": "export/REEL-009-curiosity-fun-feed.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 9.8,
+      "size": "1080x1350",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-curiosity-fun-feed.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-curiosity-fun-feed/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "myth",
+        "style": "adult",
+        "size": "feed"
+      },
+      "name": "REEL-009-myth-adult-feed",
+      "query": "pattern=myth&style=adult&size=feed",
+      "file": "export/REEL-009-myth-adult-feed.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 9.9,
+      "size": "1080x1350",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-myth-adult-feed.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-myth-adult-feed/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "ikea",
+        "style": "fun",
+        "size": "feed"
+      },
+      "name": "REEL-009-ikea-fun-feed",
+      "query": "pattern=ikea&style=fun&size=feed",
+      "file": "export/REEL-009-ikea-fun-feed.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 14,
+      "size": "1080x1350",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-ikea-fun-feed.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-ikea-fun-feed/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "three",
+        "style": "adult",
+        "size": "feed"
+      },
+      "name": "REEL-009-three-adult-feed",
+      "query": "pattern=three&style=adult&size=feed",
+      "file": "export/REEL-009-three-adult-feed.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 12.2,
+      "size": "1080x1350",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-three-adult-feed.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-three-adult-feed/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "demo",
+        "style": "fun",
+        "size": "landscape"
+      },
+      "name": "REEL-009-demo-fun-landscape",
+      "query": "pattern=demo&style=fun&size=landscape",
+      "file": "export/REEL-009-demo-fun-landscape.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 8,
+      "size": "1920x1080",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-demo-fun-landscape.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-demo-fun-landscape/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "ikea",
+        "style": "adult",
+        "size": "landscape"
+      },
+      "name": "REEL-009-ikea-adult-landscape",
+      "query": "pattern=ikea&style=adult&size=landscape",
+      "file": "export/REEL-009-ikea-adult-landscape.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 14,
+      "size": "1920x1080",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-ikea-adult-landscape.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-ikea-adult-landscape/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "three",
+        "style": "fun",
+        "size": "landscape"
+      },
+      "name": "REEL-009-three-fun-landscape",
+      "query": "pattern=three&style=fun&size=landscape",
+      "file": "export/REEL-009-three-fun-landscape.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 12.2,
+      "size": "1920x1080",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-three-fun-landscape.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-three-fun-landscape/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "curiosity",
+        "style": "adult",
+        "size": "landscape"
+      },
+      "name": "REEL-009-curiosity-adult-landscape",
+      "query": "pattern=curiosity&style=adult&size=landscape",
+      "file": "export/REEL-009-curiosity-adult-landscape.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 9.8,
+      "size": "1920x1080",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-curiosity-adult-landscape.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-curiosity-adult-landscape/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "bab",
+        "style": "fun",
+        "size": "landscape"
+      },
+      "name": "REEL-009-bab-fun-landscape",
+      "query": "pattern=bab&style=fun&size=landscape",
+      "file": "export/REEL-009-bab-fun-landscape.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 12.4,
+      "size": "1920x1080",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-bab-fun-landscape.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-bab-fun-landscape/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "story",
+        "style": "adult",
+        "size": "landscape"
+      },
+      "name": "REEL-009-story-adult-landscape",
+      "query": "pattern=story&style=adult&size=landscape",
+      "file": "export/REEL-009-story-adult-landscape.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 14.6,
+      "size": "1920x1080",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-story-adult-landscape.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-story-adult-landscape/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "curiosity",
+        "style": "fun",
+        "size": "banner"
+      },
+      "name": "REEL-009-curiosity-fun-banner",
+      "query": "pattern=curiosity&style=fun&size=banner",
+      "file": "export/REEL-009-curiosity-fun-banner.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 9.8,
+      "size": "1200x628",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-curiosity-fun-banner.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-curiosity-fun-banner/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "specificity",
+        "style": "adult",
+        "size": "banner"
+      },
+      "name": "REEL-009-specificity-adult-banner",
+      "query": "pattern=specificity&style=adult&size=banner",
+      "file": "export/REEL-009-specificity-adult-banner.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 9.2,
+      "size": "1200x628",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-specificity-adult-banner.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-specificity-adult-banner/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "myth",
+        "style": "fun",
+        "size": "banner"
+      },
+      "name": "REEL-009-myth-fun-banner",
+      "query": "pattern=myth&style=fun&size=banner",
+      "file": "export/REEL-009-myth-fun-banner.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 9.9,
+      "size": "1200x628",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-myth-fun-banner.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-myth-fun-banner/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "ikea",
+        "style": "adult",
+        "size": "square"
+      },
+      "name": "REEL-009-ikea-adult-square",
+      "query": "pattern=ikea&style=adult&size=square",
+      "file": "export/REEL-009-ikea-adult-square.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 14,
+      "size": "1080x1080",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-ikea-adult-square.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-ikea-adult-square/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "listicle",
+        "style": "fun",
+        "size": "square"
+      },
+      "name": "REEL-009-listicle-fun-square",
+      "query": "pattern=listicle&style=fun&size=square",
+      "file": "export/REEL-009-listicle-fun-square.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 15.4,
+      "size": "1080x1080",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-listicle-fun-square.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-listicle-fun-square/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "contrast",
+        "style": "fun",
+        "size": "square"
+      },
+      "name": "REEL-009-contrast-fun-square",
+      "query": "pattern=contrast&style=fun&size=square",
+      "file": "export/REEL-009-contrast-fun-square.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 10.2,
+      "size": "1080x1080",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-contrast-fun-square.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-contrast-fun-square/report.md",
+        "code": 0
+      }
+    }
+  ]
+}
