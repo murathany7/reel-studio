@@ -36,8 +36,8 @@ if (!file) { console.error("usage: variants.mjs <variants.json> [--jobs N] [--on
 
 const cfg = JSON.parse(await readFile(file, "utf8"));
 const base = path.dirname(path.resolve(file));
-const comp = path.join(base, cfg.composition || "composition/index.html");
-const outDir = path.join(base, cfg.out || "export"), qaDir = path.join(base, cfg.qa || "qa");
+const comp = path.resolve(base, cfg.composition || "composition/index.html");   // absolute paths allowed (render elsewhere)
+const outDir = path.resolve(base, cfg.out || "export"), qaDir = path.resolve(base, cfg.qa || "qa");
 const jobs = +flag("jobs", Math.max(1, Math.min(6, Math.floor(cpus().length / 2))));
 
 // ---- expand the matrix ----
