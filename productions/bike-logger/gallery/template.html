@@ -59,11 +59,11 @@ footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--line);
 </style>
 
 <div class="wrap">
-  <div class="eyebrow">Bike Logger · cartoon reels · silent</div>
-  <h1>The crew, {{COUNT}} ways.</h1>
-  <p class="lede">Every reel is cut from <b>one composition per piece</b> and the same sourced facts: the Raspberry Pi 5,
-    camera, GPS, BNO085, ultrasonic and Hall sensor drawn as a cartoon crew. Each comes in a <b>fun</b> style and a dry
-    <b>adult</b> one. Tap a tile to play it.</p>
+  <div class="eyebrow">Bike Logger · reels · 60 fps · silent</div>
+  <h1>One bike, {{COUNT}} ways.</h1>
+  <p class="lede">Every reel is cut from <b>one composition per piece</b> and the same sourced facts: the bike and its real
+    parts (Raspberry Pi 5, Camera Module 3 Wide, GPS, BNO085, ultrasonic, A3144 Hall sensor), each moving the way the
+    hardware works. Each comes in a <b>fun</b> voice and a dry <b>adult</b> one. Tap a tile to play it.</p>
   <div class="stats" id="stats"></div>
 
   <div class="rail" role="toolbar" aria-label="Filter reels">
@@ -106,7 +106,7 @@ function tile(it, i) {
   el.innerHTML = `<button type="button" aria-label="Play ${it.name}">${it.cover ? `<img alt="" loading="lazy" src="${it.cover}">` : ""}${it.url ? `<span class="play"></span>` : `<span class="none">Video uploading</span>`}</button>
     <div class="marker" style="--c:${COLOR[it.piece]};--at:${at}%"></div>
     <div class="meta"><strong></strong><em></em>
-      <div class="tags"><span>${it.piece.replace("REEL-", "")}</span><span class="${it.style === "adult" ? "adult" : ""}">${it.style}</span>${it.size === "feed" ? "<span>4:5</span>" : ""}<span>${fmt(it.dur)}</span>${it.qa === 0 ? '<span class="ok">QA ✓</span>' : ""}</div></div>`;
+      <div class="tags"><span>${it.piece.replace("REEL-", "")}</span><span class="${it.style === "adult" ? "adult" : ""}">${it.style}</span>${it.size === "feed" ? "<span>4:5</span>" : ""}<span>${fmt(it.dur)}</span>${it.fps ? `<span>${it.fps} fps</span>` : ""}${it.qa === 0 ? '<span class="ok">QA ✓</span>' : ""}</div></div>`;
   el.querySelector("strong").textContent = it.label;
   el.querySelector("em").textContent = it.basis;
   const btn = el.querySelector("button");

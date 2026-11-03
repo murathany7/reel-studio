@@ -7,5 +7,4 @@ for line in sys.stdin:
     r = re.search(r'([A-Za-z0-9-]+)\.mp4".*?→ "(/_blob/[0-9a-f]+)"', line)
     if r: m["videos"][r.group(1)] = r.group(2)
 json.dump(m, open(P, "w"), indent=2, sort_keys=True)
-json.dump(m["videos"], open(os.path.join(os.path.dirname(__file__), "urls.json"), "w"))
 print(len(m["videos"]), "videos mapped")

@@ -1,82 +1,65 @@
-# REEL-008 — The tunnel (cartoon gag, silent)
-
-> Approved 2026-11-03 and produced. Third of the cartoon series; same cast as REEL-006 (`../REEL-006-crew/refs/cast.png`).
-> A short gag built on one fact: the Hall sensor gives speed and distance even without GPS.
+# REEL-008 — The tunnel (silent, 60 fps)
 
 | Field | Value |
 |---|---|
 | Brand | `brands/bike-logger/` |
-| Type | Reel |
-| Status | `QA passed` (draft for review; see *Variants*) |
-| Size | 1080×1920 (9:16) |
-| Frame rate / length | 30 fps · 11 s |
-| Language | EN |
-| Placement | Organic (`.safe-organic`); short enough for paid too if the copy moves into `.safe` |
-| Engines | **SVG rig + GSAP** (reuses REEL-007's street and bike). No other engine needed |
+| Type | Reel (+ landscape, banner, square) |
+| Status | `QA passed` (draft for review) |
+| Size / length | 1080×1920 · 11.2 s · 60 fps |
+| Placement | Organic; short enough for paid |
+| Engines | Ad kit + the brand's tunnel scene |
 | Sound | Silent |
-| Approved by / date | Murathan, 2026-11-03 ("yeah do it"; cast, names and the two off-palette colours approved with it) |
+| Approved by / date | Murathan, 2026-11-03, revised the same day (parts, not characters) |
 
 ## 2. Why this piece exists
 
 | | |
 |---|---|
-| **Problem it solves** | GPS-only projects that lose speed and distance under bridges and in tunnels |
-| **Benefit / takeaway** | A second sensor that doesn't need the sky: you learn why real systems carry a backup |
-| **Product fact shown** | A3144 Hall + spoke magnet, 1 pulse per turn: speed and distance even without GPS |
-| **Hook** | "GPS just went dark." as the bike rolls into a tunnel |
-| **CTA** | murathanyildirim.com/bike-logger |
+| **Problem** | GPS-only projects lose speed and distance under bridges and in tunnels |
+| **Benefit** | A second sensor that doesn't need the sky: why real systems carry a backup |
+| **Fact shown** | A3144 Hall + spoke magnet, 1 pulse per turn: speed and distance even without GPS |
 
-## 3. Hook variants
+## 3. Hooks
 
-| Var | On-screen text | Opening visual |
-|---|---|---|
-| A | **Tunnel ahead.** | Tunnel mouth growing on the right, Fix's arcs full |
-| B | **No sky, no GPS.** | Fix's arcs fading to grey one by one |
-| C | **Who keeps count in the dark?** | Black frame, only Spin's lamp pulse blinking |
-
-## 4. Storyboard (for approval)
-
-| # | Time | Visual & motion (engine) | On-screen text |
-|---|---|---|---|
-| 1 | 0.0–2.0 | Bike rides toward a tunnel; **Fix** sits on the box with full signal arcs | **Tunnel ahead.** |
-| 2 | 2.0–4.2 | Inside: the frame goes dark except the tunnel lamps; Fix's arcs grey out one by one, its eyes go wide, a `NO FIX` tag over it | 02 · GPS · **Signal gone.** |
-| 3 | 4.2–7.4 | **Spin** taps Fix on the shoulder, then keeps counting: magnet passes flash lamp pulses, a speed readout keeps updating, an odometer keeps rolling | 05 · HALL SENSOR · **The wheel still counts.** · `A3144` `spoke magnet` `1 pulse per turn` |
-| 4 | 7.4–9.0 | Out into the light: Fix's arcs come back, Fix and Spin high-five | **Speed and distance, even without GPS.** |
-| 5 | 9.0–11.0 | End card | **Bike Logger** · Build your own ride recorder. · `murathanyildirim.com/bike-logger` |
-
-The speed readout shows `km/h` ticking as an illustration with no specific value claimed (or blank digits, if
-preferred). The odometer counts turns, not a distance figure.
-
-**Caption + hashtags:**
-> GPS can't see through a tunnel roof. A Hall sensor and one spoke magnet keep counting wheel turns, so speed and
-> distance don't stop. #robotics #raspberrypi #sensors #maker #bike
-
-### ✅ Approval
-
-- [x] Storyboard approved 2026-11-03.
-- Requested changes: also make **adult versions, still cartoony** → every piece renders in a second style (below).
-
-## 6. Fact check (planned)
-
-| Claim on screen | Source |
+| Var | Text |
 |---|---|
-| Speed and distance even without GPS; A3144; spoke magnet; 1 pulse per turn | Brand README *Facts* (live page) |
-| USB GPS | same |
+| A | **Tunnel ahead.** (adult: *Tunnel.*) |
+| B | **No sky, no GPS.** |
+| C | **Who keeps count in the dark?** (adult: *Who counts in the dark?*) |
 
-**Not claimed:** how far, how fast, battery life, safety.
+## 4. Storyboard
 
-## Variants (2026-11-03)
+| # | Time | Visual | Text |
+|---|---|---|---|
+| 1 | 0–2.2 | The bike rides toward a tunnel; GPS arcs full on the box lid | Hook |
+| 2 | 2.2–4.2 | Inside: darker, ceiling lamps passing; the GPS arcs grey out one by one; `NO FIX` tag over the puck | `02 · GPS` *Signal gone.* |
+| 3 | 4.2–7.0 | The Hall sensor keeps glowing once per wheel turn; inset close-up of sensor + magnet; WHEEL TURNS keeps counting (from the real wheel rotation) | `05 · Hall sensor` *The wheel still counts.* + chips |
+| 4 | 7.0–9.0 | Out into the light; GPS arcs return | *Speed and distance, even without GPS.* |
+| 5 | 9.0–11.2 | End card with GPS and Hall sensor | **Bike Logger** · URL |
 
-One composition, six reels (style `fun` | `adult` × hook `A` | `B` | `C`, section 3) plus website and feed sizes:
-`landscape` 1920×1080 (site hero, YouTube), `banner` 1200×628 (link ads, Open Graph) and `square` 1080×1080, listed
-in `variants.json` → `include`. The **adult** style is
-the same story and facts for a grown-up audience: the crew's adult drawing (ink outlines, half-lidded deadpan eyes,
-muted colours), no squash/overshoot or flashes, dry copy (e.g. "Takes every corner personally.").
+The turn count is the drawing's own wheel turns, not a claimed distance or speed.
 
-- Composition: `composition/index.html` (reads `?style=&hook=&size=`), built on the ad kit (`engines/ad-kit`) and
-  the brand's cartoon world (`brands/bike-logger/assets/cartoon/`).
-- Matrix: `variants.json` → `export/manifest.md` (files, lengths), `qa/variants-sheet.jpg`, `qa/<name>/report.md`.
-- The MP4s are not in git (`*.mp4` is ignored); they live in the Artifact gallery linked from `STATUS.md`.
+## Revision 2026-11-03: real parts, no characters, 60 fps
+
+The first cut drew the parts as cartoon characters (faces, arms, hops). Feedback: *"I don't want these weird
+creatures. It should be bike and chips, always making sense and smooth."* So every part is now a flat drawing of the
+real hardware (`brands/bike-logger/assets/cartoon/parts.js`, sheet `../REEL-006-crew/refs/parts.png`), and it only
+moves the way the hardware works: the Pi's cooler spins and its LED blinks, the camera's 102° cone opens, the GPS
+arcs pulse (or fade without a fix), the BNO085's axes lean with the board, the ultrasonic pings, the Hall sensor
+glows when the spoke magnet passes. The bike carries the same sensors (rear camera cone, GPS on the lid, ultrasonic
+at the rack, magnet on a spoke, Hall sensor on the seatstay) and they react to what happens on the road. Objects
+don't bob, hop or wave; entrances rise and settle. Everything renders at 60 fps.
+
+## Variants
+
+One composition, 9 exports: style `fun` | `adult` × hook `A` | `B` | `C` at 9:16, plus website and feed sizes
+(`landscape` 1920×1080 for site heroes and YouTube, `banner` 1200×628 for link ads and Open Graph, `square`
+1080×1080), listed in `variants.json`. **Adult** = the same facts in a dry voice, with muted colours, ink outlines
+and calmer motion.
+
+- `export/manifest.md`: every file with its axes, length, size, fps and QA result. MP4s are not in git; they are in
+  the gallery artifact (`../gallery-assets.json`).
+- `qa/variants-sheet.jpg` (one cover per variant) and `qa/<name>/report.md`.
 
 ## 7. Rebuild
 

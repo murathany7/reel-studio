@@ -19,17 +19,22 @@ Common ad scenarios and persuasion patterns as reusable scenes on the `Studio` c
 </script>
 ```
 
-- `cast(key, style)` returns an actor's SVG (300×300 viewBox, feet at y≈278, SvgRig part ids). Bike Logger's
-  crew: `brands/bike-logger/assets/cartoon/crew.js`.
+- `cast(key, style)` returns an actor's SVG (300×300 viewBox, resting on y≈278). Characters use SvgRig part ids
+  (`#body`, `#eyes`, `#mouth-*`, `#arm-*`). **Objects** (products, parts) add `data-still` to their SVG: they never
+  idle-bob or blink, and the character acts (`AdKit.CHARACTER_ACTS`: wave, talk, hop, nod, shake) are skipped for
+  them. Bike Logger's parts: `brands/bike-logger/assets/cartoon/parts.js`.
+- `motion` overrides the style's motion, e.g. `{ hop: 0, pop: "back.out(1.25)" }` for objects that should rise and
+  settle rather than bounce. `fps` sets the frame rate (Bike Logger renders at 60).
 - `forbid`: the brand's banned words (regex or word). Any string in the spec that matches fails the build.
 - Sizes: `reel` 1080×1920 (organic or `placement: "paid"` safe zones), `feed` 1080×1350, `square` 1080×1080,
   `landscape` 1920×1080 (website hero, YouTube, landing-page video) and `banner` 1200×628 (link ads, Open Graph).
   Landscape puts text on the left 47 % and the stage on the right; every size in px scales with the frame
   (`ctx.k`, CSS `--ak-s`). A scene with fixed geometry calls `c = c.unscaled(layer)` and draws at reel scale.
 - Cuts: scenes start their entrances `AdKit.PRE` (0.12 s) before the cut, while the layer is still hidden, so the
-  first frame after a cut is already moving (QA flags repeated frames at cuts as hitches).
+  first frame after a cut is already moving (QA flags repeated frames at cuts as hitches). Positions before 0 are
+  clamped (GSAP would otherwise shift the whole timeline), and the first scene is visible on frame 0.
 - Styles: `fun` (overshoot, hops, flashes) and `adult` (dry: smaller moves, no squash, no flashes). A brand's
-  characters and theme can switch look per style too (the crew has an adult drawing; `theme.css` has `.ak-adult`).
+  actors and theme can switch look per style too (the parts have an adult drawing; `theme.css` has `.ak-adult`).
 - Text sits in the top 36 % of the safe zone, actors and props below it, so every scene works in every size.
 
 ## Scenes (`scenes.js`)

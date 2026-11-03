@@ -1,88 +1,67 @@
-# REEL-007 — One ride, one timeline (cartoon, silent)
-
-> Approved 2026-11-03 and produced. Second of the cartoon series; same cast as REEL-006 (`../REEL-006-crew/refs/cast.png`).
+# REEL-007 — One ride, one timeline (silent, 60 fps)
 
 | Field | Value |
 |---|---|
 | Brand | `brands/bike-logger/` |
-| Type | Reel |
-| Status | `QA passed` (draft for review; see *Variants*) |
-| Size | 1080×1920 (9:16) |
-| Frame rate / length | 30 fps · 16 s |
-| Language | EN |
-| Placement | Organic (`.safe-organic`) |
-| Engines | **SVG + GSAP** for a side-on cartoon city ride (bike, box on the rack, crew peeking out, parallax street in 3 layers). **SVG rig** for the crew. **Pixi** only for seeded road dashes and speed lines (cheap, many sprites, a pure function of `t`) |
+| Type | Reel (+ landscape, banner) |
+| Status | `QA passed` (draft for review) |
+| Size / length | 1080×1920 · 16.2 s · 60 fps |
+| Placement | Organic |
+| Engines | Ad kit + the brand's ride, replay and street scenes |
 | Sound | Silent |
-| Approved by / date | Murathan, 2026-11-03 ("yeah do it"; cast, names and the two off-palette colours approved with it) |
-
-## 1. Brief
-
-- **Request:** cartoony videos of Bike Logger (2026-11-03). This one sells the payoff: the synced replay.
-- **Must avoid:** safety promises, close-pass numbers, phone in hand, riding against traffic (`compliance.md`).
+| Approved by / date | Murathan, 2026-11-03, revised the same day (parts, not characters) |
 
 ## 2. Why this piece exists
 
 | | |
 |---|---|
-| **Problem it solves** | Sensor projects that each print their own log, and none of them line up |
-| **Benefit / takeaway** | Everything you wired is on one timeline: scrub once and every reading moves together |
-| **Product fact shown** | Dashboard / phone app, one timeline; lean, rear distance, wheel speed (brand fact list) |
-| **Hook** | A cartoon bike rides in; the box lid lifts and five pairs of eyes look out |
-| **CTA** | murathanyildirim.com/bike-logger |
-| **Success metric** | Hook rate, watch-through, link taps |
+| **Problem** | Sensor projects that each print their own log, and none of them line up |
+| **Benefit** | Everything you wired is on one timeline: scrub once and every reading moves together |
+| **Facts shown** | IMU: lean, potholes (acceleration). Ultrasonic: rear distance in metres. Hall: 1 pulse per turn. Dashboard and app: one timeline |
 
-## 3. Hook variants
+## 3. Hooks
 
-| Var | On-screen text | Opening visual |
-|---|---|---|
-| A | **Ride. Record. Replay.** | Bike rolls in from the left, crew peeks out of the box |
-| B | **Your bike has a crew.** | Close on the box under the rack, lid lifts, eyes blink |
-| C | **Every sensor. One timeline.** | The replay scrubber first, then rewind into the ride |
-
-## 4. Storyboard (for approval)
-
-| # | Time | Visual & motion (engine) | On-screen text | Notes |
-|---|---|---|---|---|
-| 1 | 0.0–2.2 | Flat night street, a city bike with the box on the rear rack rolls in (SVG, GSAP parallax, Pixi road dashes). Lid lifts, the crew's eyes look out | **Ride. Record. Replay.** | Rider on the right side of a bike lane, hands on the bars |
-| 2 | 2.2–4.4 | Pothole: the bike hops, **Tilt** bounces in the box; a lamp "bump" tick drops onto a timeline strip at the bottom | 03 · IMU · **Logs every pothole.** | Timeline strip sits above the 22 % bottom zone |
-| 3 | 4.4–6.6 | Corner: the whole bike leans, **Tilt** leans with it; a lean gauge swings | **Feels every lean.** | |
-| 4 | 6.6–9.0 | A cartoon car overtakes on the left with room to spare; **Ping**'s arcs bounce off it; a brake-red band marks the moment on the strip | 04 · ULTRASONIC · **Logs every overtake.** · `in metres` | No number; car overtakes legally |
-| 5 | 9.0–10.8 | Wheel close-up: **Spin** counts magnet passes, counter ticks | **Counts every turn.** | |
-| 6 | 10.8–13.6 | Cut to a cartoon phone (no hand) with the replay: video, map, lean, behind, speed. A finger-free playhead scrubs back; the street scene above rewinds in sync, the crew all point at the same moment | 05 · CODE IT · **Scrub once. Everything moves.** | The payoff beat |
-| 7 | 13.6–16.0 | End card: the crew waves from the box | **Bike Logger** · Build your own ride recorder. · `murathanyildirim.com/bike-logger` | |
-
-**Caption + hashtags:**
-> Five sensors and a camera, one sealed box, one timeline. Scrub the replay and the video, map, lean, rear distance
-> and speed all move together. #robotics #raspberrypi #maker #cycling #embedded
-
-### ✅ Approval
-
-- [x] Storyboard approved 2026-11-03.
-- Requested changes: also make **adult versions, still cartoony** → every piece renders in a second style (below).
-
-## 6. Fact check (planned)
-
-| Claim on screen | Source |
+| Var | Text |
 |---|---|
-| Lean, potholes (acceleration) from the IMU | Brand README *Facts*: BNO085 "corners, potholes, hard brakes" |
-| Rear distance logged in metres with the video | same |
-| Wheel turns counted | same: A3144, 1 pulse per turn |
-| One timeline, scrub once and everything moves | same: Software |
+| A | **Ride. Record. Replay.** |
+| B | **Five sensors on one bike.** (adult: *Five sensors. One bike.*) |
+| C | **Every sensor. One timeline.** |
 
-**Not claimed:** close-pass numbers, safety, "dashcam", price, skill level.
+## 4. Storyboard
 
-## Variants (2026-11-03)
+| # | Time | Visual (all from the bike's own sensors) | Text |
+|---|---|---|---|
+| 1 | 0–2.2 | Night street, the bike rides in the bike lane; rear camera cone behind it, GPS arcs on the lid | Hook |
+| 2 | 2.2–4.4 | Pothole under the wheels, the bike bumps; inset: the BNO085 tilting; a lamp marker drops on the timeline strip | `03 · IMU` *Logs every pothole.* |
+| 3 | 4.4–6.5 | Inset: the BNO085 leans and recovers | *Feels every lean.* |
+| 4 | 6.5–8.6 | A car comes from behind and overtakes with room; the rack's ultrasonic pings it; inset: the probe pinging; brake-red marker | `04 · Ultrasonic` *Logs every overtake.* |
+| 5 | 8.6–10.6 | The Hall sensor on the seatstay glows each time the spoke magnet passes; inset: sensor and magnet | `05 · Hall sensor` *Counts every turn.* |
+| 6 | 10.6–13.8 | Phone with the replay: video, map, lean, behind, speed; the playhead plays, scrubs back, plays | `Code it` *Scrub once. Everything moves.* |
+| 7 | 13.8–16.2 | End card with IMU, ultrasonic, Hall sensor | **Bike Logger** · URL |
 
-One composition, six reels (style `fun` | `adult` × hook `A` | `B` | `C`, section 3) plus website and feed sizes:
-`landscape` 1920×1080 (site hero, YouTube), `banner` 1200×628 (link ads, Open Graph) and `square` 1080×1080, listed
-in `variants.json` → `include`. The **adult** style is
-the same story and facts for a grown-up audience: the crew's adult drawing (ink outlines, half-lidded deadpan eyes,
-muted colours), no squash/overshoot or flashes, dry copy (e.g. "Takes every corner personally.").
+Riding follows the brand rules: right side of the lane, hands on the bars, the car overtakes with room. No distance numbers on screen; the replay's charts have no values.
 
-- Composition: `composition/index.html` (reads `?style=&hook=&size=`), built on the ad kit (`engines/ad-kit`) and
-  the brand's cartoon world (`brands/bike-logger/assets/cartoon/`).
-- Matrix: `variants.json` → `export/manifest.md` (files, lengths), `qa/variants-sheet.jpg`, `qa/<name>/report.md`.
-- The MP4s are not in git (`*.mp4` is ignored); they live in the Artifact gallery linked from `STATUS.md`.
+## Revision 2026-11-03: real parts, no characters, 60 fps
+
+The first cut drew the parts as cartoon characters (faces, arms, hops). Feedback: *"I don't want these weird
+creatures. It should be bike and chips, always making sense and smooth."* So every part is now a flat drawing of the
+real hardware (`brands/bike-logger/assets/cartoon/parts.js`, sheet `../REEL-006-crew/refs/parts.png`), and it only
+moves the way the hardware works: the Pi's cooler spins and its LED blinks, the camera's 102° cone opens, the GPS
+arcs pulse (or fade without a fix), the BNO085's axes lean with the board, the ultrasonic pings, the Hall sensor
+glows when the spoke magnet passes. The bike carries the same sensors (rear camera cone, GPS on the lid, ultrasonic
+at the rack, magnet on a spoke, Hall sensor on the seatstay) and they react to what happens on the road. Objects
+don't bob, hop or wave; entrances rise and settle. Everything renders at 60 fps.
+
+## Variants
+
+One composition, 9 exports: style `fun` | `adult` × hook `A` | `B` | `C` at 9:16, plus website and feed sizes
+(`landscape` 1920×1080 for site heroes and YouTube, `banner` 1200×628 for link ads and Open Graph, `square`
+1080×1080), listed in `variants.json`. **Adult** = the same facts in a dry voice, with muted colours, ink outlines
+and calmer motion.
+
+- `export/manifest.md`: every file with its axes, length, size, fps and QA result. MP4s are not in git; they are in
+  the gallery artifact (`../gallery-assets.json`).
+- `qa/variants-sheet.jpg` (one cover per variant) and `qa/<name>/report.md`.
 
 ## 7. Rebuild
 

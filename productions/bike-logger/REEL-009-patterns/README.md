@@ -11,9 +11,9 @@
 | Type | Reel pack (A/B test material) |
 | Status | `QA passed` (draft pack for review: pick winners to publish) |
 | Size | 1080×1920 (9:16), 1080×1350 (4:5), 1080×1080 (1:1), 1920×1080 (16:9), 1200×628 (1.91:1) |
-| Frame rate / length | 30 fps · 8–14 s each (`export/manifest.md`) |
+| Frame rate / length | 60 fps · 8–14 s each (`export/manifest.md`) |
 | Placement | Reels: organic safe zone. Feed and square: 70 px margins. Landscape and banner: 5 % sides, 7.5 % top and bottom, text left, stage right |
-| Engines | Ad kit (GSAP + SVG rig) + the brand's cartoon world (bike, street, replay) |
+| Engines | Ad kit (GSAP + SVG) + the brand's parts and world (bike with its sensors, street, replay). No characters (revised 2026-11-03) |
 | Sound | Silent |
 | Approved by / date | Direction approved by Murathan, 2026-11-03 (request above). Copy is the approved REEL-006–008 copy plus the brief's lines; review before publishing |
 
@@ -28,15 +28,15 @@
 | `demo` | Hook → the replay scrubbed → end card | Show the result |
 | `faq` | "No GPS in a tunnel?" → "The wheel still counts." · "Where do rides go?" → "Your rides stay with you." | Two-sided messages (Hovland 1949) |
 | `three` | Wire it. Code it. Ride. | Rule of three (Shu & Carlson 2014) |
-| `unboxing` | Box rattles open → the whole crew on a timeline | Anticipation (Loewenstein 1987) |
+| `unboxing` | Box opens → all six parts on a timeline, each lighting as the playhead passes | Anticipation (Loewenstein 1987) |
 | `curiosity` | A silhouette and "What's in the box?" → "A Raspberry Pi 5." | Information gap (Loewenstein 1994) |
 | `interrupt` | A colour jolt, "Wait." → hook | Orienting response (Sokolov 1963) |
 | `ikea` | "Don't buy a recorder." → "Build one." (3 steps) → replay → "You built that." | IKEA effect (Norton, Mochon & Ariely 2012) |
 | `progress` | A build checklist ticking 0/6 → 6/6 with a progress bar → replay | Goal gradient (Kivetz et al. 2006); no false pre-ticks |
 | `myth` | Fact → myth struck out → fact again (speed without GPS) | Truth sandwich (Lewandowsky et al. 2020) |
 | `reciprocity` | A free tip: speed = turns × wheel size ÷ time → "Want to wire it up?" | Reciprocity (Cialdini 1984) |
-| `foot` | "Start with one sensor." → the Hall sensor → the whole crew | Foot in the door (Freedman & Fraser 1966) |
-| `story` | The box opens; on a ride Tilt feels a pothole, Ping a car, Spin counts; the replay | Narrative transportation (Green & Brock 2000) |
+| `foot` | "Start with one sensor." → the Hall sensor → all six parts | Foot in the door (Freedman & Fraser 1966) |
+| `story` | The box opens; on a ride the IMU feels a pothole, the ultrasonic measures a car, the Hall sensor counts; the replay | Narrative transportation (Green & Brock 2000) |
 | `loss` | "Every ride you don't record is gone": the corner, the pothole… fade → "Record the next one." | Loss framing (Tversky & Kahneman 1981), no fear |
 | `contrast` | Blinking LED kit vs Bike Logger, three rows each | Contrast effect |
 | `specificity` | 102° · 9-axis · IP65 (200 × 120 × 75 mm) | Precise numbers (Schindler & Yalch 2006) |

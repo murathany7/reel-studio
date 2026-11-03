@@ -1,103 +1,67 @@
-# REEL-006 — Meet the crew (cartoon, silent)
-
-> Approved 2026-11-03 and produced. Part of a cartoon series of three (REEL-006, REEL-007, REEL-008) that share one cast:
-> the real parts drawn as flat characters. The cast sheet is `refs/cast.png` (drawn by `refs/crew.js`).
+# REEL-006 — Meet the parts (silent, 60 fps)
 
 | Field | Value |
 |---|---|
 | Brand | `brands/bike-logger/` |
-| Type | Reel |
-| Status | `QA passed` (draft for review; see *Variants*) |
-| Size | 1080×1920 (9:16) |
-| Frame rate / length | 30 fps · 16 s |
-| Language | EN |
-| Placement | Organic (copy inside `.safe-organic`) |
-| Engines | **SVG rig** (`engines/svg-rig.js`) for the crew: hop, blink, wave, squash, all in code, no designer file needed. **GSAP** for type and chips. No 3D, no capture: the look asked for is cartoon, and flat SVG renders fast and md5-stable |
-| Sound | Silent: all meaning on screen |
-| Approved by / date | Murathan, 2026-11-03 ("yeah do it"; cast, names and the two off-palette colours approved with it) |
-
-## 1. Brief
-
-- **Request:** "make some cartoony videos of Bike Logger at murathanyildirim.com/bike-logger" (2026-11-03).
-- **Reference:** the brand's facts and look (`brands/bike-logger/README.md`). The live page could not be fetched
-  from this session (network policy), so every fact comes from the brand README's list taken from that page.
-- **Must avoid:** prices, kit contents, skill level, "easy", safety promises, part-maker logos (`compliance.md`).
+| Type | Reel (+ landscape, square, banner) |
+| Status | `QA passed` (draft for review) |
+| Size / length | 1080×1920 · 17.4 s · 60 fps |
+| Placement | Organic (`.safe-organic`) |
+| Engines | Ad kit (GSAP + SVG) with the brand's parts and world |
+| Sound | Silent |
+| Approved by / date | Murathan, 2026-11-03 (storyboard), revised the same day (parts, not characters) |
 
 ## 2. Why this piece exists
 
 | | |
 |---|---|
-| **Problem it solves** | Kits that are a pile of anonymous boards: you don't know what each one does until you've wired it |
-| **Benefit / takeaway** | Each part has one job you can name; wire all five to one Pi and they work as a team |
-| **Product fact shown** | The Pi, camera, GPS, IMU, ultrasonic and Hall sensor, each with its job (brand fact list) |
-| **Hook** | The sealed box rattles, then pops open: "Meet the crew." |
+| **Problem** | Kits that are a pile of anonymous boards: you don't know what each one does until you've wired it |
+| **Benefit** | Each part has one job you can name; wire all of them to one Pi and they replay the ride together |
+| **Facts shown** | Pi 5 (8 GB, active cooler), Camera Module 3 Wide (102°), USB GPS (u-blox, antenna up), BNO085 (lean, pitch, acceleration), ultrasonic (waterproof probes, in metres), A3144 + spoke magnet (1 pulse per turn), IP65 box |
 | **CTA** | murathanyildirim.com/bike-logger |
-| **Success metric** | Hook rate, saves, shares |
 
-## 3. Hook variants
+## 3. Hooks
 
-| Var | On-screen text | Opening visual |
+| Var | Text | Opening visual |
 |---|---|---|
-| A | BUILD YOUR OWN RIDE RECORDER · **Meet the crew.** | Closed IP65 box rattling on its own |
-| B | **Six parts. One box.** | Parts fall one by one into the open box |
-| C | **Who's in the box?** | Two eyes blink in the dark gap under the lid |
+| A | BUILD YOUR OWN RIDE RECORDER · **Meet the parts.** (adult: *Everything under the rack.*) | The IP65 box, a slow push-in, the lid opens and light comes up |
+| B | **Five sensors. One Pi.** (adult: *Five sensors. One sealed box.*) | Box, push-in, lid opens |
+| C | **What's in the box?** | Box held longer, lid opens late |
 
-## 4. Storyboard (for approval)
+## 4. Storyboard
 
-| # | Time | Visual & motion (engine) | On-screen text | Notes |
-|---|---|---|---|---|
-| 1 | 0.0–2.0 | The grey IP65 box sits on a night floor; it rattles twice (anticipation), the lid flips open with a bounce (SVG + GSAP) | BUILD YOUR OWN RIDE RECORDER · **Meet the crew.** | Hook. Box low, text in top third |
-| 2 | 2.0–4.0 | **Brain** hops out (squash/stretch), its cooler fan spins up, it waves (SVG rig) | 00 · THE BRAIN · **Runs the show.** · `Raspberry Pi 5` `8 GB` `active cooler` | |
-| 3 | 4.0–5.8 | **Cam** hops out, turns its lens to the back, blinks with an aperture iris | 01 · CAMERA · **Watches behind.** · `Camera Module 3 Wide` `102°` | |
-| 4 | 5.8–7.6 | **Fix** hops out, antenna up, signal arcs pulse in one by one | 02 · GPS · **Knows where.** · `USB GPS` `u-blox` `antenna up` | |
-| 5 | 7.6–9.4 | **Tilt** hops out and leans left, right, then bounces as a pothole bump hits it; x/y/z arrows wobble | 03 · 9-AXIS IMU · **Feels every lean.** · `BNO085` `lean` `pitch` `acceleration` | |
-| 6 | 9.4–11.2 | **Ping** hops out, sends sound arcs to the right; they bounce back from a cartoon car's bumper edging in | 04 · ULTRASONIC · **Measures behind.** · `waterproof probes` `in metres` | No number shown (compliance: numbers only from a real ride) |
-| 7 | 11.2–13.0 | **Spin** hops out; its magnet buddy circles past on a spoke, each pass flashes a lamp pulse and ticks a counter 1, 2, 3 | 05 · HALL SENSOR · **Counts the wheel.** · `A3144` `spoke magnet` `1 pulse per turn` | |
-| 8 | 13.0–16.0 | The crew lines up on a long timeline bar; a playhead sweeps and they all bounce on the same beat. End card | **Wire it. Code it. Ride.** · Bike Logger · `murathanyildirim.com/bike-logger` | End card held 2 s |
+| # | Time | Visual | Text |
+|---|---|---|---|
+| 1 | 0–2.1 | Box, push-in, lid opens with a lamp glow | Hook |
+| 2–7 | 2.1–13.2 | Each part rises out of the open box doing its job (1.85 s each), then slides off as the next rises: Pi cooler spinning + LED, camera cone opening to 102°, GPS arcs pulsing, BNO085 tilting with its axes, ultrasonic pinging, Hall sensor with the magnet passing and a TURNS count | `00 · The brain` *Runs the show.* … `05 · Hall sensor` *Counts the wheel.* + spec chips |
+| 8 | 13.2–15.8 | All six on a timeline with labels; each lights as the playhead passes | **Wire it. Code it. Ride.** |
+| 9 | 15.8–18 | End card with Pi, GPS and Hall sensor | **Bike Logger** · Build your own ride recorder. · URL |
 
-**Caption + hashtags:**
-> Six parts, one sealed box under the rack. Each one does one job; wire them to a Raspberry Pi and they replay your
-> whole ride on one timeline. #robotics #raspberrypi #maker #diyelectronics #bike
+## 6. Fact check
 
-### Decisions needed with this storyboard (whole series)
+Every chip and line is in the brand README's fact list (live page). Not claimed: price, kit contents, skill level, "easy", any number not listed there.
 
-1. **A cast for a brand with no mascot.** The README says *Mascot / characters: none*. Approving this adds the crew
-   (`refs/cast.png`) to the brand; I'd save it to `brands/bike-logger/assets/characters/` and note it in the README.
-2. **Two colours outside the palette:** Brain and Cam are PCB green (`#3fa66b`), Tilt is purple (`#7a5bd6`), so six
-   characters read as six. Alternative: palette only (Brain signal blue, Tilt chip grey); less distinct.
-3. **Names:** Brain, Cam, Fix, Tilt, Ping, Spin. Change any.
+## Revision 2026-11-03: real parts, no characters, 60 fps
 
-### ✅ Approval
+The first cut drew the parts as cartoon characters (faces, arms, hops). Feedback: *"I don't want these weird
+creatures. It should be bike and chips, always making sense and smooth."* So every part is now a flat drawing of the
+real hardware (`brands/bike-logger/assets/cartoon/parts.js`, sheet `../REEL-006-crew/refs/parts.png`), and it only
+moves the way the hardware works: the Pi's cooler spins and its LED blinks, the camera's 102° cone opens, the GPS
+arcs pulse (or fade without a fix), the BNO085's axes lean with the board, the ultrasonic pings, the Hall sensor
+glows when the spoke magnet passes. The bike carries the same sensors (rear camera cone, GPS on the lid, ultrasonic
+at the rack, magnet on a spoke, Hall sensor on the seatstay) and they react to what happens on the road. Objects
+don't bob, hop or wave; entrances rise and settle. Everything renders at 60 fps.
 
-- [x] Storyboard approved 2026-11-03.
-- Requested changes: also make **adult versions, still cartoony** → every piece renders in a second style (below).
+## Variants
 
-## 6. Fact check (planned)
+One composition, 10 exports: style `fun` | `adult` × hook `A` | `B` | `C` at 9:16, plus website and feed sizes
+(`landscape` 1920×1080 for site heroes and YouTube, `banner` 1200×628 for link ads and Open Graph, `square`
+1080×1080), listed in `variants.json`. **Adult** = the same facts in a dry voice, with muted colours, ink outlines
+and calmer motion.
 
-| Claim on screen | Source |
-|---|---|
-| Raspberry Pi 5, 8 GB, active cooler | Brand README *Facts* (live page) |
-| Camera Module 3 Wide, 102°, rear-facing | same |
-| USB GPS, u-blox, antenna up | same |
-| BNO085, 9-axis: lean, pitch, acceleration | same |
-| Ultrasonic, waterproof probes, logged in metres | same |
-| A3144 Hall, spoke magnet, 1 pulse per turn | same |
-| IP65 box, one timeline replay | same |
-
-**Not claimed:** price, kit contents, skill level, "easy", any distance number.
-
-## Variants (2026-11-03)
-
-One composition, six reels (style `fun` | `adult` × hook `A` | `B` | `C`, section 3) plus website and feed sizes:
-`landscape` 1920×1080 (site hero, YouTube), `banner` 1200×628 (link ads, Open Graph) and `square` 1080×1080, listed
-in `variants.json` → `include`. The **adult** style is
-the same story and facts for a grown-up audience: the crew's adult drawing (ink outlines, half-lidded deadpan eyes,
-muted colours), no squash/overshoot or flashes, dry copy (e.g. "Takes every corner personally.").
-
-- Composition: `composition/index.html` (reads `?style=&hook=&size=`), built on the ad kit (`engines/ad-kit`) and
-  the brand's cartoon world (`brands/bike-logger/assets/cartoon/`).
-- Matrix: `variants.json` → `export/manifest.md` (files, lengths), `qa/variants-sheet.jpg`, `qa/<name>/report.md`.
-- The MP4s are not in git (`*.mp4` is ignored); they live in the Artifact gallery linked from `STATUS.md`.
+- `export/manifest.md`: every file with its axes, length, size, fps and QA result. MP4s are not in git; they are in
+  the gallery artifact (`../gallery-assets.json`).
+- `qa/variants-sheet.jpg` (one cover per variant) and `qa/<name>/report.md`.
 
 ## 7. Rebuild
 
