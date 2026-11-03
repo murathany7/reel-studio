@@ -145,7 +145,7 @@ try {
       "-f", "image2pipe", "-framerate", String(meta.fps), "-c:v", "png", "-i", "-",
       ...(opts.audio ? ["-i", opts.audio] : []),
       // aq-mode=3 + light deblock keeps smooth brand gradients from banding/shifting between frames.
-      "-c:v", "libx264", "-profile:v", "high", "-preset", "slow", "-crf", "16",
+      "-c:v", "libx264", "-profile:v", "high", "-preset", process.env.X264_PRESET || "medium", "-crf", "16",
       "-x264-params", "aq-mode=3:aq-strength=0.9:deblock=-1,-1", "-g", String(meta.fps * 2),
       "-pix_fmt", "yuv420p", "-r", String(meta.fps), "-fps_mode", "cfr",
       "-color_primaries", "bt709", "-color_trc", "bt709", "-colorspace", "bt709",
