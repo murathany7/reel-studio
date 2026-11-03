@@ -4,6 +4,10 @@ The memory of this repo. Read it first, update it last.
 
 ## Now
 
+- 2026-11-03: **publishing is manual for now.** `release.yml` removed (its npm and PyPI steps never succeeded: no
+  trusted publishers on either registry). CI (`ci.yml`) only tests: Linux Node 20/24, macOS, Homebrew formula style;
+  green on `main`. Release steps by hand: `packaging/README.md`. Registries are still at 0.2.1, GHCR has 0.2.2/0.2.3
+  from the old workflow. The unused `npm`/`pypi` GitHub environments can be deleted in repo settings.
 - Repo scaffolded 2026-11-02: core renderer (generalised from `../marketing-reels-skill/renderer`), engine
   adapters, skills, brand and production templates, engines demo.
 - 2026-11-02: Bike Logger brand added (facts, look, voice, compliance, brand-check still).

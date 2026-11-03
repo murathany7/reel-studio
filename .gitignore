@@ -28,6 +28,7 @@ productions/yuppo/
 # Python package build output (packaging/build-python.sh)
 python/src/reel_studio/kit/
 python/dist/
+dist/
 
 # Personal distribution stats (check-metrics): local only
 scripts/metrics.mjs

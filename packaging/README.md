@@ -9,33 +9,26 @@ One kit, three registries. The npm package is the source of truth: the PyPI whee
 | PyPI | `pipx install reel-studio`, `uvx reel-studio init` | `python/` + `packaging/build-python.sh` |
 | Homebrew | `brew install murathany7/reel-studio/reel-studio` | `packaging/homebrew/reel-studio.rb` → tap repo `murathany7/homebrew-reel-studio` |
 
-## Release (automatic)
+## Release (by hand)
+
+Publishing is manual for now: there is no release workflow. CI (`.github/workflows/ci.yml`) only tests. Release from a
+clean, green `main`:
 
 ```sh
-packaging/bump.sh 0.2.2     # package.json, plugin.json, pyproject.toml
-git commit -am "v0.2.2" && git push
+packaging/bump.sh 0.2.4                     # package.json, plugin.json, pyproject.toml
+git commit -am "v0.2.4" && git push         # wait for CI to pass
+npm publish --access public                 # npm (asks for 2FA in the browser)
+packaging/build-python.sh && (cd python && uv publish)          # PyPI (a PyPI API token)
+packaging/update-formula.sh ../homebrew-reel-studio             # then commit and push the tap
+npm pack --pack-destination dist && gh release create v0.2.4 --generate-notes dist/*.tgz python/dist/*
 ```
 
-On every push to `main`, `.github/workflows/release.yml` checks whether `package.json`'s version is on npm. If it is
-not, it runs the full test suite, then publishes npm (with provenance) and PyPI (trusted publishing), creates the
-`v<version>` tag and GitHub Release with the packages attached, and bumps the Homebrew tap. Pushes that do not change
-the version only run CI (`.github/workflows/ci.yml`).
+Docker image (optional), amd64 + arm64 on GHCR:
 
-## One-time setup (maintainer)
-
-| Where | What |
-|---|---|
-| npmjs.com → reel-studio → Settings → Trusted publishing | GitHub Actions, `murathany7/reel-studio`, workflow `release.yml`, environment `npm` |
-| pypi.org → reel-studio → Publishing → Add a trusted publisher | GitHub, `murathany7/reel-studio`, workflow `release.yml`, environment `pypi` |
-| GitHub → murathany7/reel-studio → Settings → Secrets → Actions | `HOMEBREW_TAP_TOKEN`: a fine-grained token with Contents read/write on `murathany7/homebrew-reel-studio` only |
-
-Without `HOMEBREW_TAP_TOKEN` the release still publishes npm and PyPI and leaves a warning; update the tap by hand.
-
-## Release by hand
-
-1. `npm publish`
-2. `packaging/build-python.sh`, then `cd python && uv publish`
-3. `packaging/update-formula.sh ../homebrew-reel-studio`, then commit and push the tap
+```sh
+docker buildx build --platform linux/amd64,linux/arm64 --push \
+  -t ghcr.io/murathany7/reel-studio:0.2.4 -t ghcr.io/murathany7/reel-studio:latest .
+```
 
 ## Tests
 
