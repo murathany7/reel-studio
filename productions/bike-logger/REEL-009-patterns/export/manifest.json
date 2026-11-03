@@ -1,0 +1,72 @@
+{
+  "id": "REEL-009",
+  "composition": "composition/index.html",
+  "variants": [
+    {
+      "axes": {
+        "pattern": "spotlight",
+        "look": "blueprint",
+        "style": "fun",
+        "size": "reel"
+      },
+      "name": "REEL-009-spotlight-blueprint-fun-reel",
+      "query": "pattern=spotlight&look=blueprint&style=fun&size=reel",
+      "file": "export/REEL-009-spotlight-blueprint-fun-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 7.8,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-spotlight-blueprint-fun-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-spotlight-blueprint-fun-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "spotlight",
+        "look": "daylight",
+        "style": "adult",
+        "size": "reel"
+      },
+      "name": "REEL-009-spotlight-daylight-adult-reel",
+      "query": "pattern=spotlight&look=daylight&style=adult&size=reel",
+      "file": "export/REEL-009-spotlight-daylight-adult-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 7.8,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-spotlight-daylight-adult-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-spotlight-daylight-adult-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "spotlight",
+        "look": "type",
+        "style": "fun",
+        "size": "reel"
+      },
+      "name": "REEL-009-spotlight-type-fun-reel",
+      "query": "pattern=spotlight&look=type&style=fun&size=reel",
+      "file": "export/REEL-009-spotlight-type-fun-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 7.8,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-spotlight-type-fun-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-spotlight-type-fun-reel/report.md",
+        "code": 0
+      }
+    }
+  ]
+}
