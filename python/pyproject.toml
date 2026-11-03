@@ -1,0 +1,35 @@
+[build-system]
+requires = ["hatchling>=1.24"]
+build-backend = "hatchling.build"
+
+[project]
+name = "reel-studio"
+version = "0.2.1"  # set from ../package.json by packaging/build-python.sh
+description = "Make marketing reels, ads and posts with code, for any brand, with Claude Code. HTML on one clock → MP4."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.9"
+authors = [{ name = "Murathan Yıldırım" }]
+keywords = ["video", "reels", "marketing", "claude-code", "gsap", "threejs", "pixi", "blender", "ffmpeg"]
+classifiers = [
+  "Environment :: Console",
+  "Operating System :: MacOS",
+  "Operating System :: POSIX :: Linux",
+  "Topic :: Multimedia :: Video",
+]
+
+[project.urls]
+Homepage = "https://github.com/murathany7/reel-studio"
+Issues = "https://github.com/murathany7/reel-studio/issues"
+
+[project.scripts]
+reel-studio = "reel_studio.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/reel_studio"]
+# kit/ is generated and gitignored; artifacts makes hatch ship it anyway
+artifacts = ["src/reel_studio/kit/**"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src/reel_studio", "README.md", "pyproject.toml"]
+artifacts = ["src/reel_studio/kit/**"]

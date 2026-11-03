@@ -22,11 +22,18 @@ The memory of this repo. Read it first, update it last.
 - 2026-11-02: npm package `reel-studio` (root `package.json`, `bin/reel-studio.mjs`): `npx reel-studio init` runs
   `init-project.sh --with-skills`, which also copies the skills into `.claude/skills/`. Keep `version` equal in
   `package.json` and `.claude-plugin/plugin.json`.
+- 2026-11-03: npm 0.2.0 had 266 downloads on publish day (mostly mirrors and bots), 15 unique repo cloners.
+  Version 0.2.1 prepared (scene-3d skill notes) for npm, PyPI and Homebrew; none published yet. PyPI wheel
+  (`python/`, built by `packaging/build-python.sh`) bundles the `npm pack` files; Homebrew formula
+  (`packaging/homebrew/reel-studio.rb`) installs the npm tarball and needs tap repo `murathany7/homebrew-reel-studio`.
+  Both tested locally (`reel-studio init` + a still render; `brew test` and `brew audit --strict` pass). Release steps:
+  `packaging/README.md`.
 
 ## Brands
 
 | Brand | Folder | State | Open questions |
 |---|---|---|---|
+| Yuppo | `brands/yuppo/` (gitignored: company assets, commercial font) | Ready 2026-11-03, moved from `../marketing-reels-skill/brand/` (full kit in `kit/`); check card `check.html` renders with Pangea Afrikan, Inter and Po | Pangea Afrikan ad licence (paid pieces use Inter Tight meanwhile)? Verified user count and store rating? ElevenLabs MCP needs `/mcp` auth for VO. Other open questions: `../marketing-reels-skill/STATUS.md` |
 | Bike Logger | `brands/bike-logger/` | Ready; check card `check.html` renders with the site's fonts and colours | Price, kit contents and skill level for the kit? A voice for VO pieces? Copy Archivo + Plex Mono into `assets/fonts/` so renders work offline? |
 
 ## Productions
@@ -34,6 +41,9 @@ The memory of this repo. Read it first, update it last.
 | ID | Brand | Title | Status | Export |
 |---|---|---|---|---|
 | REEL-001 | bike-logger | Robotics starter kit (silent, 28 s) | delivered | `productions/bike-logger/REEL-001-kit/export/REEL-001-kit-en.mp4` |
+| REEL-003 | yuppo | One wake-up time, the whole day planned (Three.js day dial + GSAP, silent, 15 s) | QA passed, silent cut (VO + music pending ElevenLabs auth) | `productions/yuppo/REEL-003-one-wake-up/export/REEL-003-one-wake-up-en.mp4` |
+| REEL-004 | yuppo | 3 a.m. question? Ask Po (Pixi night sky + Lottie Po + GSAP, silent, 16 s) | QA passed, silent cut (VO + music pending) | `productions/yuppo/REEL-004-ask-po-3am/export/REEL-004-ask-po-3am-en.mp4` |
+| REEL-005 | yuppo | What Star parents get, 7-day trial ad (Blender physics plate + GSAP, silent, 14 s) | QA passed, silent cut (music + SFX pending) | `productions/yuppo/REEL-005-star-trial/export/REEL-005-star-trial-en.mp4` |
 | REEL-002 | bike-logger | Engines sampler: Three.js tray, Blender camera housing, Pixi sensor streams (silent, 14.8 s) | QA passed, draft for review | `productions/bike-logger/REEL-002-engines/export/REEL-002-engines-en.mp4` |
 
 ## Engines
@@ -42,17 +52,21 @@ The memory of this repo. Read it first, update it last.
 |---|---|---|
 | GSAP | ✅ | |
 | SVG rig | ✅ | GSAP ignores CSS `transform-origin` on SVG; the rig sets pivots itself (`data-pivot` to override) |
-| Lottie | ✅ ported | Not re-tested in this repo; first brand with a Lottie file should render a still to confirm |
+| Lottie | ✅ | Tested 2026-11-03 with Yuppo's Po files (REEL-004): seeks frame-exactly, md5-stable. Load `/core/node_modules/lottie-web/build/player/lottie.min.js` before the runtime |
 | Pixi v8 | ✅ | `autoStart: false`, ticker stopped, drawn on seek |
 | Three.js r170 | ✅ | `preserveDrawingBuffer: true`; WebGL needs the GPU flags in `core/render.mjs` (`CHROME_ARGS`) |
-| Blender 5.2 | ✅ | Eevee. Backdrop must be camera-only or it flattens toon bands. 2 s at 540×960 ≈ 17 s |
+| Blender 5.2 | ✅ | Eevee. Backdrop must be camera-only or it flattens toon bands. 2 s at 540×960 ≈ 17 s. Rigid-body plates work (REEL-005: 14 s at 1080×1920 in 6 min 20 s) |
 | Page capture | ✅ | REEL-001's drive module reproduces the original capture (PSNR ≈41 dB on a 4 s test). Generic `capture.mjs` tested on a rAF test page: frame n = n/fps, two runs identical. Serve pages with HTTP Range support if they seek `<video>` (python's http.server does not) |
 | Rive | 🔜 | Needs a `.riv` to build and test the adapter |
 
 ## Decisions
 
+- 2026-11-03: Yuppo moved here as `brands/yuppo/`; its brand and productions are gitignored because this repo is public. Yuppo IDs continue after the old repo's (next: REEL-003).
+
 - 2026-11-02: one renderer, many engines on one clock, instead of one engine per style or a framework like
   Remotion (keeps plain HTML, no licence, keeps the existing QA). Revisit if rendering needs to run in parallel or in the cloud.
+- 2026-11-03: other registries wrap the npm package instead of porting the CLI: PyPI and Homebrew only (crates.io,
+  RubyGems and Go would just shell out to Node and bash).
 - 2026-11-02: productions are grouped by brand: `productions/<brand>/<ID>-<slug>/`.
 - 2026-11-02: Bike Logger's audience is robotics kit learners; every piece sells learning by building, with the replay as the payoff.
 
@@ -60,7 +74,6 @@ The memory of this repo. Read it first, update it last.
 
 - Parallel rendering (split frames across several Chrome pages) once pieces with Three.js or captures get long.
 - Rive adapter when a `.riv` file exists.
-- Decide whether Yuppo moves here as `brands/yuppo/` or stays in `../marketing-reels-skill`.
 
 ## Learnings
 
@@ -79,5 +92,16 @@ The memory of this repo. Read it first, update it last.
 - **HTML labels on 3D (2026-11-02):** Three.js refreshes world matrices only inside `render()`. Before projecting
   a point to place a tag, call `camera.updateMatrixWorld()` and the object's parent `updateMatrixWorld()`, or the
   tag follows the previously rendered frame.
+- **Blender rigid bodies in background (2026-11-03):** `bpy.ops.ptcache.bake_all()` ends a `-b` run silently (no
+  render, no error), and a plain animation render left every body at rest. Step the scene with `scene.frame_set(f)`
+  for every frame at the end of `build()`; the render then reads the filled cache. Delay a body's drop by keyframing
+  `rigid_body.kinematic` True → False at its release frame.
+- **Blender plate on a flat brand colour (2026-11-03):** a lit floor never matches the page colour and its horizon
+  shows as a band. Tilt the camera so no horizon is in frame, key with a sun (no falloff), and make the floor an
+  emission of the brand colour multiplied by a ramp on `ShaderToRGB` of a diffuse, so only shadows darken it.
+- **Check every Lottie before using it (2026-11-03):** Yuppo's `success.json` Po frowns; brand rules forbid a sad Po.
+  Render a grid of a brand's Lotties at a few times before picking one.
+- **zsh does not word-split `$var`:** `set -- $x` in a loop passes one argument, so paths break with
+  `window.__meta is not a function` (the page 404'd). Use a function with explicit arguments.
 - `qa-video.sh` flags dark-brand frames (>98 % near-black) as "black" even with content on screen: look before fixing.
 - Hard cuts show up as "jumps" in `qa-video.sh`; note them as intended in the QA report.

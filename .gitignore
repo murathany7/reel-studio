@@ -17,3 +17,11 @@ node_modules/
 # Generated QA evidence for examples (rebuild with the commands in each README)
 examples/*/qa/
 __pycache__/
+
+# Yuppo is a company brand: its kit, fonts (Pangea Afrikan is commercial) and productions stay out of the public repo
+brands/yuppo/
+productions/yuppo/
+
+# Python package build output (packaging/build-python.sh)
+python/src/reel_studio/kit/
+python/dist/

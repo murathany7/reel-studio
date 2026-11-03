@@ -15,6 +15,11 @@ description: Build a 3D shot for a video - live in the composition with Three.js
   to the import map). Wrap the load in `Studio.wait(...)`. Put model files in the brand's `assets/models/` or the production's `composition/`.
 - Cartoon look: `toon(color, { steps })` + `outline(mesh, { thickness })`. Hard light: one `DirectionalLight` + low `AmbientLight`.
 - Animated GLB clips: create an `AnimationMixer`, then in `update` call `mixer.setTime(t - start)`. Never `mixer.update(delta)`.
+- HTML tags that follow 3D points: in `update(t)`, call `camera.updateMatrixWorld()` and the parent's
+  `updateMatrixWorld()` before `vector.applyMatrix4(obj.matrixWorld).project(camera)`. Three.js refreshes these only
+  inside `render()`, so without it a tag follows the previous frame. Example: `productions/bike-logger/REEL-002-engines`.
+- CAD meshes as JSON (vertices + indices): `toNonIndexed()` + `computeVertexNormals()` gives crisp flat facets.
+  Render with `threeLayer(..., { pixelRatio: 2 })` for supersampled edges.
 - Physics: bake it (simulate at a fixed 1/120 s step into an array before the first frame) and look up by `t`.
 
 ## Blender (plate)

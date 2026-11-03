@@ -81,6 +81,13 @@ It copies the renderer into the folder, installs it and checks Chrome and ffmpeg
 npx reel-studio init
 ```
 
+**Or with Python or Homebrew**, the same kit and the same `init` (the renderer still runs on Node):
+
+```bash
+pipx install reel-studio && reel-studio init      # or: uvx reel-studio init
+brew install murathany7/reel-studio/reel-studio && reel-studio init   # brings Node and ffmpeg
+```
+
 **Or clone it** and work inside the repo:
 
 ```bash
