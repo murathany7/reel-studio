@@ -1,16 +1,31 @@
 # REEL-006 variants
 
-10 of 10 rendered. Rebuild: `node scripts/variants.mjs productions/bike-logger/REEL-006-crew/variants.json`
+25 of 25 rendered (merged from this machine and the render sessions).
 
-| File | style | hook | size | Length | Size | fps | QA |
-|---|---|---|---|---|---|---|---|
-| `REEL-006-fun-hookA-reel.mp4` | fun | A | reel | 18 s | 1080x1920 | 60 | ✅ |
-| `REEL-006-fun-hookB-reel.mp4` | fun | B | reel | 18 s | 1080x1920 | 60 | ✅ |
-| `REEL-006-fun-hookC-reel.mp4` | fun | C | reel | 18.3 s | 1080x1920 | 60 | ✅ |
-| `REEL-006-adult-hookA-reel.mp4` | adult | A | reel | 18 s | 1080x1920 | 60 | ✅ |
-| `REEL-006-adult-hookB-reel.mp4` | adult | B | reel | 18 s | 1080x1920 | 60 | ✅ |
-| `REEL-006-adult-hookC-reel.mp4` | adult | C | reel | 18.3 s | 1080x1920 | 60 | ✅ |
-| `REEL-006-fun-hookA-landscape.mp4` | fun | A | landscape | 18 s | 1920x1080 | 60 | ✅ |
-| `REEL-006-adult-hookA-landscape.mp4` | adult | A | landscape | 18 s | 1920x1080 | 60 | ✅ |
-| `REEL-006-fun-hookC-square.mp4` | fun | C | square | 18.3 s | 1080x1080 | 60 | ✅ |
-| `REEL-006-adult-hookB-banner.mp4` | adult | B | banner | 18 s | 1200x628 | 60 | ✅ |
+| File | hook | look | size | style | Length | Size | fps | QA |
+|---|---|---|---|---|---|---|---|---|
+| `REEL-006-adult-hookA-landscape.mp4` | A |  | landscape | adult | 18 s | 1920x1080 | 60 | ✅ |
+| `REEL-006-adult-hookA-reel.mp4` | A |  | reel | adult | 18 s | 1080x1920 | 60 | ✅ |
+| `REEL-006-adult-hookB-banner.mp4` | B |  | banner | adult | 18 s | 1200x628 | 60 | ✅ |
+| `REEL-006-adult-hookB-reel.mp4` | B |  | reel | adult | 18 s | 1080x1920 | 60 | ✅ |
+| `REEL-006-adult-hookC-reel.mp4` | C |  | reel | adult | 18.3 s | 1080x1920 | 60 | ✅ |
+| `REEL-006-blueprint-adult-hookA-reel.mp4` | A | blueprint | reel | adult | 18 s | 1080x1920 | 60 | ✅ |
+| `REEL-006-blueprint-adult-hookB-reel.mp4` | B | blueprint | reel | adult | 18 s | 1080x1920 | 60 | ✅ |
+| `REEL-006-blueprint-fun-hookA-landscape.mp4` | A | blueprint | landscape | fun | 18 s | 1920x1080 | 60 | ✅ |
+| `REEL-006-blueprint-fun-hookA-reel.mp4` | A | blueprint | reel | fun | 18 s | 1080x1920 | 60 | ✅ |
+| `REEL-006-blueprint-fun-hookB-reel.mp4` | B | blueprint | reel | fun | 18 s | 1080x1920 | 60 | ✅ |
+| `REEL-006-daylight-adult-hookA-banner.mp4` | A | daylight | banner | adult | 18 s | 1200x628 | 60 | ✅ |
+| `REEL-006-daylight-adult-hookA-reel.mp4` | A | daylight | reel | adult | 18 s | 1080x1920 | 60 | ✅ |
+| `REEL-006-daylight-adult-hookB-reel.mp4` | B | daylight | reel | adult | 18 s | 1080x1920 | 60 | ✅ |
+| `REEL-006-daylight-fun-hookA-reel.mp4` | A | daylight | reel | fun | 18 s | 1080x1920 | 60 | ✅ |
+| `REEL-006-daylight-fun-hookB-reel.mp4` | B | daylight | reel | fun | 18 s | 1080x1920 | 60 | ✅ |
+| `REEL-006-fun-hookA-landscape.mp4` | A |  | landscape | fun | 18 s | 1920x1080 | 60 | ✅ |
+| `REEL-006-fun-hookA-reel.mp4` | A |  | reel | fun | 18 s | 1080x1920 | 60 | ✅ |
+| `REEL-006-fun-hookB-reel.mp4` | B |  | reel | fun | 18 s | 1080x1920 | 60 | ✅ |
+| `REEL-006-fun-hookC-reel.mp4` | C |  | reel | fun | 18.3 s | 1080x1920 | 60 | ✅ |
+| `REEL-006-fun-hookC-square.mp4` | C |  | square | fun | 18.3 s | 1080x1080 | 60 | ✅ |
+| `REEL-006-type-adult-hookA-reel.mp4` | A | type | reel | adult | 18 s | 1080x1920 | 60 | ✅ |
+| `REEL-006-type-adult-hookB-reel.mp4` | B | type | reel | adult | 18 s | 1080x1920 | 60 | ✅ |
+| `REEL-006-type-fun-hookA-reel.mp4` | A | type | reel | fun | 18 s | 1080x1920 | 60 | ✅ |
+| `REEL-006-type-fun-hookB-reel.mp4` | B | type | reel | fun | 18 s | 1080x1920 | 60 | ✅ |
+| `REEL-006-type-fun-hookC-square.mp4` | C | type | square | fun | 18.3 s | 1080x1080 | 60 | ✅ |

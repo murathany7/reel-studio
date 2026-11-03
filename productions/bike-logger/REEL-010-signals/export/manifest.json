@@ -1,0 +1,468 @@
+{
+  "id": "REEL-010",
+  "composition": "composition/index.html",
+  "variants": [
+    {
+      "axes": {
+        "look": "blueprint",
+        "style": "adult",
+        "hook": "A",
+        "size": "reel"
+      },
+      "name": "REEL-010-blueprint-adult-hookA-reel",
+      "query": "look=blueprint&style=adult&hook=A&size=reel",
+      "file": "export/REEL-010-blueprint-adult-hookA-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 12.4,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-010-blueprint-adult-hookA-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-010-blueprint-adult-hookA-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "look": "blueprint",
+        "style": "adult",
+        "hook": "B",
+        "size": "landscape"
+      },
+      "name": "REEL-010-blueprint-adult-hookB-landscape",
+      "query": "look=blueprint&style=adult&hook=B&size=landscape",
+      "file": "export/REEL-010-blueprint-adult-hookB-landscape.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 12.4,
+      "size": "1920x1080",
+      "fps": 60,
+      "cover": "export/covers/REEL-010-blueprint-adult-hookB-landscape.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-010-blueprint-adult-hookB-landscape/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "look": "blueprint",
+        "style": "adult",
+        "hook": "B",
+        "size": "reel"
+      },
+      "name": "REEL-010-blueprint-adult-hookB-reel",
+      "query": "look=blueprint&style=adult&hook=B&size=reel",
+      "file": "export/REEL-010-blueprint-adult-hookB-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 12.4,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-010-blueprint-adult-hookB-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-010-blueprint-adult-hookB-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "look": "blueprint",
+        "style": "adult",
+        "hook": "C",
+        "size": "reel"
+      },
+      "name": "REEL-010-blueprint-adult-hookC-reel",
+      "query": "look=blueprint&style=adult&hook=C&size=reel",
+      "file": "export/REEL-010-blueprint-adult-hookC-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 12.4,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-010-blueprint-adult-hookC-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-010-blueprint-adult-hookC-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "look": "blueprint",
+        "style": "fun",
+        "hook": "A",
+        "size": "reel"
+      },
+      "name": "REEL-010-blueprint-fun-hookA-reel",
+      "query": "look=blueprint&style=fun&hook=A&size=reel",
+      "file": "export/REEL-010-blueprint-fun-hookA-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 12.4,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-010-blueprint-fun-hookA-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-010-blueprint-fun-hookA-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "look": "blueprint",
+        "style": "fun",
+        "hook": "B",
+        "size": "reel"
+      },
+      "name": "REEL-010-blueprint-fun-hookB-reel",
+      "query": "look=blueprint&style=fun&hook=B&size=reel",
+      "file": "export/REEL-010-blueprint-fun-hookB-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 12.4,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-010-blueprint-fun-hookB-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-010-blueprint-fun-hookB-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "look": "blueprint",
+        "style": "fun",
+        "hook": "C",
+        "size": "reel"
+      },
+      "name": "REEL-010-blueprint-fun-hookC-reel",
+      "query": "look=blueprint&style=fun&hook=C&size=reel",
+      "file": "export/REEL-010-blueprint-fun-hookC-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 12.4,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-010-blueprint-fun-hookC-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-010-blueprint-fun-hookC-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "look": "cartoon",
+        "style": "adult",
+        "hook": "A",
+        "size": "reel"
+      },
+      "name": "REEL-010-cartoon-adult-hookA-reel",
+      "query": "look=cartoon&style=adult&hook=A&size=reel",
+      "file": "export/REEL-010-cartoon-adult-hookA-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 12.4,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-010-cartoon-adult-hookA-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-010-cartoon-adult-hookA-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "look": "cartoon",
+        "style": "adult",
+        "hook": "B",
+        "size": "reel"
+      },
+      "name": "REEL-010-cartoon-adult-hookB-reel",
+      "query": "look=cartoon&style=adult&hook=B&size=reel",
+      "file": "export/REEL-010-cartoon-adult-hookB-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 12.4,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-010-cartoon-adult-hookB-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-010-cartoon-adult-hookB-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "look": "cartoon",
+        "style": "adult",
+        "hook": "C",
+        "size": "reel"
+      },
+      "name": "REEL-010-cartoon-adult-hookC-reel",
+      "query": "look=cartoon&style=adult&hook=C&size=reel",
+      "file": "export/REEL-010-cartoon-adult-hookC-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 12.4,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-010-cartoon-adult-hookC-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-010-cartoon-adult-hookC-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "look": "cartoon",
+        "style": "fun",
+        "hook": "A",
+        "size": "landscape"
+      },
+      "name": "REEL-010-cartoon-fun-hookA-landscape",
+      "query": "look=cartoon&style=fun&hook=A&size=landscape",
+      "file": "export/REEL-010-cartoon-fun-hookA-landscape.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 12.4,
+      "size": "1920x1080",
+      "fps": 60,
+      "cover": "export/covers/REEL-010-cartoon-fun-hookA-landscape.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-010-cartoon-fun-hookA-landscape/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "look": "cartoon",
+        "style": "fun",
+        "hook": "A",
+        "size": "reel"
+      },
+      "name": "REEL-010-cartoon-fun-hookA-reel",
+      "query": "look=cartoon&style=fun&hook=A&size=reel",
+      "file": "export/REEL-010-cartoon-fun-hookA-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 12.4,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-010-cartoon-fun-hookA-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-010-cartoon-fun-hookA-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "look": "cartoon",
+        "style": "fun",
+        "hook": "B",
+        "size": "reel"
+      },
+      "name": "REEL-010-cartoon-fun-hookB-reel",
+      "query": "look=cartoon&style=fun&hook=B&size=reel",
+      "file": "export/REEL-010-cartoon-fun-hookB-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 12.4,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-010-cartoon-fun-hookB-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-010-cartoon-fun-hookB-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "look": "cartoon",
+        "style": "fun",
+        "hook": "C",
+        "size": "reel"
+      },
+      "name": "REEL-010-cartoon-fun-hookC-reel",
+      "query": "look=cartoon&style=fun&hook=C&size=reel",
+      "file": "export/REEL-010-cartoon-fun-hookC-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 12.4,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-010-cartoon-fun-hookC-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-010-cartoon-fun-hookC-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "look": "daylight",
+        "style": "adult",
+        "hook": "A",
+        "size": "reel"
+      },
+      "name": "REEL-010-daylight-adult-hookA-reel",
+      "query": "look=daylight&style=adult&hook=A&size=reel",
+      "file": "export/REEL-010-daylight-adult-hookA-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 12.4,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-010-daylight-adult-hookA-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-010-daylight-adult-hookA-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "look": "daylight",
+        "style": "adult",
+        "hook": "B",
+        "size": "reel"
+      },
+      "name": "REEL-010-daylight-adult-hookB-reel",
+      "query": "look=daylight&style=adult&hook=B&size=reel",
+      "file": "export/REEL-010-daylight-adult-hookB-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 12.4,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-010-daylight-adult-hookB-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-010-daylight-adult-hookB-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "look": "daylight",
+        "style": "adult",
+        "hook": "C",
+        "size": "reel"
+      },
+      "name": "REEL-010-daylight-adult-hookC-reel",
+      "query": "look=daylight&style=adult&hook=C&size=reel",
+      "file": "export/REEL-010-daylight-adult-hookC-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 12.4,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-010-daylight-adult-hookC-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-010-daylight-adult-hookC-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "look": "daylight",
+        "style": "fun",
+        "hook": "A",
+        "size": "reel"
+      },
+      "name": "REEL-010-daylight-fun-hookA-reel",
+      "query": "look=daylight&style=fun&hook=A&size=reel",
+      "file": "export/REEL-010-daylight-fun-hookA-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 12.4,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-010-daylight-fun-hookA-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-010-daylight-fun-hookA-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "look": "daylight",
+        "style": "fun",
+        "hook": "B",
+        "size": "reel"
+      },
+      "name": "REEL-010-daylight-fun-hookB-reel",
+      "query": "look=daylight&style=fun&hook=B&size=reel",
+      "file": "export/REEL-010-daylight-fun-hookB-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 12.4,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-010-daylight-fun-hookB-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-010-daylight-fun-hookB-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "look": "daylight",
+        "style": "fun",
+        "hook": "C",
+        "size": "reel"
+      },
+      "name": "REEL-010-daylight-fun-hookC-reel",
+      "query": "look=daylight&style=fun&hook=C&size=reel",
+      "file": "export/REEL-010-daylight-fun-hookC-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 12.4,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-010-daylight-fun-hookC-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-010-daylight-fun-hookC-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "look": "daylight",
+        "style": "fun",
+        "hook": "C",
+        "size": "square"
+      },
+      "name": "REEL-010-daylight-fun-hookC-square",
+      "query": "look=daylight&style=fun&hook=C&size=square",
+      "file": "export/REEL-010-daylight-fun-hookC-square.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 12.4,
+      "size": "1080x1080",
+      "fps": 60,
+      "cover": "export/covers/REEL-010-daylight-fun-hookC-square.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-010-daylight-fun-hookC-square/report.md",
+        "code": 0
+      }
+    }
+  ]
+}

@@ -49,7 +49,8 @@ The memory of this repo. Read it first, update it last.
   exclude × include → parallel renders, manifest, covers, contact sheet, QA). Sizes: reel, feed, square, landscape
   1920×1080, banner 1200×628. Skill: `ad-variants`. Bike Logger got flat drawings of its real parts (no characters), a bike
   carrying its sensors with a pedalling rider, street, box, ride, replay and tunnel scenes
-  (`brands/bike-logger/assets/cartoon/`). 82 variants across REEL-006–009 at 60 fps; MP4s live in the gallery
+  (`brands/bike-logger/assets/cartoon/`). **225 variants delivered** (REEL-006–011, all QA without ❌, 60 fps),
+  rendered here and in three parallel cloud sessions (branches `bike-logger-renders-s1..s3`, merged); MP4s live in the gallery
   artifact https://claude.ai/artifact/K5XziAL1h6YFb1JfaJwxJn (asset map `productions/bike-logger/gallery-assets.json`), not in git.
 - 2026-11-03: distribution to do by hand (the maintainer, not an agent): Claude plugin directory at
   claude.ai/directory/manage (submit any time); awesome-claude-code via its web issue form only, from 2026-11-16 (repo
@@ -129,8 +130,13 @@ The memory of this repo. Read it first, update it last.
   scene visible up front.
 - **instanceof across realms:** `w instanceof RegExp` is false for a regex made in another realm (node:vm tests,
   iframes). Check `Object.prototype.toString.call(w) === "[object RegExp]"`.
-- **Render cost (2026-11-03):** ad-kit reels (SVG + GSAP) render ≈ 45 s per 11 s of 1080×1920 on one core; on 4 cores
-  `--jobs 4` with `--qa` does about 25 variants an hour.
+- **Render cost (2026-11-03):** at 60 fps, x264 `-preset slow` was ~40 % of the CPU; `medium` (default now,
+  `X264_PRESET` to change) made a 4-core run 1.8× faster at the same CRF. More `--jobs` than cores doesn't help; to go
+  faster, split the matrix with `--only` across cloud sessions (each renders, QAs, uploads to the gallery artifact and
+  pushes its covers/QA/asset map to its own branch; merge manifests by variant name).
+- **Don't hide rests with a slow zoom (2026-11-03):** a 2 % push-in per scene moves edges < 1 px per frame, so the
+  rasteriser steps them and QA finds *more* repeated frames. Repeated frames at the very end of eased moves are
+  sub-pixel motion, not stutter; leave them.
 - **rm with a relative glob after cd** is blocked by the agent's safety check; delete by one explicit absolute path.
 
 - **Missing video plate (2026-11-02):** a `<video>` whose file 404s fires `error` before the page script runs, so

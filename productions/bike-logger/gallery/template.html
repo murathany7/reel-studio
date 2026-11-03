@@ -130,7 +130,8 @@ function render() {
   const shown = DATA.filter((d) => (state.piece === "all" || d.piece === state.piece) && (state.look === "all" || d.look === state.look) && (state.style === "all" || d.style === state.style) && (state.size === "all" || d.size === state.size));
   const list = document.getElementById("list"); list.replaceChildren();
   for (const k of Object.keys(PIECES)) {
-    const rows = shown.filter((d) => d.piece === k); if (!rows.length) continue;
+    const ORDER = { reel: 0, feed: 1, square: 2, landscape: 3, banner: 4 };
+    const rows = shown.filter((d) => d.piece === k).sort((x, y) => ORDER[x.size] - ORDER[y.size]); if (!rows.length) continue;
     const sec = document.createElement("section"); sec.className = "section";
     sec.innerHTML = `<h2></h2><p></p><div class="grid"></div>`;
     sec.querySelector("h2").innerHTML = `<span></span><small>${k} · ${rows.length} reel${rows.length === 1 ? "" : "s"}</small>`;
