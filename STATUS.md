@@ -37,6 +37,13 @@ The memory of this repo. Read it first, update it last.
   at 1, 3, 4.6 s), a full video through `qa-video.sh`. Release (`release.yml`) publishes when `package.json`'s version
   is not on npm: `packaging/bump.sh <v>` + push. Needs one-time trusted-publisher setup on npm and PyPI and a
   `HOMEBREW_TAP_TOKEN` secret (`packaging/README.md`). `core/render.mjs` uses SwiftShader for WebGL off macOS.
+- 2026-11-03: Docker image (`Dockerfile`: Node 22, Chromium, ffmpeg, Noto/DejaVu fonts, the kit from `npm pack`).
+  Tested locally: `reel-studio init`, md5-stable stills, the engines demo video. `release.yml` job `docker` pushes
+  `ghcr.io/murathany7/reel-studio:<v>` and `:latest` (amd64 + arm64); after its first push, set the GHCR package to
+  public once (GitHub → Packages → reel-studio → Package settings).
+- 2026-11-03: distribution to do by hand (the maintainer, not an agent): Claude plugin directory at
+  claude.ai/directory/manage (submit any time); awesome-claude-code via its web issue form only, from 2026-11-16 (repo
+  must be 14 days old, human-submitted); Show HN, Reddit, Product Hunt, one reel a week on short-video platforms.
 
 ## Brands
 

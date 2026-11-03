@@ -1,12 +1,12 @@
 {
   "name": "reel-studio",
   "displayName": "Reel Studio",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Agency-quality reels, ads and posts made by Claude Code, for any brand. Free; no per-video fees. Brief → storyboard → approval → HTML on one clock → frame-by-frame QA → MP4.",
   "author": { "name": "Murathan Yıldırım", "url": "https://github.com/murathany7" },
   "homepage": "https://github.com/murathany7/reel-studio",
   "repository": "https://github.com/murathany7/reel-studio",
   "license": "MIT",
-  "keywords": ["video", "reels", "marketing", "gsap", "threejs", "blender", "ffmpeg"],
+  "keywords": ["video", "reels", "marketing", "claude-code", "claude-skills", "ai-video", "video-generation", "video-ads", "motion-graphics", "instagram-reels", "tiktok", "gsap", "threejs", "pixi", "blender", "ffmpeg", "headless-chrome", "remotion-alternative"],
   "skills": "./.claude/skills/"
 }

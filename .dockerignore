@@ -1,0 +1,9 @@
+.git
+**/node_modules
+python/dist
+python/src/reel_studio/kit
+productions/*
+!productions/_TEMPLATE
+brands/*
+!brands/_template
+docs

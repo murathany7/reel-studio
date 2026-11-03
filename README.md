@@ -95,6 +95,13 @@ pipx install reel-studio && reel-studio init      # or: uvx reel-studio init
 brew install murathany7/reel-studio/reel-studio && reel-studio init   # brings Node and ffmpeg
 ```
 
+**Or with Docker**, with Node, Chromium, ffmpeg and fonts inside, nothing to install (Linux renders use software WebGL):
+
+```bash
+docker run --rm -it -v "$PWD":/work ghcr.io/murathany7/reel-studio reel-studio init
+docker run --rm -v "$PWD":/work ghcr.io/murathany7/reel-studio node core/render.mjs video <page>.html out.mp4
+```
+
 **Or clone it** and work inside the repo:
 
 ```bash
