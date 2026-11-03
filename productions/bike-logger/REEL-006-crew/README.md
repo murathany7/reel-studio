@@ -69,3 +69,10 @@ and calmer motion.
 node scripts/variants.mjs productions/bike-logger/REEL-006-crew/variants.json --qa
 node core/render.mjs video "productions/bike-logger/REEL-006-crew/composition/index.html?style=adult&hook=B&size=landscape" /tmp/REEL-006.mp4
 ```
+
+## Looks (2026-11-03)
+
+`variants-looks.json` renders the same piece in three more looks (`?look=`): **blueprint** (white line art of
+the bike, street and parts on a drafting grid, signals in amber), **daylight** (the light version, brand CTA kept)
+and **type** (kinetic typography, words revealed one by one, no part illustrations). Rebuild:
+`node scripts/variants.mjs productions/bike-logger/<this folder>/variants-looks.json --qa`.

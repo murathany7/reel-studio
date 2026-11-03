@@ -74,6 +74,8 @@ The memory of this repo. Read it first, update it last.
 | REEL-006 | bike-logger | Meet the parts: each rises out of the box doing its job (ad kit, silent, 60 fps, 17.4 s), fun + adult × 3 hooks + web sizes | QA passed, draft for review | 10 variants: `export/manifest.md` · gallery |
 | REEL-007 | bike-logger | One ride, one timeline: the bike's sensors on a city ride → synced replay (ad kit, silent, 60 fps, 16.2 s) | QA passed, draft for review | 9 variants: `export/manifest.md` · gallery |
 | REEL-008 | bike-logger | The tunnel: GPS drops out, the Hall sensor keeps counting (ad kit, silent, 60 fps, 11.2 s) | QA passed, draft for review | 9 variants: `export/manifest.md` · gallery |
+| REEL-010 | bike-logger | Five signals: every sensor's trace on one clock (data look, silent, 60 fps, 12.4 s) | QA passed, draft for review | 21 variants: `export/manifest.md` · gallery |
+| REEL-011 | bike-logger | The box in 3D: Three.js toon IP65 box opens, Pi 5 cooler spins (silent, 60 fps, 11.8 s) | QA passed, draft for review | 16 variants: `export/manifest.md` · gallery |
 | REEL-009 | bike-logger | Persuasion pattern pack: 19 patterns × fun/adult + 16 feed/square/landscape/banner (silent, 60 fps, 8–14 s) | QA passed, draft pack: pick winners | 54 variants: `export/manifest.md` · gallery |
 
 ## Engines
@@ -94,6 +96,8 @@ The memory of this repo. Read it first, update it last.
 - 2026-11-03: **Bike Logger has no characters.** A cartoon crew (parts with faces) was approved, built, then
   rejected by the maintainer: "bike and chips, always making sense and smooth". Parts are drawn as the real hardware
   and only move the way it works; the bike carries the sensors. "Adult" = dry copy, muted colours, ink outlines.
+- 2026-11-03: not everything cartoony: every Bike Logger piece also renders as **blueprint**, **daylight** and
+  **type** (`variants-looks.json`), plus a data piece (REEL-010) and a 3D piece (REEL-011). 225 variants in all.
 - 2026-11-03: Bike Logger pieces render at 60 fps ("I want them to flow really smooth").
 - 2026-11-03: rendered MP4s are stored outside git and GitHub: in a private claude.ai Artifact gallery with its own
   asset storage (videos upload from disk; Drive via the MCP connector would mean base64 through the model's context).

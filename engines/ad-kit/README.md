@@ -30,6 +30,8 @@ Common ad scenarios and persuasion patterns as reusable scenes on the `Studio` c
   `landscape` 1920×1080 (website hero, YouTube, landing-page video) and `banner` 1200×628 (link ads, Open Graph).
   Landscape puts text on the left 47 % and the stage on the right; every size in px scales with the frame
   (`ctx.k`, CSS `--ak-s`). A scene with fixed geometry calls `c = c.unscaled(layer)` and draws at reel scale.
+- `look` adds a `look-<name>` class to the stage so a brand theme can restyle a whole piece (Bike Logger: blueprint,
+  daylight, type). `kinetic: true` splits every title into masked words revealed one after another.
 - Cuts: scenes start their entrances `AdKit.PRE` (0.12 s) before the cut, while the layer is still hidden, so the
   first frame after a cut is already moving (QA flags repeated frames at cuts as hitches). Positions before 0 are
   clamped (GSAP would otherwise shift the whole timeline), and the first scene is visible on frame 0.

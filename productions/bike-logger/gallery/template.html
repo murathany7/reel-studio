@@ -40,6 +40,9 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .tile { min-width: 0; display: flex; flex-direction: column; gap: 8px; }
 .tile button { all: unset; cursor: pointer; display: block; position: relative; aspect-ratio: 9 / 16; max-width: 100%; border-radius: 6px; overflow: hidden; background: var(--panel); border: 1px solid var(--line); }
 .tile.feed button { aspect-ratio: 4 / 5; }
+.tile.square button { aspect-ratio: 1 / 1; }
+.tile.landscape button { aspect-ratio: 16 / 9; }
+.tile.banner button { aspect-ratio: 1200 / 628; }
 .tile img, .tile video { width: 100%; height: 100%; object-fit: cover; display: block; }
 .tile .play { position: absolute; inset: auto 10px 10px auto; width: 34px; height: 34px; border-radius: 50%; background: rgba(6,8,10,.75); border: 1px solid var(--line); display: grid; place-items: center; }
 .tile .play::before { content: ""; border-left: 11px solid var(--ink); border-top: 7px solid transparent; border-bottom: 7px solid transparent; margin-left: 3px; }
@@ -63,11 +66,13 @@ footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--line);
   <h1>One bike, {{COUNT}} ways.</h1>
   <p class="lede">Every reel is cut from <b>one composition per piece</b> and the same sourced facts: the bike and its real
     parts (Raspberry Pi 5, Camera Module 3 Wide, GPS, BNO085, ultrasonic, A3144 Hall sensor), each moving the way the
-    hardware works. Each comes in a <b>fun</b> voice and a dry <b>adult</b> one. Tap a tile to play it.</p>
+    hardware works. Four looks (illustrated, blueprint, daylight, kinetic type), plus a data piece and a 3D one, each in a
+    <b>fun</b> voice and a dry <b>adult</b> one. Tap a tile to play it.</p>
   <div class="stats" id="stats"></div>
 
   <div class="rail" role="toolbar" aria-label="Filter reels">
     <div class="group" id="f-piece"><span>Piece</span></div>
+    <div class="group" id="f-look"><span>Look</span></div>
     <div class="group" id="f-style"><span>Style</span></div>
     <div class="group" id="f-size"><span>Size</span></div>
   </div>
@@ -80,8 +85,8 @@ footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--line);
 <script>
 const DATA = /*DATA*/[];
 const PIECES = /*PIECES*/{};
-const COLOR = { "REEL-006": "var(--lamp)", "REEL-007": "var(--brake)", "REEL-008": "var(--signal)", "REEL-009": "var(--imu)" };
-const state = { piece: "all", style: "all", size: "all" };
+const COLOR = { "REEL-006": "var(--lamp)", "REEL-007": "var(--brake)", "REEL-008": "var(--signal)", "REEL-009": "var(--imu)", "REEL-010": "#58e08a", "REEL-011": "#eceae4" };
+const state = { piece: "all", look: "all", style: "all", size: "all" };
 try { Object.assign(state, JSON.parse(localStorage.getItem("blr-filter") || "{}")); } catch (e) {}
 
 function chips(id, key, opts) {
@@ -95,18 +100,19 @@ function chips(id, key, opts) {
   }
 }
 chips("f-piece", "piece", [["all", "All"], ...Object.keys(PIECES).map((k) => [k, k.replace("REEL-", "") + " " + PIECES[k][0], COLOR[k]])]);
+chips("f-look", "look", [["all", "All"], ["cartoon", "Illustrated"], ["blueprint", "Blueprint"], ["daylight", "Daylight"], ["type", "Type"]]);
 chips("f-style", "style", [["all", "All"], ["fun", "Fun"], ["adult", "Adult"]]);
-chips("f-size", "size", [["all", "All"], ["reel", "9:16"], ["feed", "4:5"]]);
+chips("f-size", "size", [["all", "All"], ["reel", "9:16"], ["feed", "4:5"], ["square", "1:1"], ["landscape", "16:9"], ["banner", "1.91:1"]]);
 
 const fmt = (s) => (s == null ? "" : s.toFixed(1) + " s");
 function tile(it, i) {
   const el = document.createElement("div");
-  el.className = "tile" + (it.size === "feed" ? " feed" : "");
+  el.className = "tile" + (it.size !== "reel" ? " " + it.size : "");
   const at = 8 + ((i * 37) % 80);
   el.innerHTML = `<button type="button" aria-label="Play ${it.name}">${it.cover ? `<img alt="" loading="lazy" src="${it.cover}">` : ""}${it.url ? `<span class="play"></span>` : `<span class="none">Video uploading</span>`}</button>
     <div class="marker" style="--c:${COLOR[it.piece]};--at:${at}%"></div>
     <div class="meta"><strong></strong><em></em>
-      <div class="tags"><span>${it.piece.replace("REEL-", "")}</span><span class="${it.style === "adult" ? "adult" : ""}">${it.style}</span>${it.size === "feed" ? "<span>4:5</span>" : ""}<span>${fmt(it.dur)}</span>${it.fps ? `<span>${it.fps} fps</span>` : ""}${it.qa === 0 ? '<span class="ok">QA ✓</span>' : ""}</div></div>`;
+      <div class="tags"><span>${it.piece.replace("REEL-", "")}</span><span class="${it.style === "adult" ? "adult" : ""}">${it.style}</span>${it.look !== "cartoon" ? `<span>${it.look}</span>` : ""}${it.size !== "reel" ? `<span>${{ feed: "4:5", square: "1:1", landscape: "16:9", banner: "1.91:1" }[it.size]}</span>` : ""}<span>${fmt(it.dur)}</span>${it.fps ? `<span>${it.fps} fps</span>` : ""}${it.qa === 0 ? '<span class="ok">QA ✓</span>' : ""}</div></div>`;
   el.querySelector("strong").textContent = it.label;
   el.querySelector("em").textContent = it.basis;
   const btn = el.querySelector("button");
@@ -119,9 +125,9 @@ function tile(it, i) {
   return el;
 }
 function render() {
-  for (const [id, key] of [["f-piece", "piece"], ["f-style", "style"], ["f-size", "size"]])
+  for (const [id, key] of [["f-piece", "piece"], ["f-look", "look"], ["f-style", "style"], ["f-size", "size"]])
     document.querySelectorAll(`#${id} .chip`).forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.v === state[key])));
-  const shown = DATA.filter((d) => (state.piece === "all" || d.piece === state.piece) && (state.style === "all" || d.style === state.style) && (state.size === "all" || d.size === state.size));
+  const shown = DATA.filter((d) => (state.piece === "all" || d.piece === state.piece) && (state.look === "all" || d.look === state.look) && (state.style === "all" || d.style === state.style) && (state.size === "all" || d.size === state.size));
   const list = document.getElementById("list"); list.replaceChildren();
   for (const k of Object.keys(PIECES)) {
     const rows = shown.filter((d) => d.piece === k); if (!rows.length) continue;
@@ -135,7 +141,7 @@ function render() {
   }
   if (!shown.length) list.innerHTML = '<p class="empty">No reels match these filters. Pick "All" in one of the rows above.</p>';
   const secs = DATA.reduce((a, d) => a + (d.dur || 0), 0);
-  document.getElementById("stats").innerHTML = `<span><b>${DATA.length}</b> reels</span><span><b>${DATA.filter((d) => d.style === "adult").length}</b> adult</span><span><b>${new Set(DATA.filter((d) => d.pattern).map((d) => d.pattern)).size}</b> ad patterns</span><span><b>${Math.round(secs / 60)}</b> min of footage</span><span>showing <b>${shown.length}</b></span>`;
+  document.getElementById("stats").innerHTML = `<span><b>${DATA.length}</b> reels</span><span><b>${DATA.filter((d) => d.style === "adult").length}</b> adult</span><span><b>${new Set(DATA.filter((d) => d.pattern).map((d) => d.pattern)).size}</b> ad patterns</span><span><b>${new Set(DATA.map((d) => d.look)).size}</b> looks</span><span><b>${Math.round(secs / 60)}</b> min of footage</span><span>showing <b>${shown.length}</b></span>`;
 }
 render();
 </script>

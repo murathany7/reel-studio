@@ -9,6 +9,8 @@ PIECES = {
   "REEL-007": ("One ride, one timeline", "On a city ride the bike's own sensors log a pothole, a lean, an overtake and every wheel turn, then the replay scrubs."),
   "REEL-008": ("The tunnel", "In a tunnel the GPS loses its fix; the Hall sensor keeps pulsing once per wheel turn."),
   "REEL-009": ("Pattern pack", "The same facts arranged by 19 ad patterns."),
+  "REEL-010": ("Five signals", "Each sensor's own trace on one clock: the pothole, the overtake and the tunnel line up on every row."),
+  "REEL-011": ("The box in 3D", "The IP65 box at its real proportions opens; the Pi 5's cooler spins inside."),
 }
 PAT = {
  "pas": ("Problem, agitate, solve", "Pain-point ad"), "bab": ("Before, after, bridge", "Transformation"),
@@ -24,7 +26,9 @@ PAT = {
 }
 HOOKS = {"REEL-006": {"A": "Meet the parts.", "B": "Five sensors. One Pi.", "C": "What's in the box?"},
          "REEL-007": {"A": "Ride. Record. Replay.", "B": "Five sensors on one bike.", "C": "Every sensor. One timeline."},
-         "REEL-008": {"A": "Tunnel ahead.", "B": "No sky, no GPS.", "C": "Who keeps count in the dark?"}}
+         "REEL-008": {"A": "Tunnel ahead.", "B": "No sky, no GPS.", "C": "Who keeps count in the dark?"},
+         "REEL-010": {"A": "Five sensors. One clock.", "B": "What your bike feels.", "C": "Every line is a sensor."},
+         "REEL-011": {"A": "Open the box.", "B": "Sealed outside. A Pi inside.", "C": "One Pi. One sealed box."}}
 items = []
 for d in sorted(os.listdir(ROOT)):
     m = os.path.join(ROOT, d, "export", "manifest.json")
@@ -36,7 +40,7 @@ for d in sorted(os.listdir(ROOT)):
         img = "data:image/jpeg;base64," + base64.b64encode(open(cover, "rb").read()).decode() if cover and os.path.exists(cover) else ""
         a = v["axes"]; pid = man["id"]
         it = {"name": v["name"], "piece": pid, "style": a.get("style", "fun"), "size": a.get("size", "reel"),
-              "pattern": a.get("pattern"), "hook": a.get("hook"), "dur": v.get("duration"), "dims": v.get("size"), "fps": v.get("fps"),
+              "pattern": a.get("pattern"), "hook": a.get("hook"), "look": a.get("look", "cartoon"), "dur": v.get("duration"), "dims": v.get("size"), "fps": v.get("fps"),
               "qa": (v.get("qa") or {}).get("fails"), "cover": img, "url": urls.get(v["name"], "")}
         if it["pattern"]: it["label"], it["basis"] = PAT.get(it["pattern"], (it["pattern"], ""))
         else: it["label"], it["basis"] = PIECES[pid][0], "Hook " + it["hook"] + ": " + HOOKS[pid][it["hook"]]
