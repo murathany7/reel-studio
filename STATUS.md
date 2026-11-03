@@ -44,10 +44,12 @@ The memory of this repo. Read it first, update it last.
 - 2026-11-03: 0.2.3: PyPI page (`python/README.md`) rebuilt as a marketing page like npm's, Bike Logger only. PyPI
   can't resolve relative paths, so every image and link there is an absolute `raw.githubusercontent.com/.../main/` URL
   (images follow `main`). Checked with `readme-renderer`, the library PyPI uses (all images and centring survive).
-- 2026-11-03: cartoon series for Bike Logger (REEL-006–008) storyboarded with a draft cast (Brain, Cam, Fix, Tilt,
-  Ping, Spin; `productions/bike-logger/REEL-006-crew/refs/crew.js`). Waiting on approval of the storyboards, the cast
-  (brand has no mascot yet) and two off-palette colours. The live site was not reachable from the cloud session
-  (proxy 403); facts come from the brand README.
+- 2026-11-03: **ad kit + variants.** `engines/ad-kit/` (17 scenes, 22 ad/persuasion patterns with their research
+  basis, guardrails that refuse unsourced stats, quotes, credentials and deadlines) and `scripts/variants.mjs` (axes ×
+  exclude × include → parallel renders, manifest, covers, contact sheet, QA). Sizes: reel, feed, square, landscape
+  1920×1080, banner 1200×628. Skill: `ad-variants`. Bike Logger got a cartoon crew (fun + adult drawings), a bike
+  with a pedalling rider, street, box, ride, replay and tunnel scenes (`brands/bike-logger/assets/cartoon/`).
+  82 variants across REEL-006–009; MP4s live in an Artifact gallery (link below), not in git.
 - 2026-11-03: distribution to do by hand (the maintainer, not an agent): Claude plugin directory at
   claude.ai/directory/manage (submit any time); awesome-claude-code via its web issue form only, from 2026-11-16 (repo
   must be 14 days old, human-submitted); Show HN, Reddit, Product Hunt, one reel a week on short-video platforms.
@@ -68,9 +70,10 @@ The memory of this repo. Read it first, update it last.
 | REEL-004 | yuppo | 3 a.m. question? Ask Po (Pixi night sky + Lottie Po + GSAP, silent, 16 s) | QA passed, silent cut (VO + music pending) | `productions/yuppo/REEL-004-ask-po-3am/export/REEL-004-ask-po-3am-en.mp4` |
 | REEL-005 | yuppo | What Star parents get, 7-day trial ad (Blender physics plate + GSAP, silent, 14 s) | QA passed, silent cut (music + SFX pending) | `productions/yuppo/REEL-005-star-trial/export/REEL-005-star-trial-en.mp4` |
 | REEL-002 | bike-logger | Engines sampler: Three.js tray, Blender camera housing, Pixi sensor streams (silent, 14.8 s) | QA passed, draft for review | `productions/bike-logger/REEL-002-engines/export/REEL-002-engines-en.mp4` |
-| REEL-006 | bike-logger | Meet the crew: cartoon cast of the real parts pops out of the box (SVG rig + GSAP, silent, 16 s) | storyboard (awaiting approval); cast sheet `refs/cast.png` | |
-| REEL-007 | bike-logger | One ride, one timeline: cartoon city ride → synced replay (SVG rig + GSAP + Pixi, silent, 16 s) | storyboard (awaiting approval) | |
-| REEL-008 | bike-logger | The tunnel: GPS drops out, the Hall sensor keeps counting (SVG rig + GSAP, silent, 11 s) | storyboard (awaiting approval) | |
+| REEL-006 | bike-logger | Meet the crew: the parts hop out of the box (ad kit, silent, 17.4 s), fun + adult × 3 hooks + web sizes | QA passed, draft for review | 10 variants: `export/manifest.md` · gallery |
+| REEL-007 | bike-logger | One ride, one timeline: cartoon city ride → synced replay (ad kit, silent, 16.2 s) | QA passed, draft for review | 9 variants: `export/manifest.md` · gallery |
+| REEL-008 | bike-logger | The tunnel: GPS drops out, the Hall sensor keeps counting (ad kit, silent, 11.2 s) | QA passed, draft for review | 9 variants: `export/manifest.md` · gallery |
+| REEL-009 | bike-logger | Persuasion pattern pack: 19 patterns × fun/adult + 16 feed/square/landscape/banner (silent, 8–14 s) | QA passed, draft pack: pick winners | 54 variants: `export/manifest.md` · gallery |
 
 ## Engines
 
@@ -87,6 +90,13 @@ The memory of this repo. Read it first, update it last.
 
 ## Decisions
 
+- 2026-11-03: Bike Logger cartoon crew approved (names, fun + adult drawings, PCB green and IMU purple as the only
+  off-palette colours). "Adult" means a grown-up cartoon (dry copy, deadpan faces, calmer motion), still family-safe.
+- 2026-11-03: rendered MP4s are stored outside git and GitHub: in a private claude.ai Artifact gallery with its own
+  asset storage (videos upload from disk; Drive via the MCP connector would mean base64 through the model's context).
+- 2026-11-03: persuasion patterns only arrange sourced material; social proof, authority and scarcity stay out of
+  Bike Logger pieces until there is a real testimonial, credential or deadline.
+
 - 2026-11-03: Yuppo moved here as `brands/yuppo/`; its brand and productions are gitignored because this repo is public. Yuppo IDs continue after the old repo's (next: REEL-003).
 
 - 2026-11-02: one renderer, many engines on one clock, instead of one engine per style or a framework like
@@ -102,6 +112,15 @@ The memory of this repo. Read it first, update it last.
 - Rive adapter when a `.riv` file exists.
 
 ## Learnings
+
+- **Dead frames at cuts (2026-11-03):** scenes whose first tween starts at the cut give 2–3 identical frames after it
+  (qa-video.sh: 5–9 hitches per reel). Start entrances a few frames before the cut while the layer is still hidden
+  (`AdKit.PRE`). Fast yoyo shakes with half-periods under 1/30 s also alias into repeated poses: 2 frames per swing.
+- **instanceof across realms:** `w instanceof RegExp` is false for a regex made in another realm (node:vm tests,
+  iframes). Check `Object.prototype.toString.call(w) === "[object RegExp]"`.
+- **Render cost (2026-11-03):** ad-kit reels (SVG + GSAP) render ≈ 45 s per 11 s of 1080×1920 on one core; on 4 cores
+  `--jobs 4` with `--qa` does about 25 variants an hour.
+- **rm with a relative glob after cd** is blocked by the agent's safety check; delete by one explicit absolute path.
 
 - **Missing video plate (2026-11-02):** a `<video>` whose file 404s fires `error` before the page script runs, so
   `Studio.video()` waited forever. It now checks `el.error` / `networkState` up front and fails the render with the

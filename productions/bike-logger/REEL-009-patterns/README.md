@@ -1,6 +1,7 @@
 # REEL-009 — Persuasion pattern pack (cartoon, silent)
 
-> One composition, 42 exports: 19 ad patterns × 2 styles at 9:16, plus 4 at 4:5 for the feed. Built from the
+> One composition, 54 exports: 19 ad patterns × 2 styles at 9:16, plus 16 in other sizes: 4:5 feed, 1:1 square,
+> 16:9 landscape (website hero, YouTube) and 1200×628 banner (link ads, Open Graph). Built from the
 > brand's brief (`brands/bike-logger/assets/cartoon/brief.js`) with the ad kit (`engines/ad-kit/`). Asked for on
 > 2026-11-03: "many different variants … engine templates for common ad scenarios and persuasion used in psychology".
 
@@ -9,9 +10,9 @@
 | Brand | `brands/bike-logger/` |
 | Type | Reel pack (A/B test material) |
 | Status | `QA passed` (draft pack for review: pick winners to publish) |
-| Size | 1080×1920 (9:16) and 1080×1350 (4:5) |
+| Size | 1080×1920 (9:16), 1080×1350 (4:5), 1080×1080 (1:1), 1920×1080 (16:9), 1200×628 (1.91:1) |
 | Frame rate / length | 30 fps · 8–14 s each (`export/manifest.md`) |
-| Placement | Organic (`.safe-organic`); feed sizes use 70 px margins |
+| Placement | Reels: organic safe zone. Feed and square: 70 px margins. Landscape and banner: 5 % sides, 7.5 % top and bottom, text left, stage right |
 | Engines | Ad kit (GSAP + SVG rig) + the brand's cartoon world (bike, street, replay) |
 | Sound | Silent |
 | Approved by / date | Direction approved by Murathan, 2026-11-03 (request above). Copy is the approved REEL-006–008 copy plus the brief's lines; review before publishing |

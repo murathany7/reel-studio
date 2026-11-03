@@ -67,7 +67,9 @@ preferred). The odometer counts turns, not a distance figure.
 
 ## Variants (2026-11-03)
 
-One composition, six exports: style `fun` | `adult` × hook `A` | `B` | `C` (section 3). The **adult** style is
+One composition, six reels (style `fun` | `adult` × hook `A` | `B` | `C`, section 3) plus website and feed sizes:
+`landscape` 1920×1080 (site hero, YouTube), `banner` 1200×628 (link ads, Open Graph) and `square` 1080×1080, listed
+in `variants.json` → `include`. The **adult** style is
 the same story and facts for a grown-up audience: the crew's adult drawing (ink outlines, half-lidded deadpan eyes,
 muted colours), no squash/overshoot or flashes, dry copy (e.g. "Takes every corner personally.").
 
@@ -80,5 +82,5 @@ muted colours), no squash/overshoot or flashes, dry copy (e.g. "Takes every corn
 
 ```bash
 node scripts/variants.mjs productions/bike-logger/REEL-008-tunnel/variants.json --qa
-node core/render.mjs video "productions/bike-logger/REEL-008-tunnel/composition/index.html?style=adult&hook=B" /tmp/REEL-008.mp4
+node core/render.mjs video "productions/bike-logger/REEL-008-tunnel/composition/index.html?style=adult&hook=B&size=landscape" /tmp/REEL-008.mp4
 ```

@@ -22,7 +22,12 @@ Common ad scenarios and persuasion patterns as reusable scenes on the `Studio` c
 - `cast(key, style)` returns an actor's SVG (300×300 viewBox, feet at y≈278, SvgRig part ids). Bike Logger's
   crew: `brands/bike-logger/assets/cartoon/crew.js`.
 - `forbid`: the brand's banned words (regex or word). Any string in the spec that matches fails the build.
-- Sizes: `reel` 1080×1920 (organic or `placement: "paid"` safe zones), `feed` 1080×1350, `square` 1080×1080.
+- Sizes: `reel` 1080×1920 (organic or `placement: "paid"` safe zones), `feed` 1080×1350, `square` 1080×1080,
+  `landscape` 1920×1080 (website hero, YouTube, landing-page video) and `banner` 1200×628 (link ads, Open Graph).
+  Landscape puts text on the left 47 % and the stage on the right; every size in px scales with the frame
+  (`ctx.k`, CSS `--ak-s`). A scene with fixed geometry calls `c = c.unscaled(layer)` and draws at reel scale.
+- Cuts: scenes start their entrances `AdKit.PRE` (0.12 s) before the cut, while the layer is still hidden, so the
+  first frame after a cut is already moving (QA flags repeated frames at cuts as hitches).
 - Styles: `fun` (overshoot, hops, flashes) and `adult` (dry: smaller moves, no squash, no flashes). A brand's
   characters and theme can switch look per style too (the crew has an adult drawing; `theme.css` has `.ak-adult`).
 - Text sits in the top 36 % of the safe zone, actors and props below it, so every scene works in every size.
