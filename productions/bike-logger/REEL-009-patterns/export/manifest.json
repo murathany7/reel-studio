@@ -269,28 +269,6 @@
     {
       "axes": {
         "pattern": "curiosity",
-        "look": "blueprint",
-        "style": "fun",
-        "size": "reel"
-      },
-      "name": "REEL-009-curiosity-blueprint-fun-reel",
-      "query": "pattern=curiosity&look=blueprint&style=fun&size=reel",
-      "file": "export/REEL-009-curiosity-blueprint-fun-reel.mp4",
-      "ok": true,
-      "skipped": false,
-      "duration": 9.8,
-      "size": "1080x1920",
-      "fps": 60,
-      "cover": "export/covers/REEL-009-curiosity-blueprint-fun-reel.jpg",
-      "qa": {
-        "fails": 0,
-        "report": "qa/REEL-009-curiosity-blueprint-fun-reel/report.md",
-        "code": 0
-      }
-    },
-    {
-      "axes": {
-        "pattern": "curiosity",
         "look": "daylight",
         "style": "adult",
         "size": "reel"
@@ -467,28 +445,6 @@
     {
       "axes": {
         "pattern": "progress",
-        "look": "blueprint",
-        "style": "fun",
-        "size": "reel"
-      },
-      "name": "REEL-009-progress-blueprint-fun-reel",
-      "query": "pattern=progress&look=blueprint&style=fun&size=reel",
-      "file": "export/REEL-009-progress-blueprint-fun-reel.mp4",
-      "ok": true,
-      "skipped": false,
-      "duration": 10.8,
-      "size": "1080x1920",
-      "fps": 60,
-      "cover": "export/covers/REEL-009-progress-blueprint-fun-reel.jpg",
-      "qa": {
-        "fails": 0,
-        "report": "qa/REEL-009-progress-blueprint-fun-reel/report.md",
-        "code": 0
-      }
-    },
-    {
-      "axes": {
-        "pattern": "progress",
         "look": "daylight",
         "style": "adult",
         "size": "reel"
@@ -593,28 +549,6 @@
       "qa": {
         "fails": 0,
         "report": "qa/REEL-009-myth-type-fun-reel/report.md",
-        "code": 0
-      }
-    },
-    {
-      "axes": {
-        "pattern": "reciprocity",
-        "look": "blueprint",
-        "style": "fun",
-        "size": "reel"
-      },
-      "name": "REEL-009-reciprocity-blueprint-fun-reel",
-      "query": "pattern=reciprocity&look=blueprint&style=fun&size=reel",
-      "file": "export/REEL-009-reciprocity-blueprint-fun-reel.mp4",
-      "ok": true,
-      "skipped": false,
-      "duration": 8.8,
-      "size": "1080x1920",
-      "fps": 60,
-      "cover": "export/covers/REEL-009-reciprocity-blueprint-fun-reel.jpg",
-      "qa": {
-        "fails": 0,
-        "report": "qa/REEL-009-reciprocity-blueprint-fun-reel/report.md",
         "code": 0
       }
     },
@@ -863,28 +797,6 @@
     {
       "axes": {
         "pattern": "contrast",
-        "look": "blueprint",
-        "style": "fun",
-        "size": "reel"
-      },
-      "name": "REEL-009-contrast-blueprint-fun-reel",
-      "query": "pattern=contrast&look=blueprint&style=fun&size=reel",
-      "file": "export/REEL-009-contrast-blueprint-fun-reel.mp4",
-      "ok": true,
-      "skipped": false,
-      "duration": 10.2,
-      "size": "1080x1920",
-      "fps": 60,
-      "cover": "export/covers/REEL-009-contrast-blueprint-fun-reel.jpg",
-      "qa": {
-        "fails": 0,
-        "report": "qa/REEL-009-contrast-blueprint-fun-reel/report.md",
-        "code": 0
-      }
-    },
-    {
-      "axes": {
-        "pattern": "contrast",
         "look": "daylight",
         "style": "adult",
         "size": "reel"
@@ -923,28 +835,6 @@
       "qa": {
         "fails": 0,
         "report": "qa/REEL-009-contrast-type-fun-reel/report.md",
-        "code": 0
-      }
-    },
-    {
-      "axes": {
-        "pattern": "specificity",
-        "look": "blueprint",
-        "style": "fun",
-        "size": "reel"
-      },
-      "name": "REEL-009-specificity-blueprint-fun-reel",
-      "query": "pattern=specificity&look=blueprint&style=fun&size=reel",
-      "file": "export/REEL-009-specificity-blueprint-fun-reel.mp4",
-      "ok": true,
-      "skipped": false,
-      "duration": 9.2,
-      "size": "1080x1920",
-      "fps": 60,
-      "cover": "export/covers/REEL-009-specificity-blueprint-fun-reel.jpg",
-      "qa": {
-        "fails": 0,
-        "report": "qa/REEL-009-specificity-blueprint-fun-reel/report.md",
         "code": 0
       }
     },
@@ -1121,6 +1011,116 @@
       "qa": {
         "fails": 0,
         "report": "qa/REEL-009-myth-type-fun-banner/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "curiosity",
+        "look": "blueprint",
+        "style": "fun",
+        "size": "reel"
+      },
+      "name": "REEL-009-curiosity-blueprint-fun-reel",
+      "query": "pattern=curiosity&look=blueprint&style=fun&size=reel",
+      "file": "export/REEL-009-curiosity-blueprint-fun-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 9.8,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-curiosity-blueprint-fun-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-curiosity-blueprint-fun-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "progress",
+        "look": "blueprint",
+        "style": "fun",
+        "size": "reel"
+      },
+      "name": "REEL-009-progress-blueprint-fun-reel",
+      "query": "pattern=progress&look=blueprint&style=fun&size=reel",
+      "file": "export/REEL-009-progress-blueprint-fun-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 10.8,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-progress-blueprint-fun-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-progress-blueprint-fun-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "reciprocity",
+        "look": "blueprint",
+        "style": "fun",
+        "size": "reel"
+      },
+      "name": "REEL-009-reciprocity-blueprint-fun-reel",
+      "query": "pattern=reciprocity&look=blueprint&style=fun&size=reel",
+      "file": "export/REEL-009-reciprocity-blueprint-fun-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 8.8,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-reciprocity-blueprint-fun-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-reciprocity-blueprint-fun-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "contrast",
+        "look": "blueprint",
+        "style": "fun",
+        "size": "reel"
+      },
+      "name": "REEL-009-contrast-blueprint-fun-reel",
+      "query": "pattern=contrast&look=blueprint&style=fun&size=reel",
+      "file": "export/REEL-009-contrast-blueprint-fun-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 10.2,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-contrast-blueprint-fun-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-contrast-blueprint-fun-reel/report.md",
+        "code": 0
+      }
+    },
+    {
+      "axes": {
+        "pattern": "specificity",
+        "look": "blueprint",
+        "style": "fun",
+        "size": "reel"
+      },
+      "name": "REEL-009-specificity-blueprint-fun-reel",
+      "query": "pattern=specificity&look=blueprint&style=fun&size=reel",
+      "file": "export/REEL-009-specificity-blueprint-fun-reel.mp4",
+      "ok": true,
+      "skipped": false,
+      "duration": 9.2,
+      "size": "1080x1920",
+      "fps": 60,
+      "cover": "export/covers/REEL-009-specificity-blueprint-fun-reel.jpg",
+      "qa": {
+        "fails": 0,
+        "report": "qa/REEL-009-specificity-blueprint-fun-reel/report.md",
         "code": 0
       }
     }

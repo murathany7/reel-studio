@@ -1,6 +1,6 @@
 # QA report — REEL-009-specificity-blueprint-fun-reel.mp4
 
-Generated 2026-11-03 22:06.
+Generated 2026-11-03 22:14.
 
 ## Specs
 
