@@ -22,7 +22,7 @@ jobs:
       version: ${{ steps.v.outputs.version }}
       release: ${{ steps.v.outputs.release }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - id: v
         run: |
           v=$(node -p "require('./package.json').version")
@@ -46,8 +46,8 @@ jobs:
       contents: read
       id-token: write  # npm trusted publishing + provenance
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: 24
           registry-url: https://registry.npmjs.org
@@ -65,8 +65,8 @@ jobs:
       contents: read
       id-token: write  # PyPI trusted publishing
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with: { node-version: 24 }
       - uses: astral-sh/setup-uv@v6
       - run: packaging/build-python.sh
@@ -106,14 +106,14 @@ jobs:
     needs: [check, npm]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Check for the tap token
         id: token
         env: { T: "${{ secrets.HOMEBREW_TAP_TOKEN }}" }
         run: |
           [ -n "$T" ] && echo "ok=true" >> "$GITHUB_OUTPUT" || echo "::warning::HOMEBREW_TAP_TOKEN is not set: update the tap by hand with packaging/update-formula.sh"
       - if: steps.token.outputs.ok == 'true'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: murathany7/homebrew-reel-studio
           token: ${{ secrets.HOMEBREW_TAP_TOKEN }}

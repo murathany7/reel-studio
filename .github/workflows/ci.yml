@@ -26,12 +26,12 @@ jobs:
           - { os: ubuntu-latest, node: 24 }
           - { os: macos-latest, node: 24 }
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Keep test renders in the runner's temp dir (uploaded if a test fails)
         run: echo "TMPDIR=$RUNNER_TEMP" >> "$GITHUB_ENV"
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: ${{ matrix.node }}
           cache: npm
@@ -72,5 +72,12 @@ jobs:
     name: Homebrew formula style
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v4
-      - run: brew style packaging/homebrew/reel-studio.rb
+      - uses: actions/checkout@v5
+      - name: brew style and audit, from a local tap like a real formula
+        env: { HOMEBREW_NO_AUTO_UPDATE: 1 }
+        run: |
+          brew tap-new --no-git local/ci
+          cp packaging/homebrew/reel-studio.rb "$(brew --repository local/ci)/Formula/"
+          brew trust local/ci  # Homebrew 7 only loads formulae from trusted taps
+          brew style local/ci/reel-studio
+          brew audit --strict --online --formula local/ci/reel-studio

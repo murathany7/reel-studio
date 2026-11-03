@@ -25,7 +25,9 @@ The memory of this repo. Read it first, update it last.
 - 2026-11-03: npm 0.2.0 had 266 downloads on publish day (mostly mirrors and bots), 15 unique repo cloners.
   Version 0.2.1 (scene-3d skill notes) published 2026-11-03 on npm, PyPI and the Homebrew tap
   (github.com/murathany7/homebrew-reel-studio); each install tested. Descriptions on the registries still carry the
-  old wording until 0.2.2 ("agency-quality reels, no per-video fees" positioning is in the repo). PyPI wheel
+  old wording until 0.2.2 ("agency-quality reels, no per-video fees" positioning is in the repo). Keywords in
+  `package.json` and `python/pyproject.toml` now cover the GitHub topics (20, GitHub's cap); they reach the
+  registries with 0.2.2. PyPI wheel
   (`python/`, built by `packaging/build-python.sh`) bundles the `npm pack` files; Homebrew formula
   (`packaging/homebrew/reel-studio.rb`) installs the npm tarball and needs tap repo `murathany7/homebrew-reel-studio`.
   Both tested locally (`reel-studio init` + a still render; `brew test` and `brew audit --strict` pass). Release steps:

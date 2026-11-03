@@ -10,7 +10,7 @@ readme = "README.md"
 license = "MIT"
 requires-python = ">=3.9"
 authors = [{ name = "Murathan Yıldırım" }]
-keywords = ["video", "reels", "marketing", "claude-code", "gsap", "threejs", "pixi", "blender", "ffmpeg"]
+keywords = ["video", "reels", "marketing", "claude-code", "claude-code-plugin", "claude-skills", "ai-video", "video-generation", "video-ads", "motion-graphics", "instagram-reels", "tiktok", "gsap", "threejs", "pixi", "blender", "ffmpeg", "headless-chrome", "remotion-alternative"]
 classifiers = [
   "Environment :: Console",
   "Operating System :: MacOS",

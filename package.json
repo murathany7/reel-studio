@@ -26,7 +26,7 @@
     "test:python": "packaging/build-python.sh && cd python && uv run --isolated --with . python -m unittest discover -s tests -v"
   },
   "engines": { "node": ">=18" },
-  "keywords": ["video", "reels", "marketing", "claude-code", "gsap", "threejs", "pixi", "blender", "ffmpeg", "remotion-alternative"],
+  "keywords": ["video", "reels", "marketing", "claude-code", "claude-code-plugin", "claude-skills", "ai-video", "video-generation", "video-ads", "motion-graphics", "instagram-reels", "tiktok", "gsap", "threejs", "pixi", "blender", "ffmpeg", "headless-chrome", "remotion-alternative"],
   "author": "Murathan Yıldırım (https://github.com/murathany7)",
   "license": "MIT",
   "homepage": "https://github.com/murathany7/reel-studio#readme",
