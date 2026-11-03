@@ -6,8 +6,12 @@
   <img src="https://img.shields.io/badge/Claude%20Code-plugin-8b93a1" alt="Claude Code plugin">
 </p>
 
-<p align="center"><b>Make marketing reels, ads and posts with code, for any brand, with Claude Code.</b><br>
-Plain HTML pages on one clock → headless Chrome → MP4. Every frame is reproducible.</p>
+<p align="center"><b>Agency-quality reels, ads and posts, made by Claude Code.</b><br>
+Open source and free. Your Claude subscription does the rest.<br>
+No editor, no timeline, no per-video fees. Every frame is code you own.</p>
+
+<p align="center"><sub>Plain HTML pages on one clock → headless Chrome → MP4, for any brand. Every frame is reproducible.<br>
+AI voiceover (ElevenLabs) is optional and billed by its provider.</sub></p>
 
 <p align="center">
   <img src="docs/media/bike-logger-reel.gif" width="240" alt="Bike Logger reel">

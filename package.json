@@ -1,7 +1,7 @@
 {
   "name": "reel-studio",
   "version": "0.2.1",
-  "description": "Make marketing reels, ads and posts with code, for any brand, with Claude Code. HTML on one clock → MP4.",
+  "description": "Agency-quality marketing reels, ads and posts made by Claude Code. Free and open source; no per-video fees.",
   "type": "module",
   "bin": { "reel-studio": "bin/reel-studio.mjs" },
   "files": [

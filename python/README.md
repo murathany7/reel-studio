@@ -1,6 +1,7 @@
 # Reel Studio
 
-Make marketing reels, ads and posts with code, for any brand, with Claude Code. HTML on one clock → MP4.
+Agency-quality reels, ads and posts, made by Claude Code. Open source and free; your Claude subscription does the
+rest. No editor, no timeline, no per-video fees.
 
 ```bash
 pipx install reel-studio      # or: uv tool install reel-studio
