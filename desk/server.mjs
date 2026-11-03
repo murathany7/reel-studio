@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/* Reel Studio desk: a local review app for productions.
+/* Reel Studio desk: an optional local review app for productions. Nothing else in the kit needs it.
  *
  *   node desk/server.mjs [--port 4100]      then open http://127.0.0.1:4100
  *
@@ -218,4 +218,5 @@ const server = createServer(async (req, res) => {
 
 server.listen(PORT, "127.0.0.1", () => {
   console.log(`Reel Studio desk: http://127.0.0.1:${server.address().port}  (serving ${ROOT})`);
+  console.log("Optional: let your Claude Code sessions see the desk with  claude mcp add reel-desk --scope project -- node desk/mcp.mjs");
 });

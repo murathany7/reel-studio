@@ -114,9 +114,13 @@ cd core && npm install && cd ..
 > *Add my product as a new brand: https://my-product.com* → facts, colours, fonts, voice, rules
 > *Make a 15 s reel for &lt;brand&gt; about &lt;feature&gt;* → brief and storyboard, then the video once you approve
 
-Then review it in the **desk**, a local page: `npx reel-studio desk` (or `node desk/server.mjs`) →
-<http://127.0.0.1:4100>. Scrub frame by frame, pin notes to frames, send them to Claude Code (your own login, no API
-key), render stills and previews, approve the storyboard and the final cut. See [`desk/README.md`](desk/README.md).
+That's the whole product: you talk to Claude Code, it writes the storyboard, waits for your OK in chat, then makes,
+renders and checks the video.
+
+**Optional: the desk.** If you'd rather review on a page than in chat, run `npx reel-studio desk` (or
+`node desk/server.mjs`) and open <http://127.0.0.1:4100>. You can scrub frame by frame, pin notes to frames, send them
+to Claude Code (your own login, no API key), render stills and previews, and approve the storyboard and the final cut.
+Nothing else needs it, and nothing changes if you never open it. See [`desk/README.md`](desk/README.md).
 
 ## What's inside
 
@@ -126,8 +130,8 @@ engines/       one adapter per engine
 brands/        one folder per brand  (_template to start)
 productions/   one folder per piece  (brief, composition, audio, QA, export)
 scripts/       audio mix, transcription, QA, frame tools
-desk/          local review app and the reel-desk MCP server
-.claude/skills setup · make-video · new-brand · pick-engine · scene-3d · character-2d · capture-site · review-desk
+desk/          optional local review app (and its optional reel-desk MCP server)
+.claude/skills setup · make-video · new-brand · pick-engine · scene-3d · character-2d · capture-site · review-desk (optional)
 ```
 
 ## Contributing

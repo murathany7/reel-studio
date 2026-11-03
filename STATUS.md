@@ -47,13 +47,13 @@ The memory of this repo. Read it first, update it last.
 - 2026-11-03: distribution to do by hand (the maintainer, not an agent): Claude plugin directory at
   claude.ai/directory/manage (submit any time); awesome-claude-code via its web issue form only, from 2026-11-16 (repo
   must be 14 days old, human-submitted); Show HN, Reddit, Product Hunt, one reel a week on short-video platforms.
-- 2026-11-03: **desk** (`desk/`, not released yet): a local review app, `node desk/server.mjs` or `npx reel-studio desk` →
+- 2026-11-03: **desk** (`desk/`, not released yet): an **optional** local review app (the chat flow is unchanged), `node desk/server.mjs` or `npx reel-studio desk` →
   http://127.0.0.1:4100. A frame-exact player driven by `__seek`, notes pinned to frames (`review.json` per
   production, tracked), still / preview / QA renders into `qa/desk/` (gitignored), the storyboard README, and approve
   buttons (storyboard ticks the README box; final cut adds a line). "Send to Claude" runs `claude -p` with the
   person's Claude Code login (`ANTHROPIC_API_KEY` stripped, tools limited, one `--resume` session per production).
-  `desk/mcp.mjs` is the `reel-desk` MCP server (in `.mcp.json`; `init` adds it to a project's `.mcp.json`) with
-  `desk_state`, `list_notes`, `add_note`, `resolve_note`, `render_frame` and no approval tool. Skill: `review-desk`.
+  `desk/mcp.mjs` is the optional `reel-desk` MCP server, not registered by default (`init` doesn't touch `.mcp.json`;
+  add it with `claude mcp add reel-desk --scope project -- node desk/mcp.mjs`) with `desk_state`, `list_notes`, `add_note`, `resolve_note`, `render_frame` and no approval tool. Skill: `review-desk`.
   Tested: `test/desk.test.mjs`, the page in the browser pane on REEL-002, and one real `claude -p` run that
   resolved a note through the MCP server (7 s). Not tested yet: on Linux/Docker, or a Claude run that edits a composition.
 
@@ -98,6 +98,9 @@ The memory of this repo. Read it first, update it last.
 - 2026-11-02: productions are grouped by brand: `productions/<brand>/<ID>-<slug>/`.
 - 2026-11-03: the skills stay the product; the desk is a thin review surface over files. It drives Claude through
   the local CLI (no API key, no Agent SDK) and only people approve: no approve tool in MCP, rule in the skills.
+  It is optional: approval in chat stays the default, and nothing in the kit reads `review.json` unless it exists.
+- 2026-11-03: distribution metrics (`check-metrics` skill, `scripts/metrics.mjs`, `metrics.jsonl`) are an optional,
+  local-only maintainer tool: gitignored, never shipped, nothing in the kit depends on them.
 - 2026-11-02: Bike Logger's audience is robotics kit learners; every piece sells learning by building, with the replay as the payoff.
 
 ## Next

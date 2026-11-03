@@ -1,7 +1,8 @@
-# Desk
+# Desk (optional)
 
-A local review app for productions. The skills stay the product: Claude Code writes and renders the pieces. The desk is
-where a person watches them, points at frames and says yes.
+A local review app for productions, **for people who'd rather review on a page than in chat**. Nothing in the kit
+needs it: the skills are the product, and Claude Code writes, renders and checks the pieces either way. If you never
+open the desk, nothing changes. It adds no dependencies and doesn't register itself anywhere.
 
 ```bash
 node desk/server.mjs            # or: npx reel-studio desk   →  http://127.0.0.1:4100
@@ -26,7 +27,8 @@ There are three ways, and none needs an API key.
    `ANTHROPIC_API_KEY` is removed from its environment, so it always uses your Claude Code login. Its tools are limited
    to Read/Edit/Write/Glob/Grep, `node core/render.mjs`, `scripts/qa-video.sh`, `scripts/extract-frames.sh` and the
    `reel-desk` tools. It runs one session per production (`--resume`). Set `CLAUDE_BIN` to use another `claude`.
-3. **`reel-desk` MCP server** (`desk/mcp.mjs`, registered in `.mcp.json`) lets a Claude Code session see the desk:
+3. **`reel-desk` MCP server** (`desk/mcp.mjs`), optional on top of the optional desk, and not registered by default.
+   Add it with `claude mcp add reel-desk --scope project -- node desk/mcp.mjs`. It lets a Claude Code session see the desk:
    `desk_state`, `list_productions`, `list_notes`, `add_note`, `resolve_note`, `render_frame` (returns the image).
    It has no approval tool.
 

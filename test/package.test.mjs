@@ -23,7 +23,7 @@ test("npm package leaves out brands, productions and repo-only files", () => {
     (/^brands\//.test(f) && !f.startsWith("brands/_template/")) ||
     (/^productions\//.test(f) && !f.startsWith("productions/_TEMPLATE/")) ||
     /^(docs|python|packaging|test|\.github)\//.test(f) ||
-    /node_modules|\.DS_Store|__pycache__/.test(f) ||
+    /node_modules|\.DS_Store|__pycache__|metrics|desk\/\.state\.json/.test(f) ||
     ["STATUS.md", "CLAUDE.md"].includes(f));
   assert.deepEqual(leaks, []);
 });

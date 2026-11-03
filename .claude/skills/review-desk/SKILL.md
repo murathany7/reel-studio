@@ -1,19 +1,26 @@
 ---
 name: review-desk
-description: Open the Reel Studio desk (a local review app) and work from its review notes - notes pinned to frames, renders, approvals. Use when asked to "open the desk", "let me review it", "apply my notes", "fix what I marked", "what's on this frame", or after a storyboard or a cut is ready for someone to look at.
+description: Optional. Open the Reel Studio desk (a local review app) and work from its review notes - notes pinned to frames, renders, approvals. Use only when the person asks for the desk or already uses it - "open the desk", "apply my desk notes", "fix what I marked", "what's on this frame" - or a production has a review.json. Never required: reviewing and approving in chat works the same.
 ---
 
-# Review desk
+# Review desk (optional)
+
+The kit works the same without it: storyboards are approved in chat, and QA is the `make-video` steps. Don't start
+the desk or suggest it unless the person asks, or they already use it (a `review.json` in the production).
 
 The desk (`desk/`) is a local page for the person: it plays a production's composition frame-exact through the
 renderer's own clock (`__seek`), and lets them pin notes to frames, render stills, preview videos and QA, read the
 storyboard, approve, and send notes to Claude. It only reads and writes files in the project, so everything it does
-reaches you as files and through the `reel-desk` MCP server.
+reaches you as files (and, if it is registered, through the `reel-desk` MCP server).
 
 ## Open it
 
 `node desk/server.mjs` (run it in the background), then the person opens <http://127.0.0.1:4100>. In the Claude
 desktop app, open that URL in the browser pane. `npx reel-studio desk` does the same. Port: `--port <n>`.
+
+The `reel-desk` MCP tools below are not registered by default. If they aren't available and the person wants them:
+`claude mcp add reel-desk --scope project -- node desk/mcp.mjs` (then restart the session). Without them, read and
+write `review.json` directly.
 
 ## Where things are
 

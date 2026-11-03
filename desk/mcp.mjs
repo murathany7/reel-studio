@@ -1,7 +1,8 @@
 #!/usr/bin/env node
-/* reel-desk: an MCP server (stdio, zero dependencies) that lets Claude Code see the desk.
- *
- *   .mcp.json → { "mcpServers": { "reel-desk": { "command": "node", "args": ["desk/mcp.mjs"] } } }
+/* reel-desk: an optional MCP server (stdio, zero dependencies) that lets Claude Code see the desk.
+ * Not registered by default. To add it to a project:
+ *   claude mcp add reel-desk --scope project -- node desk/mcp.mjs
+ * (The desk's own "Send to Claude" passes it with --mcp-config, so that works without registering.)
  *
  * Tools: desk_state (what the person has open), list_productions, list_notes, add_note (Claude's own QA findings),
  * resolve_note (mark a note fixed with a reply; the person closes it after checking), render_frame (a still, returned
