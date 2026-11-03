@@ -7,9 +7,15 @@ The memory of this repo. Read it first, update it last.
 - 2026-11-04: **release workflow back** (`release.yml`, `ci.yml` callable again). Each target (npm, PyPI, GHCR,
   GitHub Release) is checked on its own and skipped when it already has the version, so reruns and hand releases mix;
   GitHub Release and Homebrew run when npm/PyPI were published now *or* earlier, and build their own files. npm and
-  PyPI fall back to `NPM_TOKEN` / `PYPI_API_TOKEN` secrets. Trusted publishers added on npmjs.com and pypi.org
-  2026-11-04 (npm shows "waiting validation": it must see a successful publish within 48 h or it expires). 0.2.5 is
-  the first automated release, to validate it. `HOMEBREW_TAP_TOKEN` not set yet (`packaging/README.md`).
+  PyPI fall back to `NPM_TOKEN` / `PYPI_API_TOKEN` secrets. **0.2.5 is the first automated release** (run
+  41737408861): npm (with provenance), PyPI and GHCR published from the workflow, so both trusted publishers are
+  validated. Gotchas on the way: PyPI's publisher had the form's placeholder `workflow.yml` instead of `release.yml`;
+  npm's trusted publisher only allows `npm stage publish` until "Allow npm publish" is ticked (else 403 "OIDC
+  permission denied"). The GitHub Release step failed (`npm pack` into a missing `dist/`, fixed). `HOMEBREW_TAP_TOKEN`
+  not set, so the tap needs `packaging/update-formula.sh` by hand.
+- 2026-11-04: **plate seek flake again**: CI run 41737408876 (Ubuntu, Node 24) rendered two different Blender plate
+  frames at t=1. The 250 ms paint fallback in `Studio.video()` gives up before a cold runner paints the new frame.
+  Not fixed yet.
 - 2026-11-03: **publishing is manual for now.** `release.yml` removed (its npm and PyPI steps never succeeded: no
   trusted publishers on either registry). CI (`ci.yml`) only tests: Linux Node 20/24, macOS, Homebrew formula style;
   green on `main`. Release steps by hand: `packaging/README.md`. Registries are still at 0.2.1, GHCR has 0.2.2/0.2.3
