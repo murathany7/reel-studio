@@ -35,5 +35,5 @@ attach a still before and after (`node core/render.mjs still <page> out.png --t 
 
 ## Releases
 
-Maintainers bump the version with `packaging/bump.sh <version>`, push to `main`, and publish npm, PyPI, the Homebrew
-tap and a GitHub Release by hand once CI passes. Steps: `packaging/README.md`.
+Maintainers bump the version with `packaging/bump.sh <version>` and push to `main`. The Release workflow publishes
+npm, PyPI, GHCR, the Homebrew tap and a GitHub Release. Details: `packaging/README.md`.

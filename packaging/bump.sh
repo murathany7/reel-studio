@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Set the version everywhere it lives: package.json, .claude-plugin/plugin.json, python/pyproject.toml.
-#   packaging/bump.sh 0.2.2      then commit, push, and publish by hand (packaging/README.md)
+#   packaging/bump.sh 0.2.2      then commit and push: the Release workflow publishes it
 set -euo pipefail
 
 v="${1:?usage: packaging/bump.sh <major.minor.patch>}"

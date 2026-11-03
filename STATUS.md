@@ -4,6 +4,12 @@ The memory of this repo. Read it first, update it last.
 
 ## Now
 
+- 2026-11-04: **release workflow back** (`release.yml`, `ci.yml` callable again). Each target (npm, PyPI, GHCR,
+  GitHub Release) is checked on its own and skipped when it already has the version, so reruns and hand releases mix;
+  GitHub Release and Homebrew run when npm/PyPI were published now *or* earlier, and build their own files. npm and
+  PyPI fall back to `NPM_TOKEN` / `PYPI_API_TOKEN` secrets. Still blocked on the maintainer's one-time setup: a
+  trusted publisher (or token secret) on npmjs.com and pypi.org, plus `HOMEBREW_TAP_TOKEN` (`packaging/README.md`).
+  Until then the npm/PyPI jobs fail with an error that names the fix. Not run yet (on `desk`, not on `main`).
 - 2026-11-03: **0.2.4 released by hand** (desk merged into `main` as `2ef2ff8`, then formula `3189519`; CI green):
   npm, PyPI, Homebrew tap (`e07134c`), GitHub Release v0.2.4 (npm tgz + wheel + sdist). `npx` and `uvx` installs of
   0.2.4 tested (`init` copies `desk/`). GHCR `0.2.4` and `latest` pushed by hand (amd64 + arm64,
