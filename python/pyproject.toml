@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "reel-studio"
-version = "0.2.6"  # set from ../package.json by packaging/build-python.sh
+version = "0.2.7"  # set from ../package.json by packaging/build-python.sh
 description = "Agency-quality marketing reels, ads and posts made by Claude Code. Free and open source; no per-video fees."
 readme = "README.md"
 license = "MIT"

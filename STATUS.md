@@ -4,6 +4,9 @@ The memory of this repo. Read it first, update it last.
 
 ## Now
 
+- 2026-11-04: **0.2.7 released** (bump on `main` → Release workflow): ships the marketer-first skills
+  (`make-video`, `new-brand`, `setup`), `scripts/voice.py` (free local AI voice), the `render.mjs` 12M bitrate cap and
+  the desk's `launch.json` entry from `init-project.sh`. Tests pass locally (the `init` test needs `rsync` installed).
 - 2026-11-04: **no videos in the repo.** README GIFs removed (MP4s live on GitHub Releases; the README links there and
   keeps its still strips); production renders, covers, stills, contact sheets and QA CSV/logs are untracked and
   ignored (`productions/**/export/`, `productions/**/qa/**/*.{jpg,png,csv,log}`), so a production in git is its
