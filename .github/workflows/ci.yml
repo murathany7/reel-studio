@@ -45,9 +45,17 @@ jobs:
       - uses: astral-sh/setup-uv@v7
 
       - name: Install ffmpeg
+        # The runner image ships third-party apt sources (packages.microsoft.com…) that sometimes 403 or lose their
+        # signature, failing `apt-get update` for everyone. Only Ubuntu's own archive is needed, so an update error
+        # is a warning; the install itself retries and still fails the job if ffmpeg can't be installed.
         run: |
-          if [ "$RUNNER_OS" = Linux ]; then sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg rsync
-          else brew install ffmpeg; fi
+          if [ "$RUNNER_OS" = Linux ]; then
+            sudo apt-get update -qq || echo "::warning::apt-get update had errors (third-party source); installing from the Ubuntu archive"
+            for i in 1 2 3; do sudo apt-get install -y -qq ffmpeg rsync && break; [ $i = 3 ] && exit 1; sleep 15; done
+          else
+            for i in 1 2 3; do brew install ffmpeg && break; [ $i = 3 ] && exit 1; sleep 15; done
+          fi
+          ffmpeg -version | head -1
 
       - name: Check Chrome
         run: |
