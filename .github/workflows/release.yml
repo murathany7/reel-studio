@@ -48,7 +48,6 @@ jobs:
     needs: check
     if: needs.check.outputs.release == 'true'
     uses: ./.github/workflows/ci.yml
-    with: { linux-only: true }
 
   npm:
     needs: [check, test]

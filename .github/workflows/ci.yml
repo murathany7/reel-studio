@@ -6,12 +6,8 @@ on:
   pull_request:
   workflow_dispatch:
   workflow_call:
-    inputs:
-      linux-only:
-        # Release passes true: the push run on the same commit already covers macOS, and macOS runners can queue
-        # for 15+ minutes and then be dropped ("not acquired"), which would block the release for nothing.
-        type: boolean
-        default: false
+  schedule:
+    - cron: "17 6 * * 1"  # Mondays: the macOS run
 
 permissions:
   contents: read
@@ -30,7 +26,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include: ${{ fromJSON(inputs.linux-only && '[{"os":"ubuntu-latest","node":20},{"os":"ubuntu-latest","node":24}]' || '[{"os":"ubuntu-latest","node":20},{"os":"ubuntu-latest","node":24},{"os":"macos-latest","node":24}]') }}
+        # PRs, pushes and releases test on Linux only. GitHub's macOS runners can queue 15+ minutes and then drop the
+        # job ("not acquired by Runner", capacity), which turned whole runs red with nothing wrong in the code.
+        # macOS runs weekly and when started by hand (Actions → CI → Run workflow), never in Release's call.
+        include: ${{ fromJSON(github.workflow == 'CI' && (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && '[{"os":"ubuntu-latest","node":20},{"os":"ubuntu-latest","node":24},{"os":"macos-latest","node":24}]' || '[{"os":"ubuntu-latest","node":20},{"os":"ubuntu-latest","node":24}]') }}
     steps:
       - uses: actions/checkout@v7
 
