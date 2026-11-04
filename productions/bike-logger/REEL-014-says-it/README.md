@@ -8,7 +8,7 @@ and loop, not the look.
 |---|---|
 | Brand | `brands/bike-logger/` |
 | Type | Reel |
-| Status | `test render` (made on request "play with it more", 2026-11-04; no storyboard approval, so not deliverable) |
+| Status | `test render, QA passed` (made on request "play with it more", 2026-11-04; no storyboard approval, so not deliverable). 12.7 MB, 12.6 Mbit/s; text QA no ❌ (spec chips 32 px warn), video QA ✅ (true peak −0.9 dBTP warn) |
 | Size | 1080×1920 (9:16) |
 | Frame rate / length | 30 fps · 18 s (9 bars at 120 BPM) |
 | Language | English |

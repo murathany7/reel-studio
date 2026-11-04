@@ -1,6 +1,6 @@
 # QA report — REEL-014-says-it-en.mp4
 
-Generated 2026-11-04 21:39.
+Generated 2026-11-04 21:54.
 
 ## Specs
 
@@ -20,7 +20,7 @@ Generated 2026-11-04 21:39.
 ## Motion
 
 ```json
-{"frames_compared": 539, "moving_frames": 539, "static_frames": 0, "median_pct_pixels_changed_when_moving": 12.119, "hitches": [], "jumps": [{"frame": 60, "time": 2.0, "pct": 86.4}, {"frame": 120, "time": 4.0, "pct": 51.5}, {"frame": 180, "time": 6.0, "pct": 45.5}, {"frame": 240, "time": 8.0, "pct": 67.8}, {"frame": 360, "time": 12.0, "pct": 44.6}, {"frame": 390, "time": 13.0, "pct": 38.1}, {"frame": 420, "time": 14.0, "pct": 50.8}, {"frame": 480, "time": 16.0, "pct": 99.4}]}
+{"frames_compared": 539, "moving_frames": 539, "static_frames": 0, "median_pct_pixels_changed_when_moving": 11.875, "hitches": [], "jumps": [{"frame": 60, "time": 2.0, "pct": 86.4}, {"frame": 120, "time": 4.0, "pct": 51.5}, {"frame": 180, "time": 6.0, "pct": 45.6}, {"frame": 240, "time": 8.0, "pct": 67.7}, {"frame": 360, "time": 12.0, "pct": 44.5}, {"frame": 390, "time": 13.0, "pct": 37.7}, {"frame": 420, "time": 14.0, "pct": 50.9}, {"frame": 435, "time": 14.5, "pct": 28.9}, {"frame": 480, "time": 16.0, "pct": 99.4}]}
 ```
 
 - **Hitches** (a duplicate frame during motion) cause visible stutter. Fix the timeline at those times.
