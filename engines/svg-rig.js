@@ -18,8 +18,10 @@
     const body = $("body"), eyes = $("eyes");
     const open = $("mouth-open"), closed = $("mouth-closed");
     const armL = $("arm-l"), armR = $("arm-r");
-    if (eyes) gsap.set(eyes, { transformBox: "fill-box", transformOrigin: "50% 50%" });
-    if (body) gsap.set(body, { transformBox: "fill-box", transformOrigin: "50% 100%" });
+    // GSAP places SVG origins from the bounding box itself; CSS transform-box on top of that shifted the eyes
+    // down on every blink.
+    if (eyes) gsap.set(eyes, { transformOrigin: "50% 50%" });
+    if (body) gsap.set(body, { transformOrigin: "50% 100%" });
     if (open) gsap.set(open, { opacity: 0 });
     // Arms pivot at the shoulder: the inner, lower corner of each arm's box (override with data-pivot="x% y%").
     if (armR) gsap.set(armR, { transformOrigin: armR.dataset.pivot || "15% 85%" });

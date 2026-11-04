@@ -4,6 +4,8 @@ The memory of this repo. Read it first, update it last.
 
 ## Now
 
+- 2026-11-04: **SVG rig blink fixed:** `transformBox: "fill-box"` on top of GSAP's own SVG origin moved the eyes far
+  down on every blink (below the mouth in the demo since its first version). Body squash still anchors at the feet.
 - 2026-11-04: **release workflow back** (`release.yml`, `ci.yml` callable again). Each target (npm, PyPI, GHCR,
   GitHub Release) is checked on its own and skipped when it already has the version, so reruns and hand releases mix;
   GitHub Release and Homebrew run when npm/PyPI were published now *or* earlier, and build their own files. npm and
@@ -128,6 +130,9 @@ The memory of this repo. Read it first, update it last.
 
 ## Learnings
 
+- **GSAP and CSS `transform-box` on SVG (2026-11-04):** GSAP already resolves `transformOrigin` percentages on SVG
+  from the bounding box. Adding `transformBox: "fill-box"` applies the origin twice, so a `scaleY` blink slid the
+  eyes down by half the face. Set `transformOrigin` alone.
 - **Desk preview drift (2026-11-03):** the desk first loaded compositions in a `display:none` iframe at the default
   300×150 size, and REEL-002's headline came out "therack." (the composition's word splitter ran with no layout).
   The renderer loads in a laid-out 1080×1920 viewport, so the desk now does the same (`visibility:hidden` while
