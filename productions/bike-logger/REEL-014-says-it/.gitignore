@@ -1,0 +1,4 @@
+# Rebuilt by the commands in README.md (Rebuild)
+audio/*.wav
+qa/beats/
+qa/render.log
