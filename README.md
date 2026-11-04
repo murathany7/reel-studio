@@ -69,7 +69,7 @@ look alike.
 | Look | Engine |
 |---|---|
 | Text, UI, layouts | HTML/CSS + GSAP |
-| Cartoon character | SVG rig · Lottie |
+| Cartoon character | SVG rig · Lottie · Rive |
 | Character that speaks the VO | Lip sync (Rhubarb mouth shapes) on an SVG rig, a mascot PNG, Three.js or Blender |
 | Particles | Pixi.js |
 | 3D, toon 3D | Three.js |
@@ -77,6 +77,23 @@ look alike.
 | Your live website | Page capture |
 
 Mix them freely in one piece. Rules for keeping each frame a pure function of `t`: [`engines/README.md`](engines/README.md).
+
+## Reel tools
+
+| | |
+|---|---|
+| Captions | Word-timed captions from the VO transcript, in a few styles (`Studio.captions`) |
+| Beat cuts | Cuts and pulses on the music's beats and bars (`scripts/beats.mjs` → `Studio.beats`) |
+| Transitions | Fade, wipe, iris, push, slide, zoom, whip and more between layers, plus GL transitions between canvases and plates |
+| Formats | One composition, rendered as 9:16, 4:5, 1:1 and 16:9 (`--formats all`) |
+| Motion blur | Real shutter blur on fast moves (`--motion-blur 8`), still deterministic |
+
+All of it in an 8-second demo: [`examples/reel-layer/`](examples/reel-layer).
+
+**Checked before you see it.** Every piece goes through frame QA: specs, 30 fps, loudness, jumps, frozen or black
+frames, a blank first frame, flashing (WCAG), and the safe zones. Text QA (`node core/render.mjs text-qa`) checks
+every text block for size, contrast against what is actually behind it, the 3-second hook, and text hidden under
+the Reels buttons. Commands: [`core/README.md`](core/README.md).
 
 ## Install
 
@@ -133,8 +150,9 @@ cd core && npm install && cd ..
 That's the whole product: you talk to your agent, it writes the storyboard, waits for your OK in chat, then makes,
 renders and checks the video.
 
-**Optional: the desk.** If you'd rather review on a page than in chat, run `npx reel-studio desk` (or
-`node desk/server.mjs`) and open <http://127.0.0.1:4100>. You can scrub frame by frame, pin notes to frames, send them
+**Optional: the desk.** If you'd rather review on a page than in chat, say *"open the desk"*. In the Claude
+desktop app it opens in the app's browser pane, next to the chat (`setup` adds it to `.claude/launch.json`).
+Elsewhere, run `npx reel-studio desk` and open <http://127.0.0.1:4100>. You can scrub frame by frame, pin notes to frames, send them
 to Claude Code or Codex (`REEL_AGENT=codex`; your own login, no API key), render stills and previews, and approve the storyboard and the final cut.
 Nothing else needs it, and nothing changes if you never open it. See [`desk/README.md`](desk/README.md).
 
