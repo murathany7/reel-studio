@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Quality check for a finished reel / video ad. Writes <qa_dir>/report.md plus
-# evidence images. Run it on every export before delivering (the qa-deliver step in .claude/skills/make-video).
+# evidence images. Run it on every export before delivering (the qa-deliver step in .agents/skills/make-video).
 #
 #   scripts/qa-video.sh <video.mp4> <qa_dir> [expected WxH=1080x1920] [fps=30]
 #

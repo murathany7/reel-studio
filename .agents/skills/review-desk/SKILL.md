@@ -10,16 +10,18 @@ the desk or suggest it unless the person asks, or they already use it (a `review
 
 The desk (`desk/`) is a local page for the person: it plays a production's composition frame-exact through the
 renderer's own clock (`__seek`), and lets them pin notes to frames, render stills, preview videos and QA, read the
-storyboard, approve, and send notes to Claude. It only reads and writes files in the project, so everything it does
+storyboard, approve, and send notes to a coding agent. It only reads and writes files in the project, so everything it does
 reaches you as files (and, if it is registered, through the `reel-desk` MCP server).
 
 ## Open it
 
 `node desk/server.mjs` (run it in the background), then the person opens <http://127.0.0.1:4100>. In the Claude
-desktop app, open that URL in the browser pane. `npx reel-studio desk` does the same. Port: `--port <n>`.
+desktop app, open that URL in the browser pane; elsewhere, give the person the URL. `npx reel-studio desk` does the same. Port: `--port <n>`.
 
 The `reel-desk` MCP tools below are not registered by default. If they aren't available and the person wants them:
-`claude mcp add reel-desk --scope project -- node desk/mcp.mjs` (then restart the session). Without them, read and
+Claude Code: `claude mcp add reel-desk --scope project -- node desk/mcp.mjs`; Codex:
+`codex mcp add reel-desk -- node desk/mcp.mjs`; Copilot: add it to `.vscode/mcp.json` or the Copilot CLI's
+`/mcp add` (then restart the session). Without them, read and
 write `review.json` directly.
 
 ## Where things are
@@ -38,11 +40,12 @@ write `review.json` directly.
    `node core/render.mjs still … --t <t>`) and **look at the image**.
 3. `resolve_note` with a one-line reply saying what changed. If a note needs a fact, an asset or a decision you
    don't have, keep it `open` and put the question in the reply. Only the person closes notes (after checking).
-4. Your own QA findings can go on the timeline too: `add_note` (they show as by `claude`).
+4. Your own QA findings can go on the timeline too: `add_note` (they show as by `claude`, the desk's name for any agent).
 
-The desk's **Send to Claude** button runs exactly this loop headlessly (`claude -p` with the person's own Claude Code
-login, `ANTHROPIC_API_KEY` removed, tools limited to read/edit/render/QA and `reel-desk`), one session per production
-(`review.json` → `claude.session`).
+The desk's **Send to agent** button runs exactly this loop headlessly with the person's own login: Claude Code
+(`claude -p`, `ANTHROPIC_API_KEY` removed, tools limited to read/edit/render/QA and `reel-desk`) or Codex
+(`codex exec`, workspace-write sandbox, `OPENAI_API_KEY` removed), picked with `REEL_AGENT`. One session per
+production (`review.json` → `claude.session` / `codex.session`).
 
 ## Approvals are the person's
 

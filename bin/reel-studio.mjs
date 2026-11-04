@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// npx reel-studio init [dir] [--update]: copy the Reel Studio kit and its Claude Code skills into a project.
+// npx reel-studio init [dir] [--update]: copy the Reel Studio kit and its agent skills into a project.
 // npx reel-studio desk [--port 4100]: open the review desk of the project in this folder.
 import { spawnSync } from "node:child_process";
 import { existsSync } from "node:fs";
@@ -17,7 +17,7 @@ if (cmd === "init") {
   const r = spawnSync("bash", [path.join(KIT, "scripts/init-project.sh"), KIT, ...rest, "--with-skills"], { stdio: "inherit" });
   if (r.status === 0) {
     console.log(`
-Done. Open this folder in Claude Code and ask:
+Done. Open this folder in Claude Code, Codex or GitHub Copilot (agent mode) and ask:
   "Add my product as a new brand: https://…"
   "Make a 15 s reel for <brand> about <feature>"
 Optional, to review on a page instead of in chat:  npx reel-studio desk`);
@@ -35,11 +35,11 @@ if (cmd === "desk") {
   process.exit(spawnSync(process.execPath, [server, ...rest], { stdio: "inherit" }).status ?? 1);
 }
 
-console.log(`Reel Studio: marketing videos made with code, run by Claude Code.
+console.log(`Reel Studio: marketing videos made with code, run by your coding agent (Claude Code, Codex, Copilot).
 
   npx reel-studio init [dir]           copy the kit and skills into dir (default: here) and install it
   npx reel-studio init [dir] --update  refresh core/, engines/, scripts/, desk/ and skills from this version
-  npx reel-studio desk [--port 4100]   optional review page: play, pin notes, send them to Claude, approve
+  npx reel-studio desk [--port 4100]   optional review page: play, pin notes, send them to your agent, approve
 
 Claude Code plugin instead:  /plugin marketplace add murathany7/reel-studio
 More: https://github.com/murathany7/reel-studio`);

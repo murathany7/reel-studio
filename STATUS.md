@@ -4,6 +4,15 @@ The memory of this repo. Read it first, update it last.
 
 ## Now
 
+- 2026-11-04: **Codex and Copilot support, same repo**. `AGENTS.md` is now the instructions file
+  (`CLAUDE.md` is `@AGENTS.md` plus a Claude-only note); the skills moved to `.agents/skills/` (Codex and Copilot read
+  it; `.claude/skills` is a symlink; the plugin points there). `init` adds `AGENTS.md`, `.agents/skills/` and links
+  `.claude/skills`; older projects with a real `.claude/skills/` folder keep it updated, and a CLAUDE.md without
+  `@AGENTS.md` gets a note to move its rules. Desk: `REEL_AGENT=codex` runs `codex exec --json` in the
+  `workspace-write` sandbox with `reel-desk` over `-c mcp_servers…`, `OPENAI_API_KEY` removed, session resumed per
+  production (`review.json` → `codex.session`). Tested with a fake codex only: local codex-cli 0.133 is too old for
+  the account's default model, so no real Codex run yet. Copilot has no headless desk runner (it uses the files or
+  the MCP server).
 - 2026-11-04: **release workflow back** (`release.yml`, `ci.yml` callable again). Each target (npm, PyPI, GHCR,
   GitHub Release) is checked on its own and skipped when it already has the version, so reruns and hand releases mix;
   GitHub Release and Homebrew run when npm/PyPI were published now *or* earlier, and build their own files. npm and
@@ -153,10 +162,15 @@ The memory of this repo. Read it first, update it last.
   It is optional: approval in chat stays the default, and nothing in the kit reads `review.json` unless it exists.
 - 2026-11-03: distribution metrics (`check-metrics` skill, `scripts/metrics.mjs`, `metrics.jsonl`) are an optional,
   local-only maintainer tool: gitignored, never shipped, nothing in the kit depends on them.
+- 2026-11-04: one repo for every agent: the kit (renderer, engines, brands) is agent-neutral, only the instruction
+  layer differs. `AGENTS.md` + `.agents/skills/` are the single source; Claude-only files just point at them.
 - 2026-11-02: Bike Logger's audience is robotics kit learners; every piece sells learning by building, with the replay as the payoff.
 
 ## Next
 
+- Codex: one real desk run after `npm i -g @openai/codex@latest` (check the `item.*` event names in `describeCodex`
+  and that `-c mcp_servers.reel-desk.*` loads the tools). Copilot: try the skills in VS Code agent mode; it reads both
+  `.claude/skills` and `.agents/skills`, so check it doesn't list each skill twice.
 - Use the reel layer in a real production: captions on a VO piece (needs ElevenLabs auth for Yuppo), beats on real
   music (check `beats.mjs` BPM against the track's stated tempo), a 4:5 cut of an existing reel.
 - Run the new tests on GitHub CI (Linux SwiftShader); consider `--capture beginframe` there once it has run a while.

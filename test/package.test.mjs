@@ -12,11 +12,11 @@ test("npm package ships the kit", () => {
     "engines/gl-transitions.js", "engines/rive.js", "core/lib/beginframe.mjs", "scripts/beats.mjs",
     "desk/server.mjs", "desk/mcp.mjs", "desk/lib.mjs", "desk/index.html", "desk/app.js",
     "scripts/init-project.sh", "scripts/qa-video.sh", "scripts/mix_audio.py",
-    "templates/project/CLAUDE.md", "templates/project/STATUS.md", "templates/project/gitignore",
+    "templates/project/AGENTS.md", "templates/project/CLAUDE.md", "templates/project/STATUS.md", "templates/project/gitignore",
     "brands/_template/README.md", "productions/_TEMPLATE/README.md",
     "examples/engines-demo/index.html", "examples/engines-demo/plates/blob.mp4",
     "examples/reel-layer/index.html", "examples/reel-layer/audio/beats.json", "examples/reel-layer/audio/words.json",
-    ".claude/skills/make-video/SKILL.md", "LICENSE", "README.md",
+    ".agents/skills/make-video/SKILL.md", "LICENSE", "README.md",
   ]) assert.ok(files.includes(f), `missing ${f}`);
 });
 
@@ -26,7 +26,7 @@ test("npm package leaves out brands, productions and repo-only files", () => {
     (/^productions\//.test(f) && !f.startsWith("productions/_TEMPLATE/")) ||
     /^(docs|python|packaging|test|\.github)\//.test(f) ||
     /node_modules|\.DS_Store|__pycache__|metrics|desk\/\.state\.json/.test(f) ||
-    ["STATUS.md", "CLAUDE.md"].includes(f));
+    ["STATUS.md", "CLAUDE.md", "AGENTS.md"].includes(f) || /skills\/check-metrics/.test(f));
   assert.deepEqual(leaks, []);
 });
 

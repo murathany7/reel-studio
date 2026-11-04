@@ -63,7 +63,8 @@ class Kit(unittest.TestCase):
         with tempfile.TemporaryDirectory() as d:
             code, out = call("init", d)
             self.assertEqual(code, 0, out)
-            for f in ("core/render.mjs", ".claude/skills/make-video/SKILL.md", "CLAUDE.md",
+            for f in ("core/render.mjs", ".agents/skills/make-video/SKILL.md", ".claude/skills/make-video/SKILL.md",
+                      "AGENTS.md", "CLAUDE.md",
                       "core/node_modules/playwright-core/package.json"):
                 self.assertTrue((Path(d) / f).exists(), f)
 

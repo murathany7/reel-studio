@@ -26,7 +26,7 @@
     "examples/reel-layer/README.md",
     "examples/reel-layer/make-audio.sh",
     "examples/reel-layer/audio/",
-    ".claude/skills/"
+    ".agents/skills/"
   ],
   "scripts": {
     "test": "node --test test/*.test.mjs",

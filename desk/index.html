@@ -41,7 +41,7 @@
   <aside class="panel" id="panel" hidden>
     <div class="tabs" role="tablist">
       <button role="tab" data-tab="notes" class="on">Notes <span class="count" id="noteCount"></span></button>
-      <button role="tab" data-tab="claude">Claude</button>
+      <button role="tab" data-tab="claude"><span class="agent">Claude</span></button>
       <button role="tab" data-tab="render">Render</button>
       <button role="tab" data-tab="board">Storyboard</button>
     </div>
@@ -56,16 +56,16 @@
         <button data-f="open" class="on">Open</button><button data-f="fixed">Fixed</button><button data-f="all">All</button>
       </div>
       <ul class="notes" id="notes"></ul>
-      <button class="primary wide" id="sendNotes">Send open notes to Claude</button>
+      <button class="primary wide" id="sendNotes">Send open notes to <span class="agent">Claude</span></button>
     </div>
 
     <div class="tab" data-tab="claude" hidden>
-      <p class="muted small">Runs your local Claude Code (<code>claude -p</code>) on this production with your existing login, no API key.
+      <p class="muted small">Runs your local <span id="agentRun">Claude Code (<code>claude -p</code>)</span> on this production with your existing login, no API key.
         It may read and edit files, render stills and run QA, nothing else. It keeps one session per production.</p>
       <textarea id="ask" rows="3" placeholder="Ask for a change, e.g. “make the end card hold 0.5 s longer”"></textarea>
       <label class="small"><input type="checkbox" id="withNotes" checked> Include open notes</label>
       <div class="row">
-        <button class="primary" id="sendAsk">Send to Claude</button>
+        <button class="primary" id="sendAsk">Send to <span class="agent">Claude</span></button>
         <button id="stopClaude" hidden>Stop</button>
       </div>
       <pre class="log" id="claudeLog"></pre>
@@ -83,7 +83,7 @@
       <h4>Exports</h4>
       <ul class="exports" id="exports"></ul>
       <h4>Approve</h4>
-      <p class="muted small">Approvals are yours alone. Claude can't record them.</p>
+      <p class="muted small">Approvals are yours alone. Your agent can't record them.</p>
       <input id="approver" placeholder="Your name" autocomplete="name">
       <div class="row wrap">
         <button id="okBoard">Approve storyboard</button>

@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 # Copy the Reel Studio kit into a project so its skills can render there.
 #   scripts/init-project.sh <kit_root> [project_dir] [--update] [--with-skills]
-# Copies core/, engines/, scripts/, desk/ (the optional review app), the engines and reel-layer demos and the brand/production templates, adds CLAUDE.md,
-# STATUS.md and .gitignore if missing, then runs npm install in core/ and checks the tools.
+# Copies core/, engines/, scripts/, desk/ (the optional review app), the engines and reel-layer demos and the brand/production templates, adds AGENTS.md
+# (read by Codex, Copilot and, through CLAUDE.md's @import, Claude Code), CLAUDE.md, STATUS.md and .gitignore if missing,
+# then runs npm install in core/ and checks the tools.
 # Existing files are kept; --update refreshes core/, engines/ and scripts/ (and the skills) from the kit (brands and
-# productions are never touched). --with-skills also copies the skills into .claude/skills/ (for installs without
-# the Claude Code plugin, e.g. npx reel-studio init).
+# productions are never touched). --with-skills also copies the skills into .agents/skills/ (Codex, Copilot) and links
+# .claude/skills to it (Claude Code), for installs without the Claude Code plugin, e.g. npx reel-studio init.
 set -euo pipefail
 
 update=""; skills=""; args=()
@@ -27,9 +28,9 @@ else
   copy() {  # copy <src rel> <dest rel> [overwrite]
     mkdir -p "$dest/$2"
     if [ "${3:-}" = overwrite ]; then
-      rsync -a --exclude node_modules --exclude __pycache__ "$kit/$1/" "$dest/$2/"
+      rsync -a --exclude node_modules --exclude __pycache__ --exclude check-metrics "$kit/$1/" "$dest/$2/"
     else
-      rsync -a --ignore-existing --exclude node_modules --exclude __pycache__ "$kit/$1/" "$dest/$2/"
+      rsync -a --ignore-existing --exclude node_modules --exclude __pycache__ --exclude check-metrics "$kit/$1/" "$dest/$2/"
     fi
   }
   mode=""; [ "$update" = "--update" ] && mode=overwrite
@@ -39,15 +40,25 @@ else
   copy desk desk $mode
   copy brands/_template brands/_template
   copy productions/_TEMPLATE productions/_TEMPLATE
-  [ -n "$skills" ] && copy .claude/skills .claude/skills $mode
+  if [ -n "$skills" ]; then
+    copy .agents/skills .agents/skills $mode
+    mkdir -p "$dest/.claude"
+    if [ -d "$dest/.claude/skills" ] && [ ! -L "$dest/.claude/skills" ]; then
+      copy .agents/skills .claude/skills $mode  # a project from before .agents/: keep its own folder up to date
+    else
+      ln -sfn ../.agents/skills "$dest/.claude/skills"
+    fi
+  fi
   mkdir -p "$dest/examples/engines-demo/plates"
   cp -n "$kit/examples/engines-demo/index.html" "$kit/examples/engines-demo/README.md" "$dest/examples/engines-demo/" 2>/dev/null || true
   cp -n "$kit/examples/engines-demo/plates/blob.mp4" "$dest/examples/engines-demo/plates/" 2>/dev/null || true
   # The reel-layer demo (captions, beats, transitions, formats); not its fetched Rive sample
   rsync -a --ignore-existing --exclude assets "$kit/examples/reel-layer/" "$dest/examples/reel-layer/" 2>/dev/null || true
-  for f in CLAUDE.md STATUS.md; do
+  [ -e "$dest/CLAUDE.md" ] && ! grep -q '^@AGENTS.md' "$dest/CLAUDE.md" && [ ! -e "$dest/AGENTS.md" ] && legacy=1 || legacy=""
+  for f in AGENTS.md CLAUDE.md STATUS.md; do
     [ -e "$dest/$f" ] || sed "s/{{DATE}}/$(date +%F)/" "$kit/templates/project/$f" > "$dest/$f"
   done
+  [ -n "$legacy" ] && echo "Note: CLAUDE.md predates AGENTS.md. Move your own rules from CLAUDE.md into AGENTS.md (Codex and Copilot read it), then leave just '@AGENTS.md' in CLAUDE.md."
   [ -e "$dest/.gitignore" ] || cp "$kit/templates/project/gitignore" "$dest/.gitignore"
   echo "Kit copied into $dest"
 fi

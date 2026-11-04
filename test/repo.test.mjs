@@ -1,6 +1,6 @@
 // Static checks: every script parses, manifests agree, skills are well formed.
 import assert from "node:assert/strict";
-import { readFileSync, readdirSync, existsSync } from "node:fs";
+import { readFileSync, readdirSync, existsSync, readlinkSync } from "node:fs";
 import path from "node:path";
 import { test } from "node:test";
 import { ROOT, run, json } from "./helpers.mjs";
@@ -52,6 +52,19 @@ test("every skill has name and description frontmatter matching its folder", () 
     assert.match(fm[1], new RegExp(`^name: ${s}$`, "m"), `${s}: name`);
     const desc = fm[1].match(/^description: (.+)$/m);
     assert.ok(desc && desc[1].length >= 40 && desc[1].length <= 1024, `${s}: description length`);
+  }
+});
+
+test("one set of skills and instructions for every agent", () => {
+  // Codex and Copilot read AGENTS.md and .agents/skills; Claude Code reads CLAUDE.md (which imports AGENTS.md)
+  // and .claude/skills (a link to the same folder). Nothing is kept twice.
+  assert.equal(json(".claude-plugin/plugin.json").skills, "./.agents/skills/");
+  assert.equal(readlinkSync(path.join(ROOT, ".claude/skills")), "../.agents/skills");
+  for (const f of ["CLAUDE.md", "templates/project/CLAUDE.md"]) {
+    assert.match(readFileSync(path.join(ROOT, f), "utf8"), /^@AGENTS\.md$/m, `${f} imports AGENTS.md`);
+  }
+  for (const f of ["AGENTS.md", "templates/project/AGENTS.md"]) {
+    assert.doesNotMatch(readFileSync(path.join(ROOT, f), "utf8"), /\.claude\/skills\/\w/, `${f} points at .agents/skills`);
   }
 });
 

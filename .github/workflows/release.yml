@@ -152,7 +152,8 @@ jobs:
           docker run --rm -it -v "\$PWD":/work ghcr.io/murathany7/reel-studio:$V reel-studio init
           \`\`\`
 
-          Or in Claude Code: \`/plugin marketplace add murathany7/reel-studio\`
+          Or in Claude Code: \`/plugin marketplace add murathany7/reel-studio\`. Codex and GitHub Copilot read the
+          \`AGENTS.md\` and \`.agents/skills/\` that \`init\` adds.
           EOF
           )"
 
