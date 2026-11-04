@@ -5,11 +5,17 @@
  *   node core/render.mjs video  <composition.html> <out.mp4> [--audio mix.wav] [--safe] [--frames <dir>] [--workers N]
  *   node core/render.mjs still  <composition.html> <out.png> [--t 1.5] [--safe]
  *   node core/render.mjs stills <composition.html> <out_dir> [--every 0.5 | --at 0,1.2,3] [--safe] [--workers N]
+ *   node core/render.mjs text-qa <composition.html> <qa_dir> [--every 0.25]
+ *                         text size, contrast, the 3 s hook and Reels safe zones → <qa_dir>/text.md (core/lib/qa-text.mjs);
+ *                         exits 1 when something fails
  *
  *   --format 4x5          render one of the formats the composition declares (Studio.setup({ formats }))
  *   --formats all|4x5,1x1 render several: <out>-<format>.mp4 / .png / <out_dir>-<format>
  *   --workers N           Chrome pages rendering frames in parallel (default: auto, up to 4). Frames are written
  *                         in order to one encoder, so the video is the same whatever N is.
+ *   --motion-blur N       average N subframes per frame in linear light (default: Studio.setup({ motionBlur }), else
+ *                         off; 8 looks smooth, 1 turns it off). Renders take about N times as long
+ *   --shutter 0.5         part of the frame interval the shutter is open (0.5 = 180°; 1 = full smear)
  *   --capture beginframe  Linux: capture with HeadlessExperimental.beginFrame in chrome-headless-shell (each frame is
  *                         one compositor frame, nothing can race the screenshot). Needs Node 22+ and the shell
  *                         (HEADLESS_SHELL_PATH, or Debian's chromium-headless-shell). Default: screenshots, or
@@ -32,6 +38,7 @@ import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { chromium } from "playwright-core";
+import { Worker } from "node:worker_threads";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 // Google Chrome: CHROME_PATH wins, else the usual install paths on macOS and Linux
@@ -200,13 +207,47 @@ async function openPage(ses, input, { safe, format }) {
   const meta = await p.evaluate("window.__meta()");
   await p.setViewport(meta.width, meta.height);
   await preparePlates(p.evaluate);
+  const { samples, shutter } = motionBlur(meta);
+  const blender = samples > 1 ? blendWorker() : null;
+  // Motion blur: the shutter opens at t and stays open for `shutter` of the frame interval; `samples` subframes
+  // evenly spaced inside it are averaged (core/lib/blend.mjs). The last subframe stays before the next frame.
   const shot = async (t, file) => {
-    await p.evaluate(`window.__seek(${t})`);
-    const buf = await p.screenshot(meta);
+    const subs = [];
+    for (let k = 0; k < samples; k++) {
+      await p.evaluate(`window.__seek(${t + (k / samples) * (shutter / meta.fps)})`);
+      subs.push(await p.screenshot(meta));
+    }
+    const buf = blender ? await blender.blend(subs) : subs[0];
     if (file) await writeFile(file, buf);
     return buf;
   };
-  return { meta, shot, errors: p.errors, close: p.close };
+  const close = async () => { await blender?.close(); await p.close(); };
+  return { meta, shot, page: p, errors: p.errors, close };
+}
+
+// Subframes per frame and shutter: --motion-blur <samples> / --shutter <0..1> win over Studio.setup({ motionBlur })
+function motionBlur(meta) {
+  const samples = Math.max(1, parseInt(opts["motion-blur"] ?? meta.motionBlur?.samples ?? 1, 10) || 1);
+  const shutter = parseFloat(opts.shutter ?? meta.motionBlur?.shutter ?? 0.5);
+  if (!(shutter > 0 && shutter <= 1)) throw new Error(`--shutter must be in (0, 1], got ${opts.shutter}`);
+  return { samples, shutter };
+}
+
+// One blend thread per page: blending 8 full-size PNGs takes ~200 ms of CPU, which would serialise the pages
+function blendWorker() {
+  const w = new Worker(new URL("./lib/blend-worker.mjs", import.meta.url));
+  const waiting = new Map();
+  let next = 0;
+  w.on("message", ({ id, out, error }) => {
+    const job = waiting.get(id);
+    waiting.delete(id);
+    error ? job.rej(new Error(error)) : job.res(Buffer.from(out.buffer, out.byteOffset, out.byteLength));
+  });
+  w.on("error", (e) => { for (const job of waiting.values()) job.rej(e); waiting.clear(); });
+  return {
+    blend: (pngs) => new Promise((res, rej) => { const id = next++; waiting.set(id, { res, rej }); w.postMessage({ id, pngs }); }),
+    close: () => w.terminate(),
+  };
 }
 
 function ffmpeg(argv) {
@@ -248,6 +289,55 @@ async function renderFrames(pages, n, timeOf, fileOf, deliver) {
     }
   }));
   await writing;
+}
+
+// Text QA: sample the timeline, measure every visible text block, write <qa_dir>/text.md + text.json + evidence
+async function textQa(pg, qaDir) {
+  const qa = await import("./lib/qa-text.mjs");
+  const { meta, page } = pg;
+  const every = parseFloat(opts.every ?? 0.25);
+  const last = meta.duration - 1 / meta.fps;
+  const times = Array.from({ length: Math.floor(last / every) + 1 }, (_, i) => +(i * every).toFixed(3));
+  const sample = async (t) => {
+    await page.evaluate(`window.__seek(${t})`);
+    const units = await page.evaluate(qa.COLLECT);
+    if (!units.length) return { t, units: [] };
+    const withText = await page.screenshot(meta);
+    await page.evaluate(qa.HIDE);
+    const without = await page.screenshot(meta);
+    await page.evaluate(qa.SHOW);
+    return { t, units: qa.measure(withText, without, units), shot: withText };
+  };
+  const samples = [];
+  for (const t of times) {
+    const { shot, ...s } = await sample(t);
+    samples.push(s);
+    process.stdout.write(`\rtext-qa ${t.toFixed(2)}/${last.toFixed(2)} s`);
+  }
+  const sum = qa.summarise(samples, meta, every);
+  // Evidence: the worst moment of each block with a problem, its box drawn in red
+  await mkdir(path.join(qaDir, "flagged"), { recursive: true });
+  for (const b of sum.blocks) {
+    const at = b.contrastResult !== "ok" ? b.contrastAt : b.zoneResult !== "ok" ? b.zoneAt : b.size !== "ok" ? b.first : null;
+    if (at === null) continue;
+    const { shot, units } = await sample(at);
+    const u = units.find((x) => x.id === b.id);
+    if (!shot || !u) continue;
+    const png = path.join(qaDir, "flagged", `text_${b.id}_t${at}.png`);
+    const { x0, y0, x1, y1 } = u.box;
+    await writeFile(png, shot);
+    await run("ffmpeg", ["-v", "error", "-y", "-i", png, "-vf",
+      `drawbox=x=${Math.round(x0) - 6}:y=${Math.round(y0) - 6}:w=${Math.round(x1 - x0) + 12}:h=${Math.round(y1 - y0) + 12}:color=red:t=6`,
+      "-update", "1", "-frames:v", "1", png.replace(/\.png$/, ".jpg")]);
+    await rm(png);
+    b.evidence = path.join("flagged", path.basename(png).replace(/\.png$/, ".jpg"));
+  }
+  await writeFile(path.join(qaDir, "text.json"), JSON.stringify({ meta, every, ...sum }, null, 2));
+  const md = qa.report(path.relative(ROOT, path.resolve(input)), meta, sum, every);
+  await writeFile(path.join(qaDir, "text.md"), md);
+  console.log("\r" + md);
+  const failed = !sum.hookOk || sum.blocks.some((b) => [b.size, b.contrastResult, b.zoneResult].includes("fail"));
+  if (failed) process.exitCode = 1;
 }
 
 const suffixed = (out, fmt) => {
@@ -305,8 +395,12 @@ async function renderOne(ses, format, output) {
       if (enc) {
         enc.stdin.end();
         await enc.done;
-        console.log(`\r${output}  (${meta.width}x${meta.height}, ${meta.fps} fps, ${n} frames, ${meta.duration}s, ${N} worker${N > 1 ? "s" : ""}) in ${((Date.now() - t0) / 1000).toFixed(1)}s`);
+        const mb = motionBlur(meta);
+        const blurNote = mb.samples > 1 ? `, motion blur ${mb.samples}×${mb.shutter}` : "";
+        console.log(`\r${output}  (${meta.width}x${meta.height}, ${meta.fps} fps, ${n} frames, ${meta.duration}s, ${N} worker${N > 1 ? "s" : ""}${blurNote}) in ${((Date.now() - t0) / 1000).toFixed(1)}s`);
       } else console.log(`${n} stills → ${output}`);
+    } else if (mode === "text-qa") {
+      await textQa(first, output);
     } else {
       throw new Error("unknown mode " + mode);
     }

@@ -42,8 +42,10 @@
     FORMATS,
 
     /** Size the stage. `formats` lists the other formats this composition is laid out for (e.g. ["4x5", "1x1"]);
-     *  ?format= (the renderer's --format) picks one, and <html> gets the class fmt-<name> for CSS overrides. */
-    setup({ width = 1080, height = 1920, fps = 30, duration, formats = [] }) {
+     *  ?format= (the renderer's --format) picks one, and <html> gets the class fmt-<name> for CSS overrides.
+     *  `motionBlur` (true, or { samples = 8, shutter = 0.5 }) makes the renderer average `samples` subframes over
+     *  `shutter` of each frame interval (0.5 = a 180° film shutter); --motion-blur / --shutter override it. */
+    setup({ width = 1080, height = 1920, fps = 30, duration, formats = [], motionBlur = false }) {
       if (!duration) throw new Error("Studio.setup needs a duration (seconds)");
       const base = Object.keys(FORMATS).find((k) => FORMATS[k][0] === width && FORMATS[k][1] === height) || "custom";
       const all = [base, ...formats.filter((f) => f !== base)];
@@ -51,7 +53,9 @@
       const format = params.get("format") || base;
       if (!all.includes(format)) throw new Error(`This composition has no "${format}" layout (it declares ${all.join(", ")})`);
       if (format !== base) [width, height] = FORMATS[format];
-      this.meta = { width, height, fps, duration, format, formats: all };
+      const blur = motionBlur === true ? {} : motionBlur || { samples: 1 };
+      this.meta = { width, height, fps, duration, format, formats: all,
+        motionBlur: { samples: blur.samples ?? 8, shutter: blur.shutter ?? 0.5 } };
       document.documentElement.classList.add("fmt-" + format);
       const stage = document.getElementById("stage");
       stage.style.width = width + "px";

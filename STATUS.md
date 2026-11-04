@@ -4,6 +4,27 @@ The memory of this repo. Read it first, update it last.
 
 ## Now
 
+- 2026-11-04: **QA checks from the benchmark** (video-director's ideas, our thresholds).
+  `qa-video.sh` now fails a black/empty first frame and more than 3 flashes a second (WCAG 2.3.1, per quadrant,
+  `scripts/qa_frames.py`). New `node core/render.mjs text-qa <comp> <qa_dir>` (`core/lib/qa-text.mjs`): every
+  0.25 s, each visible DOM text block gets its size (median over time, transforms included), contrast (two
+  screenshots, with and without text: glyph pixels vs exactly what is behind them, so strokes and shadows count),
+  Reels UI zones (9:16), and the 3 s hook; problems lasting ≥ 0.5 s fail, shorter ones warn; exits 1 on a ❌;
+  `data-qa-skip` for decoration. First runs: REEL-001 has 19 spec chips at 27 px (❌ under 28) and its headlines in the
+  paid-only zone (REEL-001 not changed). Zones are tested on the glyphs' own pixels, not the font's line box (which
+  reaches above the letters and flagged headlines set exactly on the safe line). Canvas text (Pixi, Three, Rive) is
+  not measured.
+- 2026-11-04: **REEL-003 QA pass 2** (yuppo): fixed what the new checks found and re-rendered video and cover: hook
+  on screen from frame 0 (frame 0 was blank), label greys #8F8F8F → #5C5C5C and 24–28 → 30–34 px, "Up 06:45" ink on
+  orange, hour labels inside the ring, tags clamped off the side rails, last headline 84 px. Text QA has no ❌ (11 small
+  labels warn), video QA ✅. Approved in chat ("Approve"): delivered again, silent cut.
+- 2026-11-04: **motion blur** in the renderer (idea from product-launch-motion, after a benchmark of similar tools):
+  `--motion-blur N [--shutter 0.5]` or `Studio.setup({ motionBlur: true | { samples, shutter } })`. Each frame is
+  N screenshots at t … t + shutter/fps, averaged in linear light by `core/lib/blend.mjs` (own PNG decode/encode,
+  no dependency; matches ffmpeg's decode of Chrome PNGs byte for byte), one worker thread per render page.
+  Deterministic (same md5 twice). Costs about N× render time (reel-layer 8 s: 7.8 s sharp, 59 s at 8 samples;
+  blending on the main thread had made it 107 s). 8 samples still shows steps on the fastest pushes (≈200 px/frame); 16 is smoother. Tests:
+  `test/blend.test.mjs`, a blur case in `test/render.test.mjs`. Not yet turned on in any production.
 - 2026-11-04: **REEL-008** (bike-logger, neon-noir) approved in chat ("Approve, own music"), produced, QA passed in 9:16 and
   4:5, final cut approved ("Approve final cut"): delivered. Not posted yet. Style frames: the real tray CAD as
   neon edges over dark faces works well; amber neon on headlines softens the glyphs, so the glow stays light (`spread` ≈ 0.2).

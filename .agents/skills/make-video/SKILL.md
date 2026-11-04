@@ -47,17 +47,22 @@ the optional desk, they may approve there instead: `review-desk` skill. Never ti
 | Composition | `composition/index.html`, started from `looks/<look>/starter.html`, **never from an earlier production's composition** (that is how every piece ends up the same). Load `/core/lib/base.css`, then `/brands/<slug>/tokens.css`, then `/looks/<look>/look.css` (+ `/looks/fx.js` for texture). Keep the look's type, motion and texture; bring in the brand's logo, product and copy. Engine patterns: `examples/engines-demo/index.html`; captions, beats, transitions and formats: `examples/reel-layer/index.html`. Text and CTA inside `.safe` (paid) or `.safe-organic` |
 | Formats | `Studio.setup({ …, formats: ["4x5", "1x1", "16x9"] })`; per-format CSS under `.fmt-4x5` etc., values with `Studio.pick({...})` |
 | Render | `node core/render.mjs video <comp> export/<ID>-<lang>.mp4 --audio audio/mix.wav` (posts: `still`). Other formats: `--formats all` → `export/<ID>-<lang>-4x5.mp4` … QA each one |
+| Motion blur | On for any piece with fast moves (pushes, whips, spins, flying type): `Studio.setup({ …, motionBlur: true })`, 16 samples for whip moves. Renders get about 8× slower: pass `--motion-blur 1` for quick checks, keep it for the final render and its QA |
 
 ## 3. QA (never skip)
 
-1. `scripts/qa-video.sh export/<ID>.mp4 qa` → `qa/report.md`. Every ❌ fixed. Every jump either an intended cut
-   (say so in the report) or fixed.
-2. `node core/render.mjs stills <comp> qa/beats --at <every beat start and end> --safe`, then **look at each one**:
+1. `scripts/qa-video.sh export/<ID>.mp4 qa` → `qa/report.md`. Every ❌ fixed (a black first frame, more than 3
+   flashes a second). Every jump either an intended cut (say so in the report) or fixed.
+2. `node core/render.mjs text-qa <comp> qa` → `qa/text.md` (exits 1 on a ❌): the hook readable by 3 s, text at
+   least 28 px (aim 40+), contrast 3:1 for large text and 4.5:1 below 48 px against what is actually behind it, nothing
+   under the Reels UI. Every ❌ fixed, or explained in the report (e.g. a label meant to be a texture). Mark pure
+   decoration `data-qa-skip`. Look at each `qa/flagged/text_*.jpg`. Canvas text (Pixi, Three, Rive) isn't measured.
+3. `node core/render.mjs stills <comp> qa/beats --at <every beat start and end> --safe`, then **look at each one**:
    text inside the safe zone, nothing cut off, no half-loaded asset, no overlap, spelling, brand colours, and the
    look held: its type, motion and texture all the way through (no beat drifting back to a previous piece's style).
-3. Determinism spot check when a WebGL or plate engine is used: render one frame twice, the md5s match.
-4. Listen once with sound: VO in sync with text, music ducked under VO, −14 LUFS.
-5. Fact check: every claim in section 6 of the README has a source. Compliance list passes.
+4. Determinism spot check when a WebGL or plate engine is used: render one frame twice, the md5s match.
+5. Listen once with sound: VO in sync with text, music ducked under VO, −14 LUFS.
+6. Fact check: every claim in section 6 of the README has a source. Compliance list passes.
 
 ## 4. Deliver
 

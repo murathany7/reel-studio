@@ -5,8 +5,10 @@
 #   scripts/qa-video.sh <video.mp4> <qa_dir> [expected WxH=1080x1920] [fps=30]
 #
 # Checks: format specs, constant frame rate, loudness (-14 LUFS / -1 dBTP),
-# frame-to-frame smoothness (hitches, jumps), frozen and black sections,
-# and a contact sheet with the paid-Reels safe zones drawn on it.
+# frame-to-frame smoothness (hitches, jumps), frozen and black sections, a black or empty first frame,
+# flashes (more than 3 per second, WCAG 2.3.1), and a contact sheet with the paid-Reels safe zones drawn on it.
+# Text size, contrast, the 3 s hook and text in unsafe zones are checked on the composition instead:
+#   node core/render.mjs text-qa <composition.html> <qa_dir>
 set -euo pipefail
 
 in="$1"; qa="$2"; want_size="${3:-1080x1920}"; want_fps="${4:-30}"
@@ -61,6 +63,22 @@ ffmpeg -v info -nostats -i "$in" -vf "freezedetect=n=0.001:d=1.5,blackdetect=d=0
 freezes=$(grep -oE 'freeze_(start|duration): [0-9.]+' "$qa/detect.log" | paste -sd' ' - || true)
 blacks=$(grep -oE 'black_start:[0-9.]+ black_end:[0-9.]+' "$qa/detect.log" | paste -sd' ' - || true)
 rm -f "$qa/detect.log"
+
+# First frame and flashes: the Y plane as is (no range conversion), frame 0 small, every frame as 2x2 quadrants
+ffmpeg -v error -y -i "$in" -vf "extractplanes=y,scale=54:96:flags=area" -frames:v 1 -f rawvideo "$qa/first.gray"
+ffmpeg -v error -y -i "$in" -vf "extractplanes=y,scale=2:2:flags=area" -f rawvideo "$qa/quads.gray"
+frames=$(python3 "$here/qa_frames.py" "$qa/quads.gray" "$qa/first.gray" "$fps")
+rm -f "$qa/first.gray" "$qa/quads.gray"
+ffmpeg -v error -y -i "$in" -vf "scale=360:-2" -frames:v 1 "$qa/first_frame.jpg" || true
+IFS=$'\t' read -r first_flag flash_n flash_at < <(python3 -c '
+import json, sys
+r = json.loads(sys.argv[1]); f = r["flashes"]
+print(r["first_frame"]["flag"] or "-", f["per_second"], "at %s s, %s" % (f["at"], f["quadrant"]) if f["at"] is not None else "-", sep="\t")' "$frames")
+[ "$first_flag" = "-" ] && first_flag=""; [ "$flash_at" = "-" ] && flash_at=""
+{
+  echo "| First frame | ${first_flag:-has content} (\`first_frame.jpg\`) | $( [ -z "$first_flag" ] && echo ✅ || echo '❌ frame 0 is the thumbnail: start on the hook') |"
+  echo "| Flashes (most in 1 s) | $flash_n ${flash_at:+($flash_at)} | $( [ "$flash_n" -le 3 ] && echo ✅ || echo '❌ over 3 per second (WCAG 2.3.1; ads get rejected)') |"
+} >> "$rep"
 
 # Evidence frames for each flag (previous + flagged frame side by side)
 for f in $(cat "$qa/motion_flags.txt"); do

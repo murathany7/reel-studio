@@ -17,6 +17,11 @@ node core/render.mjs video  <composition.html> export/<ID>.mp4 --formats all
 # Parallel pages (default: auto, up to 4). The output is the same for any N
 node core/render.mjs video  <composition.html> <out.mp4> --workers 4
 
+# Motion blur: average 8 subframes per frame in linear light, shutter open half the frame (180°).
+# Fast pushes, whips and spins stop strobing. About 8× the render time; 16 for very fast moves; 1 turns it off.
+# Or set it in the composition: Studio.setup({ …, motionBlur: true }) / motionBlur: { samples: 16, shutter: 0.5 }
+node core/render.mjs video  <composition.html> <out.mp4> --motion-blur 8 [--shutter 0.5]
+
 # Linux (CI, Docker): capture with HeadlessExperimental.beginFrame in chrome-headless-shell (or REEL_CAPTURE=beginframe)
 node core/render.mjs video  <composition.html> <out.mp4> --capture beginframe
 
@@ -33,8 +38,13 @@ python3 scripts/mix_audio.py <audio/cues.json> <audio/mix.wav>
 # Beat grid of the music, for Studio.beats: bpm, beats, downbeats, onsets
 node scripts/beats.mjs <audio/music.mp3> <audio/beats.json> [--bpm 128]
 
-# QA: specs, 30 fps CFR, loudness, hitches/jumps, frozen/black, safe-zone sheet
+# QA: specs, 30 fps CFR, loudness, hitches/jumps, frozen/black, black or empty first frame, flashes (> 3/s),
+# safe-zone sheet
 scripts/qa-video.sh <video.mp4> <qa_dir> [1080x1920] [30]
+
+# Text QA on the composition: hook by 3 s, size, contrast against what is behind each glyph, text under the Reels UI
+# → <qa_dir>/text.md, text.json, flagged/text_*.jpg. Exits 1 on a ❌. data-qa-skip opts decoration out
+node core/render.mjs text-qa <composition.html> <qa_dir> [--every 0.25] [--format 4x5]
 ```
 
 Preview live: serve the repo root (`python3 -m http.server 8080`) and open the composition.
@@ -74,6 +84,7 @@ Engines (Three.js, Pixi, SVG rig, Lottie, plates): see `engines/README.md` and t
 | `Studio.lottie(el, path, { start, loop, speed })` | Lottie layer |
 | `Studio.video(el, { start })` | Pre-rendered plate (Blender, capture, footage) |
 | `Studio.onSeek(fn, { late: true })` | Run after every other layer has drawn (reads their pixels) |
+| `Studio.setup({ …, motionBlur: true })` | Motion blur in every render of this piece (`{ samples = 8, shutter = 0.5 }`); `--motion-blur` / `--shutter` override it. Stills get it too, so QA frames match the video |
 | `Studio.setup({ …, formats: ["4x5", "1x1", "16x9"] })` | Other formats this layout supports; `<html>` gets `fmt-<name>` |
 | `Studio.format`, `Studio.pick({ "16x9": a, default: b })` | The format being rendered; a value per format |
 | `Studio.captions(el, words, { style, offset, maxChars, lines, gap, upper })` | Word-by-word captions from `[{ text, start, end }]` or whisper.cpp JSON (`scripts/transcribe.sh`). Styles: `karaoke`, `pop`, `highlight`, `plain`. Tokens: `--caption-size`, `--caption-ink`, `--caption-accent`, `--caption-stroke`, `--caption-font` |
