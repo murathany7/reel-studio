@@ -1,0 +1,10 @@
+<!doctype html>
+<!-- A composition whose video plate does not exist: the render must fail with the plate's URL, not hang. -->
+<link rel="stylesheet" href="/core/lib/base.css">
+<div id="stage"><video id="v" src="no-such-plate.mp4"></video></div>
+<script src="/core/node_modules/gsap/dist/gsap.min.js"></script>
+<script src="/core/lib/runtime.js"></script>
+<script>
+  Studio.setup({ width: 1080, height: 1920, fps: 30, duration: 1 });
+  Studio.video(document.getElementById("v"));
+</script>

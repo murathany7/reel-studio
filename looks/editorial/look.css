@@ -1,0 +1,28 @@
+/* Editorial (print magazine). Load after base.css and the brand's tokens.css.
+ * Paper and ink are the look's; the brand accent is used once per frame, like a spot colour. */
+:root {
+  --ed-paper: var(--paper, #f2ede3);
+  --ed-ink: #17150f;
+  --ed-spot: var(--accent, #c8341f);
+  --ed-serif: var(--font-serif, "Iowan Old Style", "Palatino", "Georgia", "Noto Serif", serif);
+  --ed-sans: var(--font-body, "Helvetica Neue", "Inter", system-ui, sans-serif);
+  --caption-font: var(--ed-serif);
+  --caption-ink: var(--ed-ink);
+  --caption-stroke: transparent;
+  --caption-accent: var(--ed-spot);
+}
+#stage { background: var(--ed-paper); color: var(--ed-ink); }
+
+.ed-masthead { display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 18px;
+               border-bottom: 3px solid var(--ed-ink); font: 600 28px/1 var(--ed-sans); letter-spacing: 0.18em; text-transform: uppercase; }
+.ed-title { font: 400 132px/0.98 var(--ed-serif); letter-spacing: -0.025em; }
+.ed-title em { font-style: italic; color: var(--ed-spot); }
+.ed-deck { font: 400 42px/1.3 var(--ed-serif); font-style: italic; max-width: 86%; }
+.ed-label { font: 700 26px/1 var(--ed-sans); letter-spacing: 0.2em; text-transform: uppercase; }
+.ed-rule { height: 1.5px; background: var(--ed-ink); }
+.ed-num { font: 400 300px/0.8 var(--ed-serif); color: var(--ed-spot); }
+.ed-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; font: 400 38px/1.38 var(--ed-serif); }
+.ed-cols p:first-child::first-letter { float: left; font-size: 3.2em; line-height: .82; padding: 6px 10px 0 0; color: var(--ed-spot); }
+/* A photo slot: a brand image (object-fit: cover) or this toned placeholder */
+.ed-photo { background: linear-gradient(160deg, #b9b1a2, #6f685c); filter: grayscale(1) contrast(1.1); overflow: hidden; }
+.ed-photo img { width: 100%; height: 100%; object-fit: cover; }

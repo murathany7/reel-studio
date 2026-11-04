@@ -12,9 +12,24 @@
 | Frame rate / length | 30 fps · __ s |
 | Language | |
 | Placement | organic / paid / both |
+| Look | `looks/<look>` (picked from the directions in section 0) |
 | Engines | GSAP + … (and why, from `engines/README.md`) |
 | Sound | VO + music · music only · silent (all meaning on screen) |
 | Approved by / date | |
+
+## 0. Directions (pick one)
+
+`node scripts/looks.mjs <brand>` lists the looks the brand already used. Pitch 2–3 that differ from each other; at
+least one the brand's last two pieces did not use. Style frame: the look's starter with the brand's tokens and the
+real hook (`qa/directions/<look>.png`).
+
+| | Look | Why it fits this brief | Style frame |
+|---|---|---|---|
+| A | | | |
+| B | | | |
+| C | | | |
+
+**Picked:** … (by the person, in chat or the desk)
 
 ## 1. Brief
 

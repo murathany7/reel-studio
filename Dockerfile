@@ -5,7 +5,7 @@
 FROM node:22-bookworm-slim
 
 RUN apt-get update \
- && apt-get install -y --no-install-recommends chromium ffmpeg rsync ca-certificates \
+ && apt-get install -y --no-install-recommends chromium chromium-headless-shell ffmpeg rsync ca-certificates \
       fonts-noto-core fonts-noto-color-emoji fonts-liberation fonts-dejavu-core \
  && rm -rf /var/lib/apt/lists/*
 ENV CHROME_PATH=/usr/bin/chromium

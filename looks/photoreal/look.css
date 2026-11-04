@@ -1,0 +1,23 @@
+/* Photoreal (premium product film). Load after base.css and the brand's tokens.css.
+ * The brand shows up in the product's materials and one small accent; the frame stays neutral and lit. */
+:root {
+  --pr-bg-top: var(--photo-bg-top, #2a2b2f);
+  --pr-bg-bottom: var(--photo-bg-bottom, #0d0e10);
+  --pr-ink: #f4f2ee;
+  --pr-accent: var(--accent, #c9a46a);
+  --pr-font: var(--font-display-light, "Helvetica Neue", "Inter", system-ui, sans-serif);
+  --caption-font: var(--pr-font);
+  --caption-weight: 500;
+  --caption-size: 58px;
+}
+#stage { background: radial-gradient(ellipse 120% 70% at 50% 42%, var(--pr-bg-top), var(--pr-bg-bottom)); color: var(--pr-ink); }
+
+/* Quiet type: light weight, generous tracking, small, never in front of the product. */
+.pr-title { font: 300 92px/1.06 var(--pr-font); letter-spacing: -0.015em; }
+.pr-title b { font-weight: 500; }
+.pr-kicker { font: 500 30px/1 var(--pr-font); letter-spacing: 0.32em; text-transform: uppercase; color: var(--pr-accent); }
+.pr-spec { font: 400 34px/1.4 var(--pr-font); letter-spacing: 0.04em; opacity: .78; }
+.pr-rule { width: 120px; height: 2px; background: var(--pr-accent); margin: 34px 0; }
+/* Cinema letterbox bars, optional: add <div class="pr-bars"></div> */
+.pr-bars::before, .pr-bars::after { content: ""; position: absolute; left: 0; right: 0; height: 7%; background: #000; z-index: 7000; }
+.pr-bars::before { top: 0; } .pr-bars::after { bottom: 0; }

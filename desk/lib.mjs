@@ -2,7 +2,7 @@
 // A production's review lives in productions/<brand>/<ID>/review.json:
 //   { "notes": [{ id, t, text, by: "human"|"claude", status: "open"|"fixed"|"closed", reply, at }],
 //     "approvals": [{ stage: "storyboard"|"final", by, at }],
-//     "claude": { "session": "<id of the last headless Claude run>" } }
+//     "claude": { "session": "<id of the last headless Claude run>" }, "codex": { "session": "<same, for Codex>" } }
 // Approvals are written by people only (the desk's buttons), never by Claude or the MCP server.
 import { existsSync, readdirSync, readFileSync, writeFileSync, mkdirSync, statSync } from "node:fs";
 import { spawn } from "node:child_process";
@@ -59,7 +59,7 @@ export function listProductions() {
 export function readReview(id) {
   const file = path.join(prodDir(id), "review.json");
   const r = existsSync(file) ? JSON.parse(readFileSync(file, "utf8")) : {};
-  return { notes: r.notes || [], approvals: r.approvals || [], claude: r.claude || {} };
+  return { notes: r.notes || [], approvals: r.approvals || [], claude: r.claude || {}, codex: r.codex || {} };
 }
 
 export function writeReview(id, review) {
@@ -169,10 +169,10 @@ export function runLines(cmd, args, onLine) {
   return { proc: p, done };
 }
 
-/** The prompt a headless Claude run gets from the desk's "Send to Claude". */
-export function claudePrompt(id, notes, extra = "") {
+/** The prompt a headless agent run (Claude Code or Codex) gets from the desk's "Send to agent". */
+export function agentPrompt(id, notes, extra = "") {
   const lines = [
-    `You are working on the Reel Studio production productions/${id}/ (follow CLAUDE.md, STATUS.md and the make-video skill).`,
+    `You are working on the Reel Studio production productions/${id}/ (follow AGENTS.md, STATUS.md and the make-video skill).`,
     `The person reviewing it in the desk asked for this. Composition: productions/${id}/composition/index.html.`,
   ];
   if (notes.length) {

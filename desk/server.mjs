@@ -4,9 +4,10 @@
  *   node desk/server.mjs [--port 4100]      then open http://127.0.0.1:4100
  *
  * Serves the repo root (so compositions load exactly as the renderer loads them) plus a small JSON API:
- * productions, frame notes, approvals, renders (still / preview video / QA) and "Send to Claude", which runs the
- * local Claude Code CLI headlessly (`claude -p`) with your existing login. No API key: ANTHROPIC_API_KEY is removed
- * from Claude's environment so a key in your shell is never billed by accident.
+ * productions, frame notes, approvals, renders (still / preview video / QA) and "Send to agent", which runs a local
+ * coding agent headlessly with your existing login: Claude Code (`claude -p`, the default) or Codex (`codex exec`),
+ * picked with REEL_AGENT=claude|codex. No API key: ANTHROPIC_API_KEY / OPENAI_API_KEY are removed from the agent's
+ * environment so a key in your shell is never billed by accident.
  * Listens on 127.0.0.1 only. Zero dependencies.
  */
 import { createServer } from "node:http";
@@ -20,7 +21,9 @@ const { ROOT } = desk;
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const argv = process.argv.slice(2);
 const PORT = +(argv.includes("--port") ? argv[argv.indexOf("--port") + 1] : process.env.PORT ?? 4100);
+const AGENT = process.env.REEL_AGENT || "claude";
 const CLAUDE = process.env.CLAUDE_BIN || "claude";
+const CODEX = process.env.CODEX_BIN || "codex";
 // What a desk-started Claude may do: read and edit the project, render, run QA, use the desk tools. Nothing else.
 const ALLOWED = ["Read", "Edit", "Write", "Glob", "Grep", "Bash(node core/render.mjs *)", "Bash(scripts/qa-video.sh *)",
   "Bash(scripts/extract-frames.sh *)", "mcp__reel-desk"];
@@ -63,8 +66,8 @@ function startRender(production, kind, t, safe) {
   return job;
 }
 
-/** One line per stream-json event, enough to follow the run. */
-function describe(ev) {
+/** One line per Claude stream-json event, enough to follow the run. */
+function describeClaude(ev) {
   if (ev.type === "system" && ev.subtype === "init") return `session ${ev.session_id} · ${ev.model || ""}`;
   if (ev.type === "assistant") {
     return (ev.message?.content || []).map((b) => {
@@ -81,21 +84,62 @@ function describe(ev) {
   return "";
 }
 
-function startClaude(production, noteIds, extra) {
+/** One line per Codex `exec --json` event. */
+function describeCodex(ev) {
+  if (ev.type === "thread.started") return `session ${ev.thread_id}`;
+  if (ev.type === "error") return `✗ ${ev.message}`;
+  if (ev.type === "turn.failed") return `✗ ${ev.error?.message || "turn failed"}`;
+  if (ev.type === "turn.completed") return "✓ done";
+  if (ev.type !== "item.completed" || !ev.item) return "";
+  const i = ev.item;
+  if (i.type === "agent_message") return (i.text || "").trim();
+  if (i.type === "command_execution") return `→ $ ${String(i.command).slice(0, 160)}`;
+  if (i.type === "mcp_tool_call") return `→ ${i.server === "reel-desk" ? "desk" : i.server}.${i.tool}`;
+  if (i.type === "file_change") return (i.changes || []).map((c) => `→ ${c.kind} ${c.path}`).join("\n");
+  return "";
+}
+
+// How each agent is started headlessly: its binary, arguments, the key to strip and how to read its output
+const toml = (v) => JSON.stringify(v); // a JSON string or array of strings is valid TOML
+const RUNNERS = {
+  claude: {
+    label: "Claude Code", bin: CLAUDE, key: "ANTHROPIC_API_KEY", describe: describeClaude,
+    session: (ev) => ev.session_id,
+    args(prompt, session) {
+      const mcp = JSON.stringify({ mcpServers: { "reel-desk": { command: process.execPath, args: [path.join(HERE, "mcp.mjs")],
+        env: { REEL_STUDIO_ROOT: ROOT } } } });
+      const args = ["-p", prompt, "--output-format", "stream-json", "--verbose", "--mcp-config", mcp,
+        "--allowedTools", ALLOWED.join(","), "--permission-mode", "acceptEdits"];
+      if (session) args.push("--resume", session);
+      return args;
+    },
+  },
+  codex: {
+    // The sandbox keeps Codex to the project folder (workspace-write), the counterpart of Claude's allowed tools
+    label: "Codex", bin: CODEX, key: "OPENAI_API_KEY", describe: describeCodex,
+    session: (ev) => ev.thread_id,
+    args(prompt, session) {
+      const cfg = [`sandbox_mode=${toml("workspace-write")}`, `approval_policy=${toml("never")}`,
+        `mcp_servers.reel-desk.command=${toml(process.execPath)}`, `mcp_servers.reel-desk.args=${toml([path.join(HERE, "mcp.mjs")])}`,
+        `mcp_servers.reel-desk.env.REEL_STUDIO_ROOT=${toml(ROOT)}`].flatMap((c) => ["-c", c]);
+      return session ? ["exec", "resume", "--json", ...cfg, session, prompt] : ["exec", "--json", ...cfg, prompt];
+    },
+  },
+};
+
+function startAgent(production, noteIds, extra) {
+  const runner = RUNNERS[AGENT];
+  if (!runner) throw new Error(`REEL_AGENT=${AGENT}: use claude or codex`);
   const review = desk.readReview(production);
   const notes = review.notes.filter((n) => (noteIds?.length ? noteIds.includes(n.id) : n.status === "open"));
   if (!notes.length && !extra?.trim()) throw new Error("nothing to send: no open notes and no request");
-  const prompt = desk.claudePrompt(production, notes, extra);
-  const mcp = JSON.stringify({ mcpServers: { "reel-desk": { command: process.execPath, args: [path.join(HERE, "mcp.mjs")],
-    env: { REEL_STUDIO_ROOT: ROOT } } } });
-  const args = ["-p", prompt, "--output-format", "stream-json", "--verbose", "--mcp-config", mcp,
-    "--allowedTools", ALLOWED.join(","), "--permission-mode", "acceptEdits"];
-  if (review.claude.session) args.push("--resume", review.claude.session);
-  const job = newJob("claude", production);
-  emit(job, { line: `Sending ${notes.length} note(s)${extra?.trim() ? " and a request" : ""} to Claude Code${review.claude.session ? " (same session as last time)" : ""}…` });
+  const prompt = desk.agentPrompt(production, notes, extra);
+  const last = review[AGENT]?.session;
+  const job = newJob(AGENT, production);
+  emit(job, { line: `Sending ${notes.length} note(s)${extra?.trim() ? " and a request" : ""} to ${runner.label}${last ? " (same session as last time)" : ""}…` });
   const env = { ...process.env };
-  delete env.ANTHROPIC_API_KEY; // use the Claude Code login, never a stray key
-  const proc = spawn(CLAUDE, args, { cwd: ROOT, env, stdio: ["ignore", "pipe", "pipe"] });
+  delete env[runner.key]; // use the agent's own login, never a stray key
+  const proc = spawn(runner.bin, runner.args(prompt, last), { cwd: ROOT, env, stdio: ["ignore", "pipe", "pipe"] });
   job.proc = proc;
   let buf = "", session = null;
   proc.stdout.on("data", (d) => {
@@ -106,17 +150,17 @@ function startClaude(production, noteIds, extra) {
       if (!l.trim()) continue;
       let ev;
       try { ev = JSON.parse(l); } catch { emit(job, { line: l }); continue; }
-      if (ev.session_id) session = ev.session_id;
-      const text = describe(ev);
+      session = runner.session(ev) || session;
+      const text = runner.describe(ev);
       if (text) emit(job, { line: text });
     }
   });
   proc.stderr.on("data", (d) => String(d).split("\n").filter((l) => l.trim()).forEach((line) => emit(job, { line })));
-  proc.on("error", (e) => emit(job, { line: e.code === "ENOENT" ? `Claude Code CLI not found (${CLAUDE}). Install it and sign in once with \`claude\`.` : String(e) }));
+  proc.on("error", (e) => emit(job, { line: e.code === "ENOENT" ? `${runner.label} CLI not found (${runner.bin}). Install it and sign in once with \`${runner.bin}\`.` : String(e) }));
   proc.on("close", (code) => {
     if (session) {
-      const r = desk.readReview(production); // re-read: Claude resolved notes while it ran
-      r.claude = { ...r.claude, session };
+      const r = desk.readReview(production); // re-read: the agent resolved notes while it ran
+      r[AGENT] = { ...r[AGENT], session };
       desk.writeReview(production, r);
     }
     finish(job, code ?? 1);
@@ -156,9 +200,10 @@ async function api(req, res, url) {
     const b = await body(req);
     return json(res, 200, publicJob(startRender(q.get("p"), b.kind, b.t, b.safe)));
   }
-  if (parts[0] === "claude" && m === "POST") {
+  if (parts[0] === "agent" && m === "GET") return json(res, 200, { agent: AGENT, label: RUNNERS[AGENT]?.label || AGENT });
+  if ((parts[0] === "agent" || parts[0] === "claude") && m === "POST") { // /api/claude: older desk pages
     const b = await body(req);
-    return json(res, 200, publicJob(startClaude(q.get("p"), b.notes, b.request)));
+    return json(res, 200, publicJob(startAgent(q.get("p"), b.notes, b.request)));
   }
   if (parts[0] === "jobs") {
     const job = jobs.get(+parts[1]);
@@ -218,5 +263,7 @@ const server = createServer(async (req, res) => {
 
 server.listen(PORT, "127.0.0.1", () => {
   console.log(`Reel Studio desk: http://127.0.0.1:${server.address().port}  (serving ${ROOT})`);
-  console.log("Optional: let your Claude Code sessions see the desk with  claude mcp add reel-desk --scope project -- node desk/mcp.mjs");
+  console.log(`Send to agent runs ${RUNNERS[AGENT]?.label || AGENT} (REEL_AGENT=claude|codex to change).`);
+  console.log("Optional: let your agent sessions see the desk with  claude mcp add reel-desk --scope project -- node desk/mcp.mjs");
+  console.log("                                                 or  codex mcp add reel-desk -- node desk/mcp.mjs");
 });

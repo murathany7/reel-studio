@@ -7,10 +7,11 @@
   <a href="https://github.com/murathany7/homebrew-reel-studio"><img src="https://img.shields.io/badge/homebrew-tap-e8a33d" alt="Homebrew"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-3ecf7a" alt="MIT"></a>
   <img src="https://img.shields.io/badge/Claude%20Code-plugin-8b93a1" alt="Claude Code plugin">
+  <img src="https://img.shields.io/badge/Codex%20%C2%B7%20Copilot-AGENTS.md%20%2B%20skills-8b93a1" alt="Codex and Copilot">
 </p>
 
-<p align="center"><b>Agency-quality reels, ads and posts, made by Claude Code.</b><br>
-Open source and free. Your Claude subscription does the rest.<br>
+<p align="center"><b>Agency-quality reels, ads and posts, made by your coding agent.</b><br>
+Claude Code, Codex or GitHub Copilot. Open source and free. Your agent subscription does the rest.<br>
 No editor, no timeline, no per-video fees. Every frame is code you own.</p>
 
 <p align="center"><sub>Plain HTML pages on one clock → headless Chrome → MP4, for any brand. Every frame is reproducible.<br>
@@ -30,7 +31,7 @@ Full-quality MP4s: <a href="https://github.com/murathany7/reel-studio/releases/l
 
 <p align="center"><img src="docs/media/pipeline.svg" width="860" alt="Brief → Storyboard → You approve → HTML on one clock → Frame QA → MP4"></p>
 
-You ask Claude Code: *"make a reel for &lt;brand&gt;"*. It writes a brief and a storyboard, waits for your yes, builds the
+You ask your agent (Claude Code, Codex or Copilot): *"make a reel for &lt;brand&gt;"*. It writes a brief and a storyboard, waits for your yes, builds the
 piece as an HTML page, renders every frame, checks them, and delivers a folder with the video and how it was made.
 
 ## Example: Bike Logger
@@ -50,6 +51,16 @@ A robotics kit reel, built by capturing the product's own 3D web page and laying
 <td width="50%"><img src="brands/bike-logger/assets/reference/brand-check.png" alt="Brand check card"><br><sub><b>Brand check</b>: one still that proves the brand's look renders right before any video is made.</sub></td>
 <td width="50%"><img src="docs/media/qa-contact-sheet.jpg" alt="QA contact sheet with safe zones"><br><sub><b>Frame QA</b>: a contact sheet with the platform's safe zones drawn over it, plus a motion check that flags jumps.</sub></td>
 </tr></table>
+
+## One brand, many looks
+
+<p align="center"><img src="docs/media/looks.jpg" alt="Seven looks from the same five-second script: neon noir, toon 3D, photoreal, editorial, kinetic type, retro film, paper collage"></p>
+
+The brand folder holds the identity (facts, colours, fonts, logo, voice). The look holds the art direction (type,
+layout, motion, texture, engines, sound), picked per piece from [`looks/`](looks): neon noir, toon 3D, photoreal,
+editorial, kinetic type, retro film, paper collage, each with a working starter. Before a storyboard, the agent
+checks what the brand's earlier pieces used and pitches 2–3 different directions, so a brand's pieces don't all
+look alike.
 
 ## Engines, all on one clock
 
@@ -83,7 +94,11 @@ Then, in the folder where your videos should live, ask:
 It copies the renderer into the folder, installs it and checks Chrome and ffmpeg. You need
 **Node 18+, Google Chrome and ffmpeg** (`brew install ffmpeg`). Blender is optional, for 3D plates.
 
-**Or with npm**, in any folder (no plugin needed; the skills are copied into `.claude/skills/`):
+**Codex or GitHub Copilot**: run `npx reel-studio init` (below) in your folder. It adds `AGENTS.md` and the skills in
+`.agents/skills/`, which Codex and Copilot (agent mode in VS Code, the Copilot CLI and the cloud agent) read on their
+own. Then ask the same things as in Claude Code.
+
+**Or with npm**, in any folder (no plugin needed; the skills go into `.agents/skills/`, linked from `.claude/skills/`):
 
 ```bash
 npx reel-studio init
@@ -115,12 +130,12 @@ cd core && npm install && cd ..
 > *Add my product as a new brand: https://my-product.com* → facts, colours, fonts, voice, rules
 > *Make a 15 s reel for &lt;brand&gt; about &lt;feature&gt;* → brief and storyboard, then the video once you approve
 
-That's the whole product: you talk to Claude Code, it writes the storyboard, waits for your OK in chat, then makes,
+That's the whole product: you talk to your agent, it writes the storyboard, waits for your OK in chat, then makes,
 renders and checks the video.
 
 **Optional: the desk.** If you'd rather review on a page than in chat, run `npx reel-studio desk` (or
 `node desk/server.mjs`) and open <http://127.0.0.1:4100>. You can scrub frame by frame, pin notes to frames, send them
-to Claude Code (your own login, no API key), render stills and previews, and approve the storyboard and the final cut.
+to Claude Code or Codex (`REEL_AGENT=codex`; your own login, no API key), render stills and previews, and approve the storyboard and the final cut.
 Nothing else needs it, and nothing changes if you never open it. See [`desk/README.md`](desk/README.md).
 
 ## What's inside
@@ -128,11 +143,14 @@ Nothing else needs it, and nothing changes if you never open it. See [`desk/READ
 ```
 core/          renderer (HTML → MP4/PNG) and the Studio clock
 engines/       one adapter per engine
+looks/         art directions: neon noir, toon 3D, photoreal, editorial, kinetic type, retro film, paper collage
 brands/        one folder per brand  (_template to start)
 productions/   one folder per piece  (brief, composition, audio, QA, export)
 scripts/       audio mix, transcription, lip sync, QA, frame tools
 desk/          optional local review app (and its optional reel-desk MCP server)
-.claude/skills setup · make-video · new-brand · pick-engine · scene-3d · character-2d · capture-site · review-desk (optional)
+AGENTS.md      instructions for every agent (CLAUDE.md imports it)
+.agents/skills setup · make-video · new-brand · pick-engine · scene-3d · character-2d · capture-site · review-desk (optional)
+               (.claude/skills links here, for Claude Code)
 ```
 
 ## Contributing

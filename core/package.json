@@ -7,6 +7,7 @@
     "render": "node render.mjs"
   },
   "dependencies": {
+    "@rive-app/canvas-advanced": "^2.37.4",
     "gsap": "^3.12.5",
     "lottie-web": "^5.12.2",
     "pixi.js": "^8.6.0",

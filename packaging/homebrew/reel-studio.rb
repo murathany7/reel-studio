@@ -1,7 +1,7 @@
 # Homebrew formula for the murathany7/homebrew-reel-studio tap. Installs the npm package with its own Node.
 # After `npm publish`, run packaging/update-formula.sh to set url and sha256, then copy this file to the tap's Formula/.
 class ReelStudio < Formula
-  desc "Agency-quality marketing reels, ads and posts made by Claude Code"
+  desc "Agency-quality marketing reels, ads and posts made by your coding agent"
   homepage "https://github.com/murathany7/reel-studio"
   url "https://registry.npmjs.org/reel-studio/-/reel-studio-0.2.5.tgz"
   sha256 "b618ef2e78546e31b552b6280283ceada591bb10ebdd5fa91e0a0846f4c6c09c"
@@ -31,6 +31,7 @@ class ReelStudio < Formula
     assert_match "Reel Studio", shell_output("#{bin}/reel-studio help")
     system bin/"reel-studio", "init", testpath/"proj"
     assert_path_exists testpath/"proj/core/render.mjs"
-    assert_path_exists testpath/"proj/.claude/skills/make-video/SKILL.md"
+    assert_path_exists testpath/"proj/.agents/skills/make-video/SKILL.md"
+    assert_path_exists testpath/"proj/AGENTS.md"
   end
 end

@@ -32,7 +32,7 @@ function renderList() {
         ${p.openNotes ? `<span class="pill notes">${p.openNotes}</span>` : ""} ${ok} ${p.composition ? "" : `<span class="pill">no comp</span>`}</span>
     </button></li>`;
   }
-  $("productions").innerHTML = html || `<li class="muted small">No productions yet. Ask Claude: “make a reel for &lt;brand&gt;”.</li>`;
+  $("productions").innerHTML = html || `<li class="muted small">No productions yet. Ask your agent: “make a reel for &lt;brand&gt;”.</li>`;
 }
 $("productions").onclick = (e) => {
   const b = e.target.closest("button[data-id]");
@@ -54,7 +54,7 @@ async function open(id, keepT = false) {
   const frame = $("comp");
   if (!p.composition) {
     frame.hidden = true; frame.removeAttribute("src"); $("transport").hidden = true; $("empty").hidden = false;
-    $("empty").innerHTML = `No composition yet.<br><span class="muted">Read the storyboard on the right. After you approve it, Claude builds <code>composition/index.html</code>.</span>`;
+    $("empty").innerHTML = `No composition yet.<br><span class="muted">Read the storyboard on the right. After you approve it, your agent builds <code>composition/index.html</code>.</span>`;
     return;
   }
   const t = keepT ? S.t : 0;
@@ -179,7 +179,7 @@ function renderNotes() {
       ${n.status === "fixed" ? `<button data-act="closed" title="Checked, looks right">✓ OK</button><button data-act="open">Reopen</button>` : ""}
       ${n.status === "closed" ? `<button data-act="open">Reopen</button>` : ""}
       <button data-act="delete" title="Delete">✕</button></div>
-    <p>${esc(n.text)}</p>${n.reply ? `<div class="reply">Claude: ${esc(n.reply)}</div>` : ""}</li>`).join("")
+    <p>${esc(n.text)}</p>${n.reply ? `<div class="reply">${esc(AGENT.label)}: ${esc(n.reply)}</div>` : ""}</li>`).join("")
     || `<li class="muted small">${S.noteFilter === "open" ? "No open notes. Scrub to a frame and pin one." : "Nothing here."}</li>`;
   $("marks").innerHTML = S.meta ? notes.filter((n) => n.status !== "closed").map((n) =>
     `<span class="m ${n.status}" style="left:${(n.t / S.meta.duration) * 100}%" data-t="${n.t}" title="#${n.id} ${esc(n.text)}"></span>`).join("") : "";
@@ -229,18 +229,26 @@ function follow(job, logEl, onDone) {
 }
 function busy(on, text = "") { $("status").textContent = text; document.body.classList.toggle("busy", on); }
 
+// Which agent "Send to" runs (the server's REEL_AGENT): Claude Code by default, or Codex
+const AGENT = { label: "Claude" };
+api("/api/agent").then((a) => {
+  AGENT.label = a.agent === "claude" ? "Claude" : a.label;
+  document.querySelectorAll(".agent").forEach((el) => (el.textContent = AGENT.label));
+  if (a.agent === "codex") $("agentRun").innerHTML = "Codex (<code>codex exec</code>, project-folder sandbox)";
+}).catch(() => {});
+
 async function sendToClaude(request, withNotes) {
   const openIds = S.review.notes.filter((n) => n.status === "open").map((n) => n.id);
   tab("claude");
   try {
-    const job = await api(`/api/claude?p=${encodeURIComponent(S.prod.id)}`, { method: "POST",
+    const job = await api(`/api/agent?p=${encodeURIComponent(S.prod.id)}`, { method: "POST",
       body: { notes: withNotes ? openIds : [-1], request } });
     $("sendAsk").disabled = $("sendNotes").disabled = true; $("stopClaude").hidden = false;
-    busy(true, "Claude is working…");
+    busy(true, `${AGENT.label} is working…`);
     $("stopClaude").onclick = () => api(`/api/jobs/${job.id}/stop`, { method: "POST" });
     follow(job, $("claudeLog"), async (ev) => {
       $("sendAsk").disabled = false; $("stopClaude").hidden = true;
-      busy(false, ev.code === 0 ? "Claude finished. Reloaded the composition." : `Claude stopped (exit ${ev.code}).`);
+      busy(false, ev.code === 0 ? `${AGENT.label} finished. Reloaded the composition.` : `${AGENT.label} stopped (exit ${ev.code}).`);
       await refreshCounts();
       await open(S.prod.id, true);
     });

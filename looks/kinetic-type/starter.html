@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Look starter: kinetic type</title>
+<link rel="stylesheet" href="/core/lib/base.css">
+<!-- <link rel="stylesheet" href="/brands/<slug>/tokens.css"> -->
+<link rel="stylesheet" href="/looks/kinetic-type/look.css">
+</head>
+<body>
+<div id="stage">
+  <!-- One slide per beat. Edit the words; the timing below cuts them on a 150 BPM grid (0.4 s). -->
+  <div class="kt-slide" data-beats="1"><div class="kt-body"><div class="kt-word xl"><span class="kt-line"><span>Stop</span></span></div></div></div>
+  <div class="kt-slide inv" data-beats="1"><div class="kt-body"><div class="kt-word"><span class="kt-line"><span>scroll</span></span><span class="kt-line"><span>ing.</span></span></div></div></div>
+  <div class="kt-slide" data-beats="2"><div class="kt-body"><div class="kt-meta">Mornings, sorted</div><div class="kt-word"><span class="kt-line"><span>it's</span></span><span class="kt-line"><span>7:02</span></span></div></div></div>
+  <div class="kt-slide inv" data-beats="1"><div class="kt-body"><div class="kt-word xl"><span class="kt-line"><span>3</span></span></div></div></div>
+  <div class="kt-slide" data-beats="1"><div class="kt-body"><div class="kt-word xl"><span class="kt-line"><span>taps</span></span></div></div></div>
+  <div class="kt-slide inv" data-beats="2"><div class="kt-body"><div class="kt-word"><span class="kt-line"><span>that's</span></span><span class="kt-line"><span>the</span></span><span class="kt-line"><span>whole</span></span><span class="kt-line"><span>thing.</span></span></div></div></div>
+  <div class="kt-slide" data-beats="4"><div class="kt-body"><div class="kt-bar" id="bar"></div><div class="kt-word"><span class="kt-line"><span>Brand</span></span></div><div class="kt-meta" style="margin-top:30px">Free on iOS + Android →</div></div></div>
+</div>
+
+<script src="/core/node_modules/gsap/dist/gsap.min.js"></script>
+<script src="/core/lib/runtime.js"></script>
+<script>
+  const tl = Studio.setup({ width: 1080, height: 1920, fps: 30, duration: 5 });
+  const BEAT = 0.4; // with music: await Studio.beats(...) and use Studio.beat(n) instead
+  const slides = [...document.querySelectorAll(".kt-slide")];
+  gsap.set(slides, { autoAlpha: 0 });
+  let at = 0;
+  slides.forEach((s, i) => {
+    const len = Number(s.dataset.beats) * BEAT;
+    // Hard cut in and out, lines slam up from their masks, a little overshoot on the scale.
+    tl.set(s, { autoAlpha: 1 }, at);
+    if (i < slides.length - 1) tl.set(s, { autoAlpha: 0 }, at + len);
+    tl.from(s.querySelectorAll(".kt-line > span"), { yPercent: 105, duration: 0.22, stagger: 0.06, ease: "expo.out" }, at)
+      .from(s.querySelector(".kt-word"), { scale: 1.12, duration: 0.3, ease: "power4.out" }, at);
+    at += len;
+  });
+  // Fit every word to the safe zone (width and height): measured once, so every frame sets the same size.
+  for (const w of document.querySelectorAll(".kt-word")) {
+    const max = Math.max(...[...w.querySelectorAll(".kt-line > span")].map((e) => e.offsetWidth));
+    const room = w.parentElement.clientWidth;
+    const body = w.parentElement, roomH = body.clientHeight - (body.scrollHeight - w.offsetHeight);
+    const k = Math.min(1, room / max, roomH / w.offsetHeight);
+    if (k < 1) w.style.fontSize = `${parseFloat(getComputedStyle(w).fontSize) * k}px`;
+  }
+  tl.from("#bar", { scaleX: 0, transformOrigin: "0 50%", duration: BEAT * 4, ease: "none" }, at - BEAT * 4);
+</script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Look starter: editorial</title>
+<link rel="stylesheet" href="/core/lib/base.css">
+<!-- <link rel="stylesheet" href="/brands/<slug>/tokens.css"> -->
+<link rel="stylesheet" href="/looks/editorial/look.css">
+<style>
+  .page { position: absolute; inset: 0; display: flex; flex-direction: column; gap: 40px; }
+  #p1 .ed-photo { height: 560px; margin-top: 10px; }
+  #p2 { gap: 30px; }
+  #p3 { justify-content: center; text-align: center; align-items: center; }
+  #p3 .ed-title { font-size: 150px; }
+  .brand { font: 400 120px/1 var(--ed-serif); letter-spacing: 0.02em; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="safe">
+    <div class="page" id="p1">
+      <div class="ed-masthead"><span>The Brief</span><span>No. 04</span></div>
+      <div class="ed-title" id="h1">The quiet<br>art of <em>mornings</em></div>
+      <div class="ed-photo" id="ph"></div>
+    </div>
+    <div class="page" id="p2">
+      <div class="ed-label" id="lb">In three steps</div>
+      <div class="ed-rule" id="r2"></div>
+      <div style="display:flex; gap:36px; align-items:flex-end"><div class="ed-num" id="n">3</div><div class="ed-deck" id="dk">taps, and the day is already arranged for you.</div></div>
+      <div class="ed-rule"></div>
+      <div class="ed-cols" id="cols"><p>Nothing to set up and nothing to learn. You open it, it knows.</p><p>Made for the ten minutes before everything starts.</p></div>
+    </div>
+    <div class="page" id="p3">
+      <div class="ed-label">Now available</div>
+      <div class="brand" id="brand">Brand</div>
+      <div class="ed-rule" style="width:180px" id="r3"></div>
+      <div class="ed-deck" style="max-width:none">Read the full story at brand.com</div>
+    </div>
+  </div>
+</div>
+
+<script src="/core/node_modules/gsap/dist/gsap.min.js"></script>
+<script src="/core/lib/runtime.js"></script>
+<script src="/looks/fx.js"></script>
+<script>
+  const tl = Studio.setup({ width: 1080, height: 1920, fps: 30, duration: 5 });
+  // Page turns: each page slides up like a scrolled spread; text lines unmask; rules draw left to right.
+  const reveal = (sel, at, d = 0.9) => tl.from(sel, { clipPath: "inset(0 0 100% 0)", y: 30, duration: d, ease: "expo.out", stagger: 0.1 }, at);
+  gsap.set(["#p2", "#p3"], { autoAlpha: 0 });
+  tl.from(".ed-masthead", { autoAlpha: 0, duration: 0.6, ease: "power1.out" }, 0);
+  reveal("#h1", 0.15);
+  tl.from("#ph", { clipPath: "inset(0 0 0 100%)", duration: 1.1, ease: "expo.inOut" }, 0.45)
+    .fromTo("#ph", { backgroundPosition: "0% 0%" }, { backgroundPosition: "0% 100%", duration: 1.8, ease: "none" }, 0.45);
+  tl.to("#p1", { yPercent: -12, autoAlpha: 0, duration: 0.6, ease: "power2.in" }, 1.7)
+    .fromTo("#p2", { autoAlpha: 0, yPercent: 10 }, { autoAlpha: 1, yPercent: 0, duration: 0.7, ease: "power3.out" }, 1.9);
+  reveal("#lb", 2.0, 0.6);
+  tl.from("#r2", { scaleX: 0, transformOrigin: "0 50%", duration: 0.8, ease: "expo.out" }, 2.05);
+  reveal(["#n", "#dk"], 2.2);
+  tl.from("#cols p", { autoAlpha: 0, duration: 0.6, stagger: 0.18, ease: "power1.out" }, 2.6);
+  tl.to("#p2", { yPercent: -12, autoAlpha: 0, duration: 0.6, ease: "power2.in" }, 3.4)
+    .fromTo("#p3", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.6, ease: "power1.out" }, 3.6);
+  reveal("#brand", 3.7);
+  tl.from("#r3", { scaleX: 0, duration: 0.8, ease: "expo.out" }, 4.0);
+
+  const stage = document.getElementById("stage");
+  LookFx.halftone(stage, { opacity: 0.06 });
+  LookFx.grain(stage, { amount: 0.04, blend: "multiply" });
+</script>
+</body>
+</html>

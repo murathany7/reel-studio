@@ -1,0 +1,20 @@
+<!doctype html>
+<!-- Text QA fixture: a hook at 0.5 s, then one block per problem the check must catch, and one it must skip. -->
+<link rel="stylesheet" href="/core/lib/base.css">
+<style>
+  #stage { background: #f4f1ea; font-family: sans-serif; }
+  #stage div { position: absolute; left: 120px; }
+</style>
+<div id="stage">
+  <div id="hook" style="top: 400px; font-size: 96px; color: #111; opacity: 0">Big hook</div>
+  <div id="tiny" style="top: 800px; font-size: 20px; color: #111">tiny print</div>
+  <div id="faint" style="top: 900px; font-size: 60px; color: #ddd8cc">faint words</div>
+  <div id="edge" style="top: 40px; font-size: 60px; color: #111">under the UI</div>
+  <div id="decor" data-qa-skip style="top: 1100px; font-size: 60px; color: #eee">???</div>
+</div>
+<script src="/core/node_modules/gsap/dist/gsap.min.js"></script>
+<script src="/core/lib/runtime.js"></script>
+<script>
+  const tl = Studio.setup({ width: 1080, height: 1920, fps: 30, duration: 2 });
+  tl.set("#hook", { opacity: 1 }, 0.4);
+</script>

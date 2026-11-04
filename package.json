@@ -14,6 +14,7 @@
     "core/render.mjs",
     "core/lib/",
     "engines/",
+    "looks/",
     "!**/__pycache__",
     "scripts/",
     "templates/",
@@ -23,7 +24,12 @@
     "examples/engines-demo/README.md",
     "examples/engines-demo/plates/blob.mp4",
     "examples/engines-demo/talk.visemes.js",
-    ".claude/skills/"
+    "examples/reel-layer/index.html",
+    "examples/reel-layer/rive.html",
+    "examples/reel-layer/README.md",
+    "examples/reel-layer/make-audio.sh",
+    "examples/reel-layer/audio/",
+    ".agents/skills/"
   ],
   "scripts": {
     "test": "node --test test/*.test.mjs",

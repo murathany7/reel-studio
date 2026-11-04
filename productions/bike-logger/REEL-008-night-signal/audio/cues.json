@@ -1,0 +1,7 @@
+{
+  "duration": 16.875,
+  "tracks": [
+    {"file": "music.wav", "role": "music", "start": 0, "volume": 1.0, "fade_out": 0.6},
+    {"file": "sfx.wav", "role": "sfx", "start": 0, "volume": 0.8}
+  ]
+}

@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Look starter: toon 3D</title>
+<link rel="stylesheet" href="/core/lib/base.css">
+<!-- <link rel="stylesheet" href="/brands/<slug>/tokens.css"> -->
+<link rel="stylesheet" href="/looks/toon-3d/look.css">
+<style>
+  .card { position: absolute; left: 0; right: 0; text-align: center; }
+  #c1 { top: 4%; } #c2 { top: 4%; } #c3 { top: 6%; }
+  #c2 .t3-bubble { margin-top: 30px; }
+  #c3 .t3-button { margin-top: 44px; }
+</style>
+<script type="importmap">{ "imports": { "three": "/core/node_modules/three/build/three.module.js" } }</script>
+</head>
+<body>
+<div id="stage">
+  <div class="layer" id="toys"></div>
+  <div class="safe">
+    <div class="card t3-title" id="c1"><span class="t3-word">Mornings</span><br><span class="t3-word a">just got</span><br><span class="t3-word b">bouncy</span></div>
+    <div class="card" id="c2"><div class="t3-title">3 taps.</div><div class="t3-bubble" id="bub">That's the whole trick!</div></div>
+    <div class="card" id="c3"><div class="t3-title" id="brand">Brand</div><div class="t3-button" id="cta">Try it free</div></div>
+  </div>
+</div>
+
+<script src="/core/node_modules/gsap/dist/gsap.min.js"></script>
+<script src="/core/lib/runtime.js"></script>
+<script type="module">
+  import { threeLayer, toon, outline } from "/engines/three.js";
+  import { RoundedBoxGeometry } from "/core/node_modules/three/examples/jsm/geometries/RoundedBoxGeometry.js";
+  const tl = Studio.setup({ width: 1080, height: 1920, fps: 30, duration: 5 });
+  const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+
+  // A hero toy that hops with squash and stretch, and three balls orbiting it. All poses from t.
+  const hop = (t, period) => { const p = (t % period) / period; return { h: Math.sin(p * Math.PI), p }; };
+  const { scene, camera, THREE } = threeLayer(document.getElementById("toys"), {
+    update(t) {
+      const { h, p } = hop(t, 0.8);
+      const squash = p < 0.08 || p > 0.92 ? 0.78 : 1 + 0.12 * Math.sin(p * Math.PI); // flat on contact, tall in the air
+      hero.position.y = -1.2 + h * 1.0;
+      hero.scale.set(1 / Math.sqrt(squash), squash, 1 / Math.sqrt(squash));
+      hero.rotation.set(0.15, -0.5 + Math.sin(t * 1.3) * 0.35, Math.sin(t * 2.5) * 0.08);
+      shadow.scale.setScalar(1.25 - h * 0.45);
+      balls.forEach((b, i) => {
+        const a = t * 1.6 + (i * Math.PI * 2) / 3;
+        b.position.set(Math.cos(a) * 2.6, -0.2 + Math.sin(t * 3 + i) * 0.5, Math.sin(a) * 1.4);
+      });
+    },
+  });
+  camera.position.set(0, 1.2, 14);
+  camera.lookAt(0, 2.2, 0); // toys sit in the lower middle, under the title
+  const ink = new THREE.Color(css("--t3-ink"));
+  const hero = new THREE.Mesh(new RoundedBoxGeometry(1.9, 2.4, 1.9, 6, 0.45), toon(new THREE.Color(css("--t3-a")), { steps: 3 }));
+  outline(hero, { color: ink, thickness: 0.05 });
+  hero.geometry.translate(0, 1.2, 0); // pivot at the bottom so squash plants it on the ground
+  const balls = [css("--t3-b"), css("--t3-c"), "#ffffff"].map((c) => {
+    const b = new THREE.Mesh(new THREE.SphereGeometry(0.42, 32, 24), toon(new THREE.Color(c)));
+    outline(b, { color: ink, thickness: 0.08 });
+    scene.add(b); return b;
+  });
+  const ground = new THREE.Mesh(new THREE.CylinderGeometry(4.2, 4.2, 0.5, 64), toon(new THREE.Color("#8be38b")));
+  outline(ground, { color: ink, thickness: 0.02 });
+  ground.position.y = -1.45;
+  const shadow = new THREE.Mesh(new THREE.CircleGeometry(1.2, 48), new THREE.MeshBasicMaterial({ color: ink, transparent: true, opacity: 0.25 }));
+  shadow.rotation.x = -Math.PI / 2; shadow.position.y = -1.19;
+  scene.add(hero, ground, shadow);
+  const sun = new THREE.DirectionalLight(0xffffff, 2.6); sun.position.set(4, 6, 6);
+  scene.add(sun, new THREE.AmbientLight(0xffffff, 0.9));
+
+  // Words pop in one by one (overshoot), bubble wobbles, button squashes. Cuts are iris wipes.
+  document.querySelectorAll("#c1 .t3-word").forEach((w, i) => tl.from(w, { scale: 0, rotation: -12, duration: 0.5, ease: "elastic.out(1, 0.55)" }, 0.1 + i * 0.22));
+  Studio.transition("#c1", "#c2", { at: 1.7, duration: 0.35, type: "iris" });
+  tl.from("#c2 .t3-title", { scale: 0, duration: 0.45, ease: "back.out(3)" }, 1.8)
+    .from("#bub", { scale: 0, transformOrigin: "20% 100%", duration: 0.5, ease: "elastic.out(1, 0.5)" }, 2.1)
+    .to("#bub", { rotation: 3, duration: 0.2, yoyo: true, repeat: 3, ease: "sine.inOut" }, 2.6);
+  Studio.transition("#c2", "#c3", { at: 3.3, duration: 0.35, type: "iris" });
+  tl.from("#brand", { y: -300, duration: 0.6, ease: "bounce.out" }, 3.35)
+    .from("#cta", { scale: 0, duration: 0.5, ease: "back.out(3)" }, 3.8)
+    .to("#cta", { scaleX: 1.12, scaleY: 0.88, duration: 0.12, yoyo: true, repeat: 1 }, 4.4);
+</script>
+</body>
+</html>

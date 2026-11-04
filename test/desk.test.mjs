@@ -95,3 +95,40 @@ test("MCP server: tools, notes, no approval tool", async () => {
   assert.equal(JSON.parse(res.result.content[0].text).status, "fixed");
   assert.equal(JSON.parse(notes.result.content[0].text)[0].reply, "moved up 40 px");
 });
+
+test("Send to agent with REEL_AGENT=codex: sandboxed codex exec, key removed, session resumed", async () => {
+  // A stand-in codex that records how it was called and prints a few `codex exec --json` events
+  const bin = path.join(proj, "fake-codex.mjs"), log = path.join(proj, "codex-calls.jsonl");
+  writeFileSync(bin, `#!${process.execPath}
+import { appendFileSync } from "node:fs";
+appendFileSync(${JSON.stringify(log)}, JSON.stringify({ argv: process.argv.slice(2), key: process.env.OPENAI_API_KEY ?? null }) + "\\n");
+for (const ev of [{ type: "thread.started", thread_id: "thread-1" }, { type: "item.completed", item: { type: "agent_message", text: "done" } },
+  { type: "turn.completed" }]) console.log(JSON.stringify(ev));
+`, { mode: 0o755 });
+  const cx = spawn(process.execPath, [path.join(ROOT, "desk/server.mjs"), "--port", "0"],
+    { env: { ...env, REEL_AGENT: "codex", CODEX_BIN: bin, OPENAI_API_KEY: "sk-stray" } });
+  try {
+    const url = await new Promise((resolve) => cx.stdout.on("data", (d) => {
+      const m = /http:\/\/127\.0\.0\.1:\d+/.exec(String(d)); if (m) resolve(m[0]);
+    }));
+    assert.deepEqual(await (await fetch(url + "/api/agent")).json(), { agent: "codex", label: "Codex" });
+    const send = async () => {
+      const job = await (await fetch(`${url}/api/agent?p=${P}`, { method: "POST", headers: { "content-type": "application/json" },
+        body: JSON.stringify({ notes: [-1], request: "hold the end card longer" }) })).json();
+      const events = await (await fetch(`${url}/api/jobs/${job.id}/events`)).text(); // ends when the job is done
+      assert.match(events, /"done":true,"code":0/);
+      assert.match(events, /session thread-1/);
+    };
+    await send();
+    await send();
+    const calls = readFileSync(log, "utf8").trim().split("\n").map((l) => JSON.parse(l));
+    assert.deepEqual(calls[0].argv.slice(0, 2), ["exec", "--json"]);
+    assert.ok(calls[0].argv.includes('sandbox_mode="workspace-write"'));
+    assert.ok(calls[0].argv.some((a) => a.startsWith("mcp_servers.reel-desk.command=")));
+    assert.match(calls[0].argv.at(-1), /AGENTS\.md[\s\S]*hold the end card longer/);
+    assert.deepEqual(calls[1].argv.slice(0, 3), ["exec", "resume", "--json"]);
+    assert.equal(calls[1].argv.at(-2), "thread-1");
+    assert.deepEqual(calls.map((c) => c.key), [null, null], "OPENAI_API_KEY must not reach Codex");
+    assert.equal(JSON.parse(readFileSync(path.join(dir, "review.json"), "utf8")).codex.session, "thread-1");
+  } finally { cx.kill(); }
+});

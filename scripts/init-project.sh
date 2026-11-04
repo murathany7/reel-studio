@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 # Copy the Reel Studio kit into a project so its skills can render there.
 #   scripts/init-project.sh <kit_root> [project_dir] [--update] [--with-skills]
-# Copies core/, engines/, scripts/, desk/ (the optional review app), the engines demo and the brand/production templates, adds CLAUDE.md,
-# STATUS.md and .gitignore if missing, then runs npm install in core/ and checks the tools.
+# Copies core/, engines/, looks/ (art directions), scripts/, desk/ (the optional review app), the engines and reel-layer demos and the brand/production templates, adds AGENTS.md
+# (read by Codex, Copilot and, through CLAUDE.md's @import, Claude Code), CLAUDE.md, STATUS.md and .gitignore if missing,
+# then runs npm install in core/ and checks the tools.
 # Existing files are kept; --update refreshes core/, engines/ and scripts/ (and the skills) from the kit (brands and
-# productions are never touched). --with-skills also copies the skills into .claude/skills/ (for installs without
-# the Claude Code plugin, e.g. npx reel-studio init).
+# productions are never touched). --with-skills also copies the skills into .agents/skills/ (Codex, Copilot) and links
+# .claude/skills to it (Claude Code), for installs without the Claude Code plugin, e.g. npx reel-studio init.
 set -euo pipefail
 
 update=""; skills=""; args=()
@@ -27,26 +28,51 @@ else
   copy() {  # copy <src rel> <dest rel> [overwrite]
     mkdir -p "$dest/$2"
     if [ "${3:-}" = overwrite ]; then
-      rsync -a --exclude node_modules --exclude __pycache__ "$kit/$1/" "$dest/$2/"
+      rsync -a --exclude node_modules --exclude __pycache__ --exclude check-metrics "$kit/$1/" "$dest/$2/"
     else
-      rsync -a --ignore-existing --exclude node_modules --exclude __pycache__ "$kit/$1/" "$dest/$2/"
+      rsync -a --ignore-existing --exclude node_modules --exclude __pycache__ --exclude check-metrics "$kit/$1/" "$dest/$2/"
     fi
   }
   mode=""; [ "$update" = "--update" ] && mode=overwrite
   copy core core $mode
   copy engines engines $mode
+  copy looks looks $mode
   copy scripts scripts $mode
   copy desk desk $mode
   copy brands/_template brands/_template
   copy productions/_TEMPLATE productions/_TEMPLATE
-  [ -n "$skills" ] && copy .claude/skills .claude/skills $mode
+  if [ -n "$skills" ]; then
+    copy .agents/skills .agents/skills $mode
+    mkdir -p "$dest/.claude"
+    if [ -d "$dest/.claude/skills" ] && [ ! -L "$dest/.claude/skills" ]; then
+      copy .agents/skills .claude/skills $mode  # a project from before .agents/: keep its own folder up to date
+    else
+      ln -sfn ../.agents/skills "$dest/.claude/skills"
+    fi
+  fi
   mkdir -p "$dest/examples/engines-demo/plates"
   cp -n "$kit/examples/engines-demo/index.html" "$kit/examples/engines-demo/README.md" "$kit/examples/engines-demo/talk.visemes.js" "$dest/examples/engines-demo/" 2>/dev/null || true
   cp -n "$kit/examples/engines-demo/plates/blob.mp4" "$dest/examples/engines-demo/plates/" 2>/dev/null || true
-  for f in CLAUDE.md STATUS.md; do
+  # The reel-layer demo (captions, beats, transitions, formats); not its fetched Rive sample
+  rsync -a --ignore-existing --exclude assets "$kit/examples/reel-layer/" "$dest/examples/reel-layer/" 2>/dev/null || true
+  [ -e "$dest/CLAUDE.md" ] && ! grep -q '^@AGENTS.md' "$dest/CLAUDE.md" && [ ! -e "$dest/AGENTS.md" ] && legacy=1 || legacy=""
+  for f in AGENTS.md CLAUDE.md STATUS.md; do
     [ -e "$dest/$f" ] || sed "s/{{DATE}}/$(date +%F)/" "$kit/templates/project/$f" > "$dest/$f"
   done
+  [ -n "$legacy" ] && echo "Note: CLAUDE.md predates AGENTS.md. Move your own rules from CLAUDE.md into AGENTS.md (Codex and Copilot read it), then leave just '@AGENTS.md' in CLAUDE.md."
   [ -e "$dest/.gitignore" ] || cp "$kit/templates/project/gitignore" "$dest/.gitignore"
+  # The desk as a named dev server, so the Claude desktop app can open it in its browser pane ("open the desk").
+  # Adds the entry to an existing launch.json; leaves one that already has a "desk" entry alone.
+  mkdir -p "$dest/.claude"
+  node -e '
+    const fs = require("fs"), f = process.argv[1];
+    let j = { version: "0.0.1", configurations: [] };
+    if (fs.existsSync(f)) { try { j = JSON.parse(fs.readFileSync(f, "utf8")); } catch { console.log("Note: .claude/launch.json is not valid JSON; desk entry not added."); process.exit(0); } }
+    j.configurations ||= [];
+    if (j.configurations.some((c) => c.name === "desk")) process.exit(0);
+    j.configurations.push({ name: "desk", runtimeExecutable: "node", runtimeArgs: ["desk/server.mjs", "--port", "4100"], port: 4100 });
+    fs.writeFileSync(f, JSON.stringify(j, null, 2) + "\n");
+  ' "$dest/.claude/launch.json"
   echo "Kit copied into $dest"
 fi
 

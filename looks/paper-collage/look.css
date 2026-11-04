@@ -1,0 +1,30 @@
+/* Paper collage (cut paper, stop motion). Load after base.css and the brand's tokens.css.
+ * Brand colours become the coloured papers; the kraft board, tape and the black marker are the look's. */
+:root {
+  --pc-board: #d9c4a0;
+  --pc-paper-a: var(--accent, #ef5b3a);
+  --pc-paper-b: var(--accent-2, #2c6fd6);
+  --pc-paper-c: var(--accent-3, #f6c445);
+  --pc-white: #fbf7ef;
+  --pc-ink: #1b1b1b;
+  --pc-font: var(--font-display, "Futura", "Avenir Next", "Trebuchet MS", sans-serif);
+  --pc-hand: var(--font-hand, "Marker Felt", "Chalkboard SE", "Comic Neue", cursive);
+  --caption-font: var(--pc-hand);
+  --caption-accent: var(--pc-paper-c);
+}
+#stage { background: var(--pc-board); color: var(--pc-ink); }
+
+/* A cut-out: torn edge (SVG filter #pc-torn, added by the starter), paper shadow, slight tilt. */
+.pc-cut { position: absolute; background: var(--pc-white); filter: url(#pc-torn) drop-shadow(0 10px 8px rgba(40,25,5,.35)); }
+.pc-cut.a { background: var(--pc-paper-a); } .pc-cut.b { background: var(--pc-paper-b); } .pc-cut.c { background: var(--pc-paper-c); }
+/* Letters cut from different papers, each its own block */
+.pc-letters { display: flex; flex-wrap: wrap; gap: 10px 8px; }
+.pc-letters span { display: inline-block; font: 900 112px/1 var(--pc-font); padding: 8px 14px 14px; background: var(--pc-white);
+                   box-shadow: 0 6px 6px rgba(40,25,5,.3); text-transform: uppercase; }
+.pc-letters span:nth-child(3n+1) { background: var(--pc-paper-a); color: var(--pc-white); }
+.pc-letters span:nth-child(3n+2) { background: var(--pc-paper-c); }
+.pc-letters span:nth-child(4n) { background: var(--pc-ink); color: var(--pc-white); }
+.pc-hand { font: 400 64px/1.15 var(--pc-hand); }
+.pc-tape { position: absolute; width: 190px; height: 58px; background: rgba(255,250,225,.62); box-shadow: 0 2px 3px rgba(0,0,0,.12); }
+.pc-stamp { display: inline-block; font: 900 46px/1 var(--pc-font); color: var(--pc-paper-a); border: 7px solid currentColor;
+            padding: 16px 24px; border-radius: 12px; text-transform: uppercase; letter-spacing: .06em; mix-blend-mode: multiply; }

@@ -59,6 +59,18 @@ anything about other people's bikes. Ask before using any of these.
 | Default engines | **Page capture** of the live 3D scene (real CAD parts) + GSAP text. **Three.js** with the real meshes for new angles. **Replay plates** from real ride data |
 | References | `assets/reference/kit-reel-cover.png`: the first reel's cover (what the brand looks like in a reel) |
 
+### Look range
+
+The brand's identity (colours, Archivo + Plex Mono, wordmark, voice, facts) goes into every piece. The art direction
+changes per piece: pick it from `looks/` (`node scripts/looks.mjs bike-logger`; see `looks/README.md`).
+
+| | |
+|---|---|
+| Signature | Night stage, mono eyebrow naming the part, wide heavy headline, spec chips, lamp glow (REEL-001 to 007). One option, not the default: the last four pieces all used it |
+| Fits | **photoreal** (the real CAD parts as a premium kit film), **neon-noir** (night rides, sensors and data as a HUD; lamp → neon-a, signal → neon-b), **editorial** (the build log as a story), **kinetic-type** (lamp on night) |
+| Ask first | **toon-3d** and **paper-collage**: friendly, but the voice is an engineer's and skill level is not confirmed |
+| Never | Any look that shows unsafe riding or real road footage without blurred faces and plates (`compliance.md`) |
+
 ### Visual sources to reuse
 
 | Source | Path | Use |
@@ -70,7 +82,7 @@ anything about other people's bikes. Ask before using any of these.
 ## Voice
 
 - Sounds like: an engineer showing their build. Short, concrete, physical. "One Pi. One sealed box." "Every overtake."
-- Pattern: a mono eyebrow names the part (`03 · HALL SENSOR`), a 2–4 word headline says what it does, chips give the spec.
+- Pattern (signature look only): a mono eyebrow names the part (`03 · HALL SENSOR`), a 2–4 word headline says what it does, chips give the spec.
 - Never sounds like: hype, safety fear, "revolutionary", "AI-powered", exclamation marks.
 - Words we use: build, wire up, code it, ride, record, replay, one timeline, sealed, real CAD. Avoid: "smart", "dashcam" (it is more than a camera), "easy" or "for beginners" (skill level is not confirmed).
 - Sound: the first reel is silent. No voice chosen yet.

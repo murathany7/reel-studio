@@ -4,6 +4,13 @@ The memory of this repo. Read it first, update it last.
 
 ## Now
 
+- 2026-11-04: **the desk opens from the chat**, for people who aren't technical. `init-project.sh` adds a `desk`
+  entry to the project's `.claude/launch.json` (merged into an existing one, never duplicated); `review-desk` opens
+  it with `preview_start` in the Claude desktop app's browser pane (elsewhere it starts the server and gives the link)
+  instead of handing over a command; `make-video` offers it once, at the first storyboard in a project. Tested on
+  scratch projects (fresh, second run, existing `launch.json`) and the copied desk serves them. Not tried yet: "open
+  the desk" in the app on a fresh project, or a clean-machine plugin install. Merged `main` (lip sync, 0.2.5) into
+  `desk`; `make-video`'s lip-sync lines moved to `.agents/skills/`.
 - 2026-11-04: **lip sync** ported from `../marketing-reels-skill` (Rhubarb Lip Sync 1.14.0): `scripts/lipsync.sh`
   (cues + a `.js` twin), `engines/lipsync.js` (cues, `paramsAt`, `mountMouth` + `addToTimeline` for a mascot PNG),
   `SvgRig.lipsync()` (draw `#mouth-A`…`#mouth-X`, missing shapes fall back to the nearest drawn one), and
@@ -17,6 +24,51 @@ The memory of this repo. Read it first, update it last.
   Rhubarb, so the script's end-to-end test skips there. Not in the Docker image. Not released yet.
 - 2026-11-04: **SVG rig blink fixed:** `transformBox: "fill-box"` on top of GSAP's own SVG origin moved the eyes far
   down on every blink (below the mouth in the demo since its first version). Body squash still anchors at the feet.
+- 2026-11-04: **QA checks from the benchmark** (video-director's ideas, our thresholds).
+  `qa-video.sh` now fails a black/empty first frame and more than 3 flashes a second (WCAG 2.3.1, per quadrant,
+  `scripts/qa_frames.py`). New `node core/render.mjs text-qa <comp> <qa_dir>` (`core/lib/qa-text.mjs`): every
+  0.25 s, each visible DOM text block gets its size (median over time, transforms included), contrast (two
+  screenshots, with and without text: glyph pixels vs exactly what is behind them, so strokes and shadows count),
+  Reels UI zones (9:16), and the 3 s hook; problems lasting ≥ 0.5 s fail, shorter ones warn; exits 1 on a ❌;
+  `data-qa-skip` for decoration. First runs: REEL-001 has 19 spec chips at 27 px (❌ under 28) and its headlines in the
+  paid-only zone (REEL-001 not changed). Zones are tested on the glyphs' own pixels, not the font's line box (which
+  reaches above the letters and flagged headlines set exactly on the safe line). Canvas text (Pixi, Three, Rive) is
+  not measured.
+- 2026-11-04: **REEL-003 QA pass 2** (yuppo): fixed what the new checks found and re-rendered video and cover: hook
+  on screen from frame 0 (frame 0 was blank), label greys #8F8F8F → #5C5C5C and 24–28 → 30–34 px, "Up 06:45" ink on
+  orange, hour labels inside the ring, tags clamped off the side rails, last headline 84 px. Text QA has no ❌ (11 small
+  labels warn), video QA ✅. Approved in chat ("Approve"): delivered again, silent cut.
+- 2026-11-04: **motion blur** in the renderer (idea from product-launch-motion, after a benchmark of similar tools):
+  `--motion-blur N [--shutter 0.5]` or `Studio.setup({ motionBlur: true | { samples, shutter } })`. Each frame is
+  N screenshots at t … t + shutter/fps, averaged in linear light by `core/lib/blend.mjs` (own PNG decode/encode,
+  no dependency; matches ffmpeg's decode of Chrome PNGs byte for byte), one worker thread per render page.
+  Deterministic (same md5 twice). Costs about N× render time (reel-layer 8 s: 7.8 s sharp, 59 s at 8 samples;
+  blending on the main thread had made it 107 s). 8 samples still shows steps on the fastest pushes (≈200 px/frame); 16 is smoother. Tests:
+  `test/blend.test.mjs`, a blur case in `test/render.test.mjs`. Not yet turned on in any production.
+- 2026-11-04: **REEL-008** (bike-logger, neon-noir) approved in chat ("Approve, own music"), produced, QA passed in 9:16 and
+  4:5, final cut approved ("Approve final cut"): delivered. Not posted yet. Style frames: the real tray CAD as
+  neon edges over dark faces works well; amber neon on headlines softens the glyphs, so the glow stays light (`spread` ≈ 0.2).
+- 2026-11-04: **looks: one brand, many art directions** (committed on `desk`). Every piece so far copied the previous
+  one's layout (Bike Logger: eyebrow + wide headline + chips + glow, `power3.out`; Yuppo: cream pills, `back.out`),
+  because the kit only had brand tokens and "copy the engines demo". Now `looks/` holds 7 art directions, each with a
+  README (palette mapping, type, layout, motion, texture, engines, sound, avoid), `look.css` (brand tokens fill its
+  roles) and a working 5 s `starter.html`: neon-noir (cyberpunk), toon-3d, photoreal, editorial, kinetic-type,
+  retro-film, paper-collage. `looks/fx.js`: seeded grain, scanlines, vignette, halftone, leaks, weave, jitter,
+  flicker, neon, glitch. `engines/three.js` gained `realistic()`, `pbr()`, `emissive()`, `bloom()` (`post` option).
+  `scripts/looks.mjs <brand>` lists the looks a brand used and the ones it has not tried. `make-video` now pitches
+  2–3 different directions (section 0 of the production README, style frames in `qa/directions/`) before the
+  storyboard, and compositions start from a look's starter, never from an earlier production. Brand READMEs have a
+  *Look range* (signature, fits, ask first, never); earlier productions are recorded as `signature`.
+  `test/looks.test.mjs`: every starter deterministic, no two looks alike. Contact sheet `docs/media/looks.jpg`.
+- 2026-11-04: **Codex and Copilot support, same repo**. `AGENTS.md` is now the instructions file
+  (`CLAUDE.md` is `@AGENTS.md` plus a Claude-only note); the skills moved to `.agents/skills/` (Codex and Copilot read
+  it; `.claude/skills` is a symlink; the plugin points there). `init` adds `AGENTS.md`, `.agents/skills/` and links
+  `.claude/skills`; older projects with a real `.claude/skills/` folder keep it updated, and a CLAUDE.md without
+  `@AGENTS.md` gets a note to move its rules. Desk: `REEL_AGENT=codex` runs `codex exec --json` in the
+  `workspace-write` sandbox with `reel-desk` over `-c mcp_servers…`, `OPENAI_API_KEY` removed, session resumed per
+  production (`review.json` → `codex.session`). Tested with a fake codex only: local codex-cli 0.133 is too old for
+  the account's default model, so no real Codex run yet. Copilot has no headless desk runner (it uses the files or
+  the MCP server).
 - 2026-11-04: **release workflow back** (`release.yml`, `ci.yml` callable again). Each target (npm, PyPI, GHCR,
   GitHub Release) is checked on its own and skipped when it already has the version, so reruns and hand releases mix;
   GitHub Release and Homebrew run when npm/PyPI were published now *or* earlier, and build their own files. npm and
@@ -31,10 +83,23 @@ The memory of this repo. Read it first, update it last.
   page's first seek, then never calls back again. `Studio.video()` took that as "new frame painted". It now only
   accepts a frame that can be the target's; otherwise the 250 ms fallback (which every later seek always used). Demo
   stills byte-identical to before; render tests pass on macOS.
+- 2026-11-03: **0.2.4 released by hand** (desk merged into `main` as `2ef2ff8`, then formula `3189519`; CI green):
+  npm, PyPI, Homebrew tap (`e07134c`), GitHub Release v0.2.4 (npm tgz + wheel + sdist). `npx` and `uvx` installs of
+  0.2.4 tested (`init` copies `desk/`). GHCR `0.2.4` and `latest` pushed by hand (amd64 + arm64,
+  `docker buildx build --push`); anonymous pull and `reel-studio init` in the container tested. Pushing needs
+  `docker login ghcr.io` with a token that has `write:packages` (`gh auth refresh -s write:packages`). Right after
+  publish the plain npm tarball URL served a cached 404 for some minutes (a `?x=` query got 200), so `brew fetch`
+  failed at first; it passed a few minutes later. Pushes went straight to `main` by bypassing its "changes through a PR" rule.
+  The `release-0.2.4` worktree branch is local only.
 - 2026-11-03: **publishing is manual for now.** `release.yml` removed (its npm and PyPI steps never succeeded: no
   trusted publishers on either registry). CI (`ci.yml`) only tests: Linux Node 20/24, macOS, Homebrew formula style;
   green on `main`. Release steps by hand: `packaging/README.md`. Registries are still at 0.2.1, GHCR has 0.2.2/0.2.3
   from the old workflow. The unused `npm`/`pypi` GitHub environments can be deleted in repo settings.
+- 2026-11-03 metrics: npm 266 downloads (all since publish, mostly mirrors/bots), PyPI n/a (not indexed yet), 0 stars,
+  GitHub 14d: 4 unique visitors, 15 unique cloners, top referrer npmjs.com; tap repo untouched. Registries are on
+  0.2.1 while the repo is 0.2.3: the v0.2.2 Release run failed at both publish steps
+  (npm E404 on PUT, PyPI `invalid-publisher`): trusted publishing is not set up on npmjs.com / pypi.org yet
+  (`packaging/README.md`, one-time setup). 0.2.1 was published by hand; no automated publish has succeeded so far.
 - Repo scaffolded 2026-11-02: core renderer (generalised from `../marketing-reels-skill/renderer`), engine
   adapters, skills, brand and production templates, engines demo.
 - 2026-11-02: Bike Logger brand added (facts, look, voice, compliance, brand-check still).
@@ -72,6 +137,11 @@ The memory of this repo. Read it first, update it last.
   Tested locally: `reel-studio init`, md5-stable stills, the engines demo video. `release.yml` job `docker` pushes
   `ghcr.io/murathany7/reel-studio:<v>` and `:latest` (amd64 + arm64); after its first push, set the GHCR package to
   public once (GitHub → Packages → reel-studio → Package settings).
+  0.2.2 release run (41688024541, commit cd0efdf): tests and `docker` passed, and `ghcr.io/murathany7/reel-studio:0.2.2`
+  is up and anonymously pullable. `npm` (E404) and `pypi` (`invalid-publisher`) failed because neither registry has the
+  trusted publisher set up yet, so the GitHub Release and Homebrew were skipped and npm/PyPI are still at 0.2.1. A local
+  `npm publish` stops at a browser 2FA sign-in. Fix: add both trusted publishers (`packaging/README.md`), then
+  `gh run rerun 41688024541 --failed`.
 - 2026-11-03: 0.2.3: PyPI page (`python/README.md`) rebuilt as a marketing page like npm's, Bike Logger only. PyPI
   can't resolve relative paths, so every image and link there is an absolute `raw.githubusercontent.com/.../main/` URL
   (images follow `main`). Checked with `readme-renderer`, the library PyPI uses (all images and centring survive).
@@ -88,22 +158,42 @@ The memory of this repo. Read it first, update it last.
   Tested: `test/desk.test.mjs`, the page in the browser pane on REEL-002, and one real `claude -p` run that
   resolved a note through the MCP server (7 s). Not tested yet: on Linux/Docker, or a Claude run that edits a composition.
 
+- 2026-11-03: REEL-001 copy revision A, asked for in the desk ("say everything is included, it's optimised, and it's
+  made to build on"): the box beat becomes the live page's own "Everything inside.", four beats gain a measured spec
+  chip instead of the word "optimised", and the end card gains "IP65 box · parametric CAD · build notes published".
+  Three parts of the ask are blocked for lack of a source and are written up in the production README §4.1: kit
+  contents ("what you get"), "optimised" as a bare claim, and "open source" (the bikelog repo is not licensed
+  publicly yet). Composition only — the export is still v2 and the revision is unapproved.
+
+- 2026-11-03: **reel layer built** (everything from *Next* of the engines research; committed on `desk`, not released):
+  `Studio.captions` (karaoke / pop / highlight / plain from whisper.cpp JSON or `[{text,start,end}]`),
+  `scripts/beats.mjs` + `Studio.beats/beat/bar/onset/snap/beatPhase` (spectral-flux tempo and phase, kick-weighted;
+  within 11–22 ms over 40 s on synthetic 95–174 BPM tracks; not yet tried on real music), `Studio.transition` (12 CSS
+  types) and `Studio.swap`, `engines/gl-transitions.js` (7 shader effects), formats (`Studio.setup({ formats })`,
+  `--format`, `--formats all`, per-format safe zones and `.fmt-*` classes), `engines/rive.js` (timeline + state machine
+  with timed inputs, tested on Rive's public `vehicles.riv`, which is gitignored), parallel workers (`--workers`, auto up
+  to 4: demo video 14.3 s → 7.3 s, byte-identical output), video plates decoded to PNG frames by ffmpeg (cached),
+  and `--capture beginframe` (`core/lib/beginframe.mjs`, Linux, tested in Docker with Debian's chromium-headless-shell
+  156; Dockerfile now installs it). Demo: `examples/reel-layer/` (8 s, four formats). Tests: `test/reel-layer.test.mjs`
+  (9), all 34 pass on macOS. Not yet run on GitHub CI.
+
 ## Brands
 
 | Brand | Folder | State | Open questions |
 |---|---|---|---|
 | Yuppo | `brands/yuppo/` (gitignored: company assets, commercial font) | Ready 2026-11-03, moved from `../marketing-reels-skill/brand/` (full kit in `kit/`); check card `check.html` renders with Pangea Afrikan, Inter and Po | Pangea Afrikan ad licence (paid pieces use Inter Tight meanwhile)? Verified user count and store rating? ElevenLabs MCP needs `/mcp` auth for VO. Talking Po (REEL-006's provisional mouth, awaiting design sign-off): `LipSync.mountMouth(el, { cx: 0.512, cy: 0.502, w: 0.15, aspect: 893 / 1000, shapes: LipSync.mouthSet({ ink: "#272727", cover: "#FF8133", tongue: "#F6A28E" }) })` over `po-baby.png`; copy into the brand README's *Mascot* when the folder is here. Other open questions: `../marketing-reels-skill/STATUS.md` |
-| Bike Logger | `brands/bike-logger/` | Ready; check card `check.html` renders with the site's fonts and colours | Price, kit contents and skill level for the kit? A voice for VO pieces? Copy Archivo + Plex Mono into `assets/fonts/` so renders work offline? |
+| Bike Logger | `brands/bike-logger/` | Ready; check card `check.html` renders with the site's fonts and colours | Price, kit contents and skill level for the kit? Is the project licensed publicly (`../bikelog/BENCHMARK_OPENBIKESENSOR.md` says not yet) — until it is, no piece can say "open source"? A voice for VO pieces? Copy Archivo + Plex Mono into `assets/fonts/` so renders work offline? |
 
 ## Productions
 
 | ID | Brand | Title | Status | Export |
 |---|---|---|---|---|
-| REEL-001 | bike-logger | Robotics starter kit (silent, 28 s) | delivered | `productions/bike-logger/REEL-001-kit/export/REEL-001-kit-en.mp4` |
+| REEL-001 | bike-logger | Robotics starter kit (silent, 28 s) | delivered (v2); copy revision A in the desk for approval | `productions/bike-logger/REEL-001-kit/export/REEL-001-kit-en.mp4` (still v2) |
 | REEL-003 | yuppo | One wake-up time, the whole day planned (Three.js day dial + GSAP, silent, 15 s) | QA passed, silent cut (VO + music pending ElevenLabs auth) | `productions/yuppo/REEL-003-one-wake-up/export/REEL-003-one-wake-up-en.mp4` |
 | REEL-004 | yuppo | 3 a.m. question? Ask Po (Pixi night sky + Lottie Po + GSAP, silent, 16 s) | QA passed, silent cut (VO + music pending) | `productions/yuppo/REEL-004-ask-po-3am/export/REEL-004-ask-po-3am-en.mp4` |
 | REEL-005 | yuppo | What Star parents get, 7-day trial ad (Blender physics plate + GSAP, silent, 14 s) | QA passed, silent cut (music + SFX pending) | `productions/yuppo/REEL-005-star-trial/export/REEL-005-star-trial-en.mp4` |
 | REEL-002 | bike-logger | Engines sampler: Three.js tray, Blender camera housing, Pixi sensor streams (silent, 14.8 s) | QA passed, draft for review | `productions/bike-logger/REEL-002-engines/export/REEL-002-engines-en.mp4` |
+| REEL-008 | bike-logger | Night signal: boot sequence of the five sensors, first piece in `looks/neon-noir` (Three.js CAD as neon edges + HUD, music, 16.9 s, 9:16 + 4:5) | delivered (final cut approved 2026-11-04); music and SFX are our own synth | `productions/bike-logger/REEL-008-night-signal/export/REEL-008-night-signal-en-9x16.mp4` (and `-4x5.mp4`) |
 
 ## Engines
 
@@ -113,11 +203,13 @@ The memory of this repo. Read it first, update it last.
 | SVG rig | ✅ | GSAP ignores CSS `transform-origin` on SVG; the rig sets pivots itself (`data-pivot` to override) |
 | Lottie | ✅ | Tested 2026-11-03 with Yuppo's Po files (REEL-004): seeks frame-exactly, md5-stable. Load `/core/node_modules/lottie-web/build/player/lottie.min.js` before the runtime |
 | Pixi v8 | ✅ | `autoStart: false`, ticker stopped, drawn on seek |
-| Three.js r170 | ✅ | `preserveDrawingBuffer: true`; WebGL needs the GPU flags in `core/render.mjs` (`CHROME_ARGS`) |
+| Three.js r187 | ✅ | Bumped from r170 2026-11-03: engines demo, REEL-002 and REEL-003 frames match (one REEL-002 frame at 45 dB PSNR). `preserveDrawingBuffer: true`; WebGL needs the GPU flags in `core/render.mjs` (`CHROME_ARGS`) |
 | Blender 5.2 | ✅ | Eevee. Backdrop must be camera-only or it flattens toon bands. 2 s at 540×960 ≈ 17 s. Rigid-body plates work (REEL-005: 14 s at 1080×1920 in 6 min 20 s) |
 | Page capture | ✅ | REEL-001's drive module reproduces the original capture (PSNR ≈41 dB on a 4 s test). Generic `capture.mjs` tested on a rAF test page: frame n = n/fps, two runs identical. Serve pages with HTTP Range support if they seek `<video>` (python's http.server does not) |
 | Lip sync (Rhubarb) | ✅ | Rhubarb 1.14.0 in `~/.cache/rhubarb-lip-sync/`; the macOS build is x86_64 (Rosetta). ~4 s per short line. Tested 2026-11-04 on the SVG rig (demo), a mascot PNG and Blender shape keys; Three.js uses the same `paramsAt` numbers (no Three.js mouth rig built yet). English recogniser; `--phonetic` for other languages (untested) |
-| Rive | 🔜 | Needs a `.riv` to build and test the adapter |
+| Rive | ✅ | `engines/rive.js` on `@rive-app/canvas-advanced` 2.37. The instance's `duration`/`fps` getters are empty: use the animation's (frames / fps). The module asks for `canvas_advanced.wasm`, the package ships `rive.wasm` |
+| GL transitions | ✅ | `engines/gl-transitions.js`, a late onSeek hook reading `Studio.pixels(layer)` |
+| beginFrame capture | ✅ Linux | One chrome-headless-shell per page (several begin-frame targets in one shell crashed it). Pixels match the screenshot path except small-text anti-aliasing |
 
 ## Decisions
 
@@ -127,21 +219,51 @@ The memory of this repo. Read it first, update it last.
   Remotion (keeps plain HTML, no licence, keeps the existing QA). Revisit if rendering needs to run in parallel or in the cloud.
 - 2026-11-03: other registries wrap the npm package instead of porting the CLI: PyPI and Homebrew only (crates.io,
   RubyGems and Go would just shell out to Node and bash).
+- 2026-11-03: engines research (`docs/research/engines-2026-11.md`): keep our renderer; no move to Remotion
+  (React, company licence) or HyperFrames (same architecture as ours, Apache-2.0: borrow techniques, not the
+  framework). Revideo, Motion Canvas and Theatre.js are stalled. Next work is a reel layer on the `Studio` clock.
 - 2026-11-02: productions are grouped by brand: `productions/<brand>/<ID>-<slug>/`.
 - 2026-11-03: the skills stay the product; the desk is a thin review surface over files. It drives Claude through
   the local CLI (no API key, no Agent SDK) and only people approve: no approve tool in MCP, rule in the skills.
   It is optional: approval in chat stays the default, and nothing in the kit reads `review.json` unless it exists.
 - 2026-11-03: distribution metrics (`check-metrics` skill, `scripts/metrics.mjs`, `metrics.jsonl`) are an optional,
   local-only maintainer tool: gitignored, never shipped, nothing in the kit depends on them.
+- 2026-11-04: one repo for every agent: the kit (renderer, engines, brands) is agent-neutral, only the instruction
+  layer differs. `AGENTS.md` + `.agents/skills/` are the single source; Claude-only files just point at them.
 - 2026-11-02: Bike Logger's audience is robotics kit learners; every piece sells learning by building, with the replay as the payoff.
 
 ## Next
 
-- Parallel rendering (split frames across several Chrome pages) once pieces with Three.js or captures get long.
-- Rive adapter when a `.riv` file exists.
+- Codex: one real desk run after `npm i -g @openai/codex@latest` (check the `item.*` event names in `describeCodex`
+  and that `-c mcp_servers.reel-desk.*` loads the tools). Copilot: try the skills in VS Code agent mode; it reads both
+  `.claude/skills` and `.agents/skills`, so check it doesn't list each skill twice.
+- Use the reel layer in a real production: captions on a VO piece (needs ElevenLabs auth for Yuppo), beats on real
+  music (check `beats.mjs` BPM against the track's stated tempo), a 4:5 cut of an existing reel.
+- Run the new tests on GitHub CI (Linux SwiftShader); consider `--capture beginframe` there once it has run a while.
+- Release (0.3.0): the npm package now ships `examples/reel-layer/` and the new engines.
+- Hook checks in QA (first second has motion and text; captions inside the safe zone), from the research note.
 
 ## Learnings
 
+- **beats.mjs and a quiet first bar (2026-11-04, REEL-008):** with no kick in bar 1, it found the right tempo (128 BPM) but
+  put beat 1 a beat late (0.464 s) even with `--downbeat 0`. For music we generate, write the grid from the generator.
+- **Looks (2026-11-04):** `Studio.transition` owns visibility only: a layer also hidden with `gsap.set(…, { autoAlpha: 0 })`
+  stays at opacity 0 after the transition, so don't pre-hide transitioned layers. Bloom: keep `threshold` ≥ 0.2 and
+  emissive ≤ 2, or the whole frame washes white and text drowns (neon-noir also needs a dark scrim behind its text).
+  Photoreal: glossy faces at grazing camera angles reflect the studio environment and turn white; keep the camera
+  higher. Lathe geometry + `anisotropy` shows facet bands (no tangents). CSS `padding: 14%` is a share of the *width*,
+  so safe-zone insets go on an absolutely positioned child. `gsap.utils.random` is unseeded: use `Studio.random`.
+- **Frames depended on the frame before (2026-11-03):** Chrome reuses raster from the previous frame, so a frame
+  rendered right after its neighbour differed (SVG edges, up to 48 levels) from the same frame rendered alone: video
+  frames didn't match stills, and parallel workers didn't match one worker. The runtime now forces a fresh paint per
+  seek in renders (`display:none` and back on `#stage`). Found by comparing 1-worker and 3-worker videos.
+- **Plates as frames (2026-11-03):** Chrome drew the demo plate 2–4 levels brighter than ffmpeg decodes it (with
+  playwright-core 1.64, which Dependabot brought back despite the 1.49.1 pin noted below). Renders now show
+  ffmpeg-decoded PNG frames instead, which match ffmpeg exactly. PNG at compression 1: ~0.4 MB a 1080×1920 frame.
+- **Two transitions on one layer (2026-11-03):** each `Studio.transition` reset its layers' styles on every seek, so
+  A → B → C cleared B's iris. The reset now happens once per seek in the runtime.
+- **beginFrame returns no image without damage:** pumping frames during a slow seek drew the new state, and the
+  final capture then got nothing and returned an older image. Every pumped frame now keeps its image.
 - **GSAP and CSS `transform-box` on SVG (2026-11-04):** GSAP already resolves `transformOrigin` percentages on SVG
   from the bounding box. Adding `transformBox: "fill-box"` applies the origin twice, so a `scaleY` blink slid the
   eyes down by half the face. Set `transformOrigin` alone.
@@ -154,6 +276,10 @@ The memory of this repo. Read it first, update it last.
 - **Missing video plate (2026-11-02):** a `<video>` whose file 404s fires `error` before the page script runs, so
   `Studio.video()` waited forever. It now checks `el.error` / `networkState` up front and fails the render with the
   plate's URL.
+- **Plate seek race (2026-11-03):** `seeked` can fire before the new video frame is painted, so a cold CI runner
+  (Node 20, Dependabot PR #1) screenshotted the previous plate frame and two renders of t=1 differed. `Studio.video()`
+  now also waits for `requestVideoFrameCallback`, with a 250 ms fallback for seeks inside the same plate frame.
+  Output unchanged; the demo video renders ~1 s slower.
 - **Chrome path:** `core/render.mjs`, `engines/capture.mjs` and `scripts/svg-to-png.sh` honour `CHROME_PATH`, then
   try the usual macOS and Linux install paths.
 - **Video plate colours (2026-11-02):** with GPU compositing (default when GPU flags are on) or with
@@ -166,10 +292,6 @@ The memory of this repo. Read it first, update it last.
 - **`requestVideoFrameCallback` lies in headless renders (2026-11-04):** after a seek on a paused plate it fires at
   most once, with the frame from *before* the seek (`mediaTime` 0 for a seek to 1 s), and never again. Check
   `mediaTime` before trusting it; the 250 ms fallback is what actually waits for paint.
-- **Plate seek race (2026-11-03):** `seeked` can fire before the new video frame is painted, so a cold CI runner
-  (Node 20, Dependabot PR #1) screenshotted the previous plate frame and two renders of t=1 differed. `Studio.video()`
-  now also waits for `requestVideoFrameCallback`, with a 250 ms fallback for seeks inside the same plate frame.
-  Output unchanged; the demo video renders ~1 s slower.
 - **HTML labels on 3D (2026-11-02):** Three.js refreshes world matrices only inside `render()`. Before projecting
   a point to place a tag, call `camera.updateMatrixWorld()` and the object's parent `updateMatrixWorld()`, or the
   tag follows the previously rendered frame.
@@ -184,5 +306,9 @@ The memory of this repo. Read it first, update it last.
   Render a grid of a brand's Lotties at a few times before picking one.
 - **zsh does not word-split `$var`:** `set -- $x` in a loop passes one argument, so paths break with
   `window.__meta is not a function` (the page 404'd). Use a function with explicit arguments.
+- **Spec chips and the safe zone (2026-11-03):** a chip is `16.2 px × characters + 36 px` at the Bike Logger size
+  (27 px IBM Plex Mono, 16 px padding, 2 px border), and a `.beat` row is 858 px wide. A third chip under a
+  three-line headline wraps to a second row and falls below y 1498, outside the organic Reels safe zone. Count the
+  characters before adding a chip, or shorten it ("Waterproof", not "Waterproof probes").
 - `qa-video.sh` flags dark-brand frames (>98 % near-black) as "black" even with content on screen: look before fixing.
 - Hard cuts show up as "jumps" in `qa-video.sh`; note them as intended in the QA report.

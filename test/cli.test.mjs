@@ -20,13 +20,13 @@ test("init copies the kit and skills, and installs the renderer", { timeout: 180
   const r = cli("init", dir);
   assert.equal(r.code, 0, r.out);
   for (const f of [
-    "core/render.mjs", "desk/server.mjs", "engines/three.js", "scripts/qa-video.sh", "brands/_template/README.md",
-    "productions/_TEMPLATE/README.md", "examples/engines-demo/plates/blob.mp4", "examples/engines-demo/talk.visemes.js",
-    ".claude/skills/make-video/SKILL.md",
-    "CLAUDE.md", "STATUS.md", ".gitignore", "core/node_modules/playwright-core/package.json",
+    "core/render.mjs", "desk/server.mjs", "engines/three.js", "looks/photoreal/starter.html", "scripts/qa-video.sh", "brands/_template/README.md",
+    "productions/_TEMPLATE/README.md", "examples/engines-demo/plates/blob.mp4", "examples/engines-demo/talk.visemes.js", ".agents/skills/make-video/SKILL.md",
+    ".claude/skills/make-video/SKILL.md", "AGENTS.md", "CLAUDE.md", "STATUS.md", ".gitignore", "core/node_modules/playwright-core/package.json",
   ]) assert.ok(existsSync(path.join(dir, f)), `missing ${f}`);
   assert.doesNotMatch(readFileSync(path.join(dir, "STATUS.md"), "utf8"), /\{\{DATE\}\}/);
   assert.ok(!existsSync(path.join(dir, "brands/bike-logger")), "brand work copied");
+  assert.match(readFileSync(path.join(dir, "CLAUDE.md"), "utf8"), /^@AGENTS\.md$/m, "CLAUDE.md imports AGENTS.md");
   assert.ok(!existsSync(path.join(dir, ".mcp.json")), "the desk is optional: init must not register its MCP server");
 
   // A second init keeps what the user changed; --update refreshes the kit but never their notes

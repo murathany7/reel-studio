@@ -1,0 +1,28 @@
+/* Neon noir (cyberpunk). Load after base.css and the brand's tokens.css.
+ * The brand accent becomes the main neon; the second neon is its opposite on the wheel unless the brand sets one. */
+:root {
+  --nn-night: #06050b;
+  --nn-neon-a: var(--neon-a, var(--accent, #ff2bd6));
+  --nn-neon-b: var(--neon-b, #19f0ff);
+  --nn-ink: #e9e6ff;
+  --nn-font-display: var(--font-display-condensed, "Avenir Next Condensed", "Arial Narrow", "Roboto Condensed", sans-serif);
+  --nn-font-mono: var(--font-mono, ui-monospace, "SF Mono", Menlo, monospace);
+  --caption-font: var(--nn-font-mono);
+  --caption-accent: var(--nn-neon-b);
+}
+#stage { background: var(--nn-night); color: var(--nn-ink); }
+
+.nn-title { font: 800 168px/0.86 var(--nn-font-display); text-transform: uppercase; letter-spacing: -0.01em; color: #fff; }
+.nn-title .a { color: var(--nn-neon-a); }
+.nn-title .b { color: var(--nn-neon-b); }
+.nn-mono { font: 500 34px/1.35 var(--nn-font-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--nn-neon-b); }
+.nn-mono::before { content: "// "; opacity: .6; }
+/* HUD frame: thin corner brackets, like a targeting overlay */
+.nn-hud { position: absolute; inset: 0; pointer-events: none; }
+.nn-hud i { position: absolute; width: 70px; height: 70px; border: 3px solid var(--nn-neon-b); opacity: .7; }
+.nn-hud i:nth-child(1) { left: 0; top: 0; border-right: 0; border-bottom: 0; }
+.nn-hud i:nth-child(2) { right: 0; top: 0; border-left: 0; border-bottom: 0; }
+.nn-hud i:nth-child(3) { left: 0; bottom: 0; border-right: 0; border-top: 0; }
+.nn-hud i:nth-child(4) { right: 0; bottom: 0; border-left: 0; border-top: 0; }
+.nn-tag { display: inline-block; font: 700 40px/1 var(--nn-font-mono); padding: 14px 20px; color: var(--nn-night);
+          background: var(--nn-neon-a); letter-spacing: 0.06em; text-transform: uppercase; }

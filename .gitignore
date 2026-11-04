@@ -32,6 +32,9 @@ dist/
 
 # Personal distribution stats (check-metrics): local only
 scripts/metrics.mjs
-.claude/skills/check-metrics/
+.agents/skills/check-metrics/
 metrics.jsonl
 scripts/.npmignore
+
+# Third-party sample files fetched for checks (see examples/reel-layer/rive.html)
+examples/reel-layer/assets/

@@ -8,5 +8,5 @@
   "repository": "https://github.com/murathany7/reel-studio",
   "license": "MIT",
   "keywords": ["video", "reels", "marketing", "claude-code", "claude-skills", "ai-video", "video-generation", "video-ads", "motion-graphics", "instagram-reels", "tiktok", "gsap", "threejs", "pixi", "blender", "ffmpeg", "headless-chrome", "remotion-alternative"],
-  "skills": "./.claude/skills/"
+  "skills": "./.agents/skills/"
 }

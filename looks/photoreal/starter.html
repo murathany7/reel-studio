@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Look starter: photoreal</title>
+<link rel="stylesheet" href="/core/lib/base.css">
+<!-- <link rel="stylesheet" href="/brands/<slug>/tokens.css"> -->
+<link rel="stylesheet" href="/looks/photoreal/look.css">
+<style>
+  .card { position: absolute; left: 0; right: 0; }
+  #c1 { top: 2%; } #c2 { top: 2%; } #c3 { top: 4%; text-align: center; }
+  #c3 .pr-rule { margin: 34px auto; }
+  .brand { font: 500 110px/1 var(--pr-font); letter-spacing: 0.2em; text-transform: uppercase; }
+</style>
+<script type="importmap">{ "imports": { "three": "/core/node_modules/three/build/three.module.js" } }</script>
+</head>
+<body>
+<div id="stage">
+  <div class="layer" id="product"></div>
+  <div class="safe">
+    <div class="card" id="c1"><div class="pr-kicker">Introducing</div><div class="pr-rule"></div><div class="pr-title">Made to be<br><b>held.</b></div></div>
+    <div class="card" id="c2"><div class="pr-kicker">Detail</div><div class="pr-rule"></div><div class="pr-spec">Machined aluminium.<br>One piece. No seams.</div></div>
+    <div class="card" id="c3"><div class="brand">Brand</div><div class="pr-rule"></div><div class="pr-spec">Available now</div></div>
+  </div>
+</div>
+
+<script src="/core/node_modules/gsap/dist/gsap.min.js"></script>
+<script src="/core/lib/runtime.js"></script>
+<script src="/looks/fx.js"></script>
+<script type="module">
+  import { threeLayer, realistic, pbr } from "/engines/three.js";
+  // motionBlur: true for the final render (8 subframes per frame, a 180° shutter); off here so drafts are fast.
+  const tl = Studio.setup({ width: 1080, height: 1920, fps: 30, duration: 5 });
+  const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+  const ease = (x) => x * x * (3 - 2 * x);
+
+  // A slow camera: orbit and push for the first shot, a close macro pass for the detail, a pull-back hero.
+  const { scene, camera, renderer, THREE } = threeLayer(document.getElementById("product"), {
+    fov: 28,
+    update(t) {
+      let r, a, y, look;
+      if (t < 1.9) { const k = ease(t / 1.9); r = 11 - k * 1.5; a = -0.5 + k * 0.5; y = 4.2; look = 1.5; }
+      else if (t < 3.4) { const k = ease((t - 1.9) / 1.5); r = 4.4 - k * 0.5; a = 0.9 + k * 0.5; y = 2.2; look = 0.1; }
+      else { const k = ease(Math.min(1, (t - 3.4) / 1.4)); r = 12 + k * 1.5; a = -0.2 + k * 0.15; y = 5; look = 1.6; }
+      camera.position.set(Math.sin(a) * r, y, Math.cos(a) * r);
+      camera.lookAt(0, look, 0); // product in the lower middle, type above it
+      puck.rotation.y = t * 0.25;
+    },
+  });
+  Studio.wait(realistic(renderer, scene, { exposure: 1.05, environment: 0.35 }));
+
+  // The product: a lathed aluminium puck with a glossy black face and a thin accent ring.
+  const profile = [[0, -0.5], [1.55, -0.5], [1.7, -0.42], [1.78, -0.25], [1.8, 0.2], [1.74, 0.38], [1.6, 0.46], [0, 0.46]].map(([x, y]) => new THREE.Vector2(x, y));
+  const puck = new THREE.Group();
+  const body = new THREE.Mesh(new THREE.LatheGeometry(profile, 128), pbr(0xc8c9cc, { metalness: 1, roughness: 0.28 }));
+  const face = new THREE.Mesh(new THREE.CylinderGeometry(1.45, 1.45, 0.04, 128), pbr(0x0b0b0d, { roughness: 0.22, clearcoat: 0.6, clearcoatRoughness: 0.15, envMapIntensity: 0.4 }));
+  face.position.y = 0.47;
+  const ring = new THREE.Mesh(new THREE.TorusGeometry(1.5, 0.025, 16, 160), pbr(new THREE.Color(css("--pr-accent")), { metalness: 1, roughness: 0.2 }));
+  ring.rotation.x = Math.PI / 2; ring.position.y = 0.48;
+  for (const m of [body, face, ring]) { m.castShadow = true; puck.add(m); }
+  puck.rotation.x = 0.18;
+  puck.scale.setScalar(0.62);
+  puck.position.y = -0.24;
+  scene.add(puck);
+
+  // Seamless floor that only shows the soft shadow; the CSS gradient behind is the backdrop.
+  const floor = new THREE.Mesh(new THREE.PlaneGeometry(40, 40), new THREE.ShadowMaterial({ opacity: 0.45 }));
+  floor.rotation.x = -Math.PI / 2; floor.position.y = -0.55; floor.receiveShadow = true;
+  scene.add(floor);
+  const key = new THREE.DirectionalLight(0xfff3e6, 3);
+  key.position.set(-4, 8, 5); key.castShadow = true;
+  key.shadow.mapSize.set(2048, 2048); key.shadow.radius = 8; key.shadow.camera.left = key.shadow.camera.bottom = -4; key.shadow.camera.right = key.shadow.camera.top = 4;
+  const rim = new THREE.DirectionalLight(0xdfe8ff, 3); rim.position.set(5, 3, -6);
+  scene.add(key, rim);
+
+  // Type fades in slowly and rises a little; scenes crossfade. Nothing bounces.
+  const enter = (id, at) => tl.fromTo(`${id} > *`, { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.9, stagger: 0.12, ease: "power2.out" }, at);
+  enter("#c1", 0.3);
+  Studio.transition("#c1", "#c2", { at: 1.75, duration: 0.5, type: "fade" }); enter("#c2", 2.0);
+  Studio.transition("#c2", "#c3", { at: 3.25, duration: 0.5, type: "fade" }); enter("#c3", 3.6);
+
+  const stage = document.getElementById("stage");
+  LookFx.vignette(stage, { amount: 0.45, inner: 50 });
+  LookFx.grain(stage, { amount: 0.025, size: 1, fps: 30 });
+</script>
+</body>
+</html>

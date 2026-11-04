@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Rive check</title>
+<link rel="stylesheet" href="/core/lib/base.css">
+<style>
+  :root { --bg: #fdeedd; }
+  #a, #b { inset: 0 0 50% 0; } #b { inset: 50% 0 0 0; }
+</style>
+</head>
+<body>
+<!-- engines/rive.js on a timeline (top) and a state machine fired by an input (bottom). Needs Rive's public sample
+     file: curl -o examples/reel-layer/assets/vehicles.riv https://cdn.rive.app/animations/vehicles.riv (gitignored) -->
+<div id="stage"><div class="layer" id="a"></div><div class="layer" id="b"></div></div>
+<script src="/core/node_modules/gsap/dist/gsap.min.js"></script>
+<script src="/core/lib/runtime.js"></script>
+<script type="module">
+  import { riveLayer } from "/engines/rive.js";
+  Studio.setup({ width: 1080, height: 1920, fps: 30, duration: 4 });
+  await riveLayer(document.getElementById("a"), "assets/vehicles.riv", { animation: "curves", loop: true });
+  await riveLayer(document.getElementById("b"), "assets/vehicles.riv", { stateMachine: 0, inputs: [{ at: 1, name: "bump" }, { at: 2.5, name: "bump" }] });
+</script>
+</body>
+</html>
