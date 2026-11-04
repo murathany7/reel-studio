@@ -50,9 +50,11 @@ starter (or a blank composition), so the layout, type and motion come from the l
 <script src="/looks/fx.js"></script>                        <!-- texture and post effects, when the look uses them -->
 ```
 
-Copy the starter into `productions/<brand>/<ID>/composition/index.html`, add the brand's tokens line, replace the
-copy with the storyboard's, put in the brand's logo, product (GLB, CAD, page capture, photo) and audio. Keep the
-look's motion grammar; change the beats.
+A starter is a 5 s sketch of the look, not a template: mostly empty frames and placeholder shapes. Pieces made by
+swapping its copy (REEL-009 to 013, 2026-11-04) looked thin and alike. Take its type, palette, texture and motion
+grammar; the picture comes from the brand's real product (GLB, CAD, page capture, photo, footage), the timing from
+the script and the voice, and the beats change every second or so (`make-video`, *What makes a reel work*). Keep
+texture light (`grain` ≤ 0.04, `size` ≥ 3): Instagram re-encodes at about 3.5 Mbit/s and fine noise turns to mush.
 
 Brands can steer a look with optional tokens: `--accent-2`, `--accent-3`, `--neon-a`, `--neon-b`, `--paper`,
 `--font-serif`, `--font-mono`, `--font-hand`, `--font-display-condensed`, `--font-display-rounded`,

@@ -20,11 +20,16 @@ project, not only in the plugin. This copies it in once.
    `productions/_TEMPLATE/`, adds `AGENTS.md`, `CLAUDE.md` (which imports it), `STATUS.md` and `.gitignore` if missing, adds a `desk` entry to `.claude/launch.json` (so "open the desk" works in the Claude desktop app), never overwrites existing
    files, runs `npm install` in `core/` and prints which tools are found.
    To refresh `core/`, `engines/` and `scripts/` after a plugin update, add `--update` as the third argument.
-3. Fix any ❌ the script prints: tell the user the one command for each (e.g. `brew install ffmpeg`). Chrome
-   elsewhere → `CHROME_PATH=/path/to/chrome`.
+3. Fix any ❌ the script prints. Fix what you can yourself; for the rest, tell the person in plain words what is
+   missing and what it is for, with the one command to paste (e.g. "Video export needs ffmpeg: `brew install
+   ffmpeg`"). Chrome elsewhere → `CHROME_PATH=/path/to/chrome`. Don't paste the script's whole output.
 4. Check the machine with one frame (no Blender needed):
    ```bash
    node core/render.mjs still examples/engines-demo/index.html /tmp/reel-studio-check.png --t 3
    ```
    Look at the PNG: a toon donut with "Three.js" above it means rendering works.
-5. Next: no brand in `brands/` yet → offer the `new-brand` skill. Otherwise → `make-video`.
+5. Optional, for a free AI voice: `pip install kokoro-onnx soundfile` (the voice model downloads on first use).
+6. Hand over like a person, not a log. The person is usually a marketer: one short message, no paths or tool names.
+   For example: "All set, I can make videos here now. What are we promoting? Tell me about the product (a website
+   link is perfect) and I'll take it from there." No brand in `brands/` yet → `new-brand`; otherwise → `make-video`.
+   Both start as a conversation.

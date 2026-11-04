@@ -15,9 +15,20 @@
 | Look | `looks/<look>` (picked from the directions in section 0) |
 | Engines | GSAP + … (and why, from `engines/README.md`) |
 | Sound | VO + music · music only · silent (all meaning on screen) |
+| Voice / face | own voice · AI voice (disclosed) · none — presenter · mascot · hands · product only |
 | Approved by / date | |
 
-## 0. Directions (pick one)
+## 0. Idea and direction (pick one of each)
+
+Ideas: a moment worth sending (a relatable problem, a surprising demo, a satisfying build, a before/after, a joke).
+
+| | Idea in one line | Would someone send it? Why |
+|---|---|---|
+| 1 | | |
+| 2 | | |
+| 3 | | |
+
+Looks:
 
 `node scripts/looks.mjs <brand>` lists the looks the brand already used. Pitch 2–3 that differ from each other; at
 least one the brand's last two pieces did not use. Style frame: the look's starter with the brand's tokens and the
@@ -30,6 +41,12 @@ real hook (`qa/directions/<look>.png`).
 | C | | | |
 
 **Picked:** … (by the person, in chat or the desk)
+
+## Hit check (make-video, *What makes a reel work*)
+
+| Hook in 1 s | Voice | Face | Real product | Change ≤ 1.5 s | Worth sending | Captions | Loops | Clean images | Original |
+|---|---|---|---|---|---|---|---|---|---|
+| | | | | | | | | | |
 
 ## 1. Brief
 

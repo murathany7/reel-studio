@@ -1,0 +1,14 @@
+{
+  "voice": "am_michael", "speed": 1.12, "lang": "en-us",
+  "lines": [
+    {"start": 0.05, "text": "My bike remembers every ride."},
+    {"start": 2.05, "text": "One Pi. One sealed box."},
+    {"start": 4.05, "text": "A wide camera, looking behind."},
+    {"start": 6.05, "text": "GPS knows where I went."},
+    {"start": 8.05, "text": "A motion sensor feels every lean."},
+    {"start": 10.05, "text": "A magnet counts every wheel turn."},
+    {"start": 12.05, "text": "Sonar measures the gap behind."},
+    {"start": 14.05, "text": "Scrub once. Everything moves."},
+    {"start": 16.05, "text": "Wire it yourself. Bike Logger."}
+  ]
+}

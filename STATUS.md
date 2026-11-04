@@ -4,6 +4,17 @@ The memory of this repo. Read it first, update it last.
 
 ## Now
 
+- 2026-11-04: **marketers first, and what makes reels work.** Research (Mosseri's ranking signals: watch time,
+  likes and **sends** per reach; Emplifi's 10k brand Reels: speech in the first 3 s ≈ +25% 10 s retention, a face ≈
+  +10%, text overlays modest; editors: a change every 0.5–1.5 s, loops; Instagram re-encodes to ≈3.5 Mbit/s; originals
+  only) is now `make-video`'s *What makes a reel work* (10 rules) and a *Hit check* row in the production template.
+  The skills talk like a producer to marketers: `AGENTS.md` *Who you're talking to*; `make-video` *How to talk* and
+  a conversation (what and who → 2–3 ideas that pass "would someone send this?" → voice and face → look as pictures →
+  script → yes); `new-brand` reads the site first, plays it back, asks only what's missing; `setup` hands over in
+  one plain line. `looks/README.md`: a starter is a sketch, not a template; texture light. New `scripts/voice.py`:
+  free local AI voice (Kokoro 1.0 int8, Apache 2.0, weights from GitHub releases → `~/.cache/reel-studio/kokoro`),
+  lines placed at their start times, word times for `Studio.captions`, warns when a line overruns. **REEL-014** (test):
+  REEL-008's visuals with voice from 0.05 s, captions as the headline, a cut every second, 120 BPM, light texture.
 - 2026-11-04: **why REEL-009–013 looked bad** (made off-repo, not on any branch, so judged from the starters
   they came from). (1) File size: the encoder was CRF 16 with no cap, and `LookFx.grain` redraws full-frame noise
   every frame, so grain looks exploded: retro-film's 5 s starter = 62 Mbit/s, 100 MB (REEL-012 74 MB, REEL-009 65 MB,
@@ -204,6 +215,7 @@ The memory of this repo. Read it first, update it last.
 | REEL-004 | yuppo | 3 a.m. question? Ask Po (Pixi night sky + Lottie Po + GSAP, silent, 16 s) | QA passed, silent cut (VO + music pending) | `productions/yuppo/REEL-004-ask-po-3am/export/REEL-004-ask-po-3am-en.mp4` |
 | REEL-005 | yuppo | What Star parents get, 7-day trial ad (Blender physics plate + GSAP, silent, 14 s) | QA passed, silent cut (music + SFX pending) | `productions/yuppo/REEL-005-star-trial/export/REEL-005-star-trial-en.mp4` |
 | REEL-002 | bike-logger | Engines sampler: Three.js tray, Blender camera housing, Pixi sensor streams (silent, 14.8 s) | QA passed, draft for review | `productions/bike-logger/REEL-002-engines/export/REEL-002-engines-en.mp4` |
+| REEL-014 | bike-logger | Says it: REEL-008's visuals + AI voice, captions, a cut every second (test of the hit rules, 18 s) | test render, not approved for posting; AI voice to disclose or replace with the maker's | `productions/bike-logger/REEL-014-says-it/export/REEL-014-says-it-en.mp4` |
 | REEL-008 | bike-logger | Night signal: boot sequence of the five sensors, first piece in `looks/neon-noir` (Three.js CAD as neon edges + HUD, music, 16.9 s, 9:16 + 4:5) | delivered (final cut approved 2026-11-04); music and SFX are our own synth | `productions/bike-logger/REEL-008-night-signal/export/REEL-008-night-signal-en-9x16.mp4` (and `-4x5.mp4`) |
 
 ## Engines

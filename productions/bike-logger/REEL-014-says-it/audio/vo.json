@@ -1,0 +1,235 @@
+{
+ "source": "script.json",
+ "words": [
+  {
+   "text": "My",
+   "start": 0.05,
+   "end": 0.25
+  },
+  {
+   "text": "bike",
+   "start": 0.25,
+   "end": 0.565
+  },
+  {
+   "text": "remembers",
+   "start": 0.565,
+   "end": 1.166
+  },
+  {
+   "text": "every",
+   "start": 1.166,
+   "end": 1.538
+  },
+  {
+   "text": "ride.",
+   "start": 1.538,
+   "end": 1.852
+  },
+  {
+   "text": "One",
+   "start": 2.05,
+   "end": 2.356
+  },
+  {
+   "text": "Pi.",
+   "start": 2.356,
+   "end": 2.594
+  },
+  {
+   "text": "One",
+   "start": 2.737,
+   "end": 3.043
+  },
+  {
+   "text": "sealed",
+   "start": 3.043,
+   "end": 3.554
+  },
+  {
+   "text": "box.",
+   "start": 3.554,
+   "end": 3.86
+  },
+  {
+   "text": "A",
+   "start": 4.05,
+   "end": 4.171
+  },
+  {
+   "text": "wide",
+   "start": 4.171,
+   "end": 4.436
+  },
+  {
+   "text": "camera,",
+   "start": 4.436,
+   "end": 4.797
+  },
+  {
+   "text": "looking",
+   "start": 5.014,
+   "end": 5.424
+  },
+  {
+   "text": "behind.",
+   "start": 5.424,
+   "end": 5.785
+  },
+  {
+   "text": "GPS",
+   "start": 6.05,
+   "end": 6.337
+  },
+  {
+   "text": "knows",
+   "start": 6.337,
+   "end": 6.752
+  },
+  {
+   "text": "where",
+   "start": 6.752,
+   "end": 7.166
+  },
+  {
+   "text": "I",
+   "start": 7.166,
+   "end": 7.326
+  },
+  {
+   "text": "went.",
+   "start": 7.326,
+   "end": 7.677
+  },
+  {
+   "text": "A",
+   "start": 8.05,
+   "end": 8.182
+  },
+  {
+   "text": "motion",
+   "start": 8.182,
+   "end": 8.577
+  },
+  {
+   "text": "sensor",
+   "start": 8.577,
+   "end": 8.973
+  },
+  {
+   "text": "feels",
+   "start": 8.973,
+   "end": 9.315
+  },
+  {
+   "text": "every",
+   "start": 9.315,
+   "end": 9.658
+  },
+  {
+   "text": "lean.",
+   "start": 9.658,
+   "end": 9.948
+  },
+  {
+   "text": "A",
+   "start": 10.05,
+   "end": 10.173
+  },
+  {
+   "text": "magnet",
+   "start": 10.173,
+   "end": 10.543
+  },
+  {
+   "text": "counts",
+   "start": 10.543,
+   "end": 10.912
+  },
+  {
+   "text": "every",
+   "start": 10.912,
+   "end": 11.232
+  },
+  {
+   "text": "wheel",
+   "start": 11.232,
+   "end": 11.552
+  },
+  {
+   "text": "turn.",
+   "start": 11.552,
+   "end": 11.823
+  },
+  {
+   "text": "Sonar",
+   "start": 12.05,
+   "end": 12.409
+  },
+  {
+   "text": "measures",
+   "start": 12.409,
+   "end": 12.935
+  },
+  {
+   "text": "the",
+   "start": 12.935,
+   "end": 13.184
+  },
+  {
+   "text": "gap",
+   "start": 13.184,
+   "end": 13.433
+  },
+  {
+   "text": "behind.",
+   "start": 13.433,
+   "end": 13.847
+  },
+  {
+   "text": "Scrub",
+   "start": 14.05,
+   "end": 14.387
+  },
+  {
+   "text": "once.",
+   "start": 14.387,
+   "end": 14.671
+  },
+  {
+   "text": "Everything",
+   "start": 14.842,
+   "end": 15.438
+  },
+  {
+   "text": "moves.",
+   "start": 15.438,
+   "end": 15.774
+  },
+  {
+   "text": "Wire",
+   "start": 16.05,
+   "end": 16.328
+  },
+  {
+   "text": "it",
+   "start": 16.328,
+   "end": 16.505
+  },
+  {
+   "text": "yourself.",
+   "start": 16.505,
+   "end": 16.986
+  },
+  {
+   "text": "Bike",
+   "start": 17.274,
+   "end": 17.552
+  },
+  {
+   "text": "Logger.",
+   "start": 17.552,
+   "end": 17.931
+  }
+ ]
+}
