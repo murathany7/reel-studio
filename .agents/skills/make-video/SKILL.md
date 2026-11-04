@@ -32,8 +32,9 @@ sound), caption. Pick engines with the `pick-engine` skill and say why; the look
 State size, length, placement and sound (VO / music / silent), and the other formats wanted (4:5 feed, 1:1, 16:9):
 one composition renders them all.
 
-**Stop and ask for approval** in chat: the look and the storyboard. No plates, audio or composition before the box is ticked. (If the person uses
-the optional desk, they may approve there instead: `review-desk` skill. Never tick the box on your own.)
+**Stop and ask for approval** in chat: the look and the storyboard. No plates, audio or composition before the box is ticked. The first time in a
+project (no `review.json` in any production yet), offer the desk in one line: "Prefer to review on a page? I can open the desk." On a yes, the
+`review-desk` skill opens it, and they may approve there. Never tick the box on your own.
 
 ## 2. Produce
 

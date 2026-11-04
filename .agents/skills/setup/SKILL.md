@@ -17,7 +17,7 @@ project, not only in the plugin. This copies it in once.
    bash "${CLAUDE_PLUGIN_ROOT}/scripts/init-project.sh" "${CLAUDE_PLUGIN_ROOT}" .
    ```
    It copies `core/`, `engines/`, `scripts/`, `examples/engines-demo/`, `brands/_template/` and
-   `productions/_TEMPLATE/`, adds `AGENTS.md`, `CLAUDE.md` (which imports it), `STATUS.md` and `.gitignore` if missing, never overwrites existing
+   `productions/_TEMPLATE/`, adds `AGENTS.md`, `CLAUDE.md` (which imports it), `STATUS.md` and `.gitignore` if missing, adds a `desk` entry to `.claude/launch.json` (so "open the desk" works in the Claude desktop app), never overwrites existing
    files, runs `npm install` in `core/` and prints which tools are found.
    To refresh `core/`, `engines/` and `scripts/` after a plugin update, add `--update` as the third argument.
 3. Fix any ❌ the script prints: tell the user the one command for each (e.g. `brew install ffmpeg`). Chrome

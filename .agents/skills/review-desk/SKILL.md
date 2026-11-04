@@ -5,8 +5,9 @@ description: Optional. Open the Reel Studio desk (a local review app) and work f
 
 # Review desk (optional)
 
-The kit works the same without it: storyboards are approved in chat, and QA is the `make-video` steps. Don't start
-the desk or suggest it unless the person asks, or they already use it (a `review.json` in the production).
+The kit works the same without it: storyboards are approved in chat, and QA is the `make-video` steps. Start the
+desk when the person asks, or they already use it (a `review.json` in the production). `make-video` offers it once,
+when a storyboard is ready; don't push it beyond that.
 
 The desk (`desk/`) is a local page for the person: it plays a production's composition frame-exact through the
 renderer's own clock (`__seek`), and lets them pin notes to frames, render stills, preview videos and QA, read the
@@ -15,8 +16,17 @@ reaches you as files (and, if it is registered, through the `reel-desk` MCP serv
 
 ## Open it
 
-`node desk/server.mjs` (run it in the background), then the person opens <http://127.0.0.1:4100>. In the Claude
-desktop app, open that URL in the browser pane; elsewhere, give the person the URL. `npx reel-studio desk` does the same. Port: `--port <n>`.
+Open it for the person; don't hand them a command to run (many are not technical).
+
+- **Claude desktop app** (a `preview_start` tool is available): `preview_start` with name `desk`. It starts the
+  server from `.claude/launch.json` and shows the desk in the app's browser pane, next to the chat. `setup` writes
+  that entry; if it is missing, add it: `{"name": "desk", "runtimeExecutable": "node", "runtimeArgs":
+  ["desk/server.mjs", "--port", "4100"], "port": 4100}` under `configurations`.
+- **Elsewhere** (terminal, Codex, Copilot): run `node desk/server.mjs` in the background and give the person
+  <http://127.0.0.1:4100>. `npx reel-studio desk` does the same. Port: `--port <n>`.
+
+Then open the production they are working on, and say in one line what they can do there: play it, pin notes to a
+frame, approve the storyboard.
 
 The `reel-desk` MCP tools below are not registered by default. If they aren't available and the person wants them:
 Claude Code: `claude mcp add reel-desk --scope project -- node desk/mcp.mjs`; Codex:

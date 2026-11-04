@@ -61,6 +61,18 @@ else
   done
   [ -n "$legacy" ] && echo "Note: CLAUDE.md predates AGENTS.md. Move your own rules from CLAUDE.md into AGENTS.md (Codex and Copilot read it), then leave just '@AGENTS.md' in CLAUDE.md."
   [ -e "$dest/.gitignore" ] || cp "$kit/templates/project/gitignore" "$dest/.gitignore"
+  # The desk as a named dev server, so the Claude desktop app can open it in its browser pane ("open the desk").
+  # Adds the entry to an existing launch.json; leaves one that already has a "desk" entry alone.
+  mkdir -p "$dest/.claude"
+  node -e '
+    const fs = require("fs"), f = process.argv[1];
+    let j = { version: "0.0.1", configurations: [] };
+    if (fs.existsSync(f)) { try { j = JSON.parse(fs.readFileSync(f, "utf8")); } catch { console.log("Note: .claude/launch.json is not valid JSON; desk entry not added."); process.exit(0); } }
+    j.configurations ||= [];
+    if (j.configurations.some((c) => c.name === "desk")) process.exit(0);
+    j.configurations.push({ name: "desk", runtimeExecutable: "node", runtimeArgs: ["desk/server.mjs", "--port", "4100"], port: 4100 });
+    fs.writeFileSync(f, JSON.stringify(j, null, 2) + "\n");
+  ' "$dest/.claude/launch.json"
   echo "Kit copied into $dest"
 fi
 
