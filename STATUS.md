@@ -4,6 +4,17 @@ The memory of this repo. Read it first, update it last.
 
 ## Now
 
+- 2026-11-04: **why REEL-009–013 looked bad** (made off-repo, not on any branch, so judged from the starters
+  they came from). (1) File size: the encoder was CRF 16 with no cap, and `LookFx.grain` redraws full-frame noise
+  every frame, so grain looks exploded: retro-film's 5 s starter = 62 Mbit/s, 100 MB (REEL-012 74 MB, REEL-009 65 MB,
+  REEL-011 45 MB), and Instagram then recompresses that to mush. Flat looks (kinetic 0.36 Mbit/s, toon) stayed tiny.
+  Fix: `render.mjs` now caps x264 at `-maxrate 16M -bufsize 32M` (`REEL_MAXRATE`/`REEL_BUFSIZE` to change); the
+  same retro-film clip is 11.7 Mbit/s, 19 MB, and looks the same at full crop. Clean pieces are unaffected (far under
+  the cap). (2) Content: the starters are 5 s placeholders (mostly empty frames, small type, words clipped: "you"
+  in editorial, "THE" in kinetic-type, a placeholder cube in toon-3d), and the looks README says to copy a starter
+  and "replace the copy". Stretched to 15 s with no real product, that reads as a template, and 4 of the 7 starters
+  are GSAP + DOM, so the pieces all felt like one engine. REEL-008 (good) had the real tray CAD as its hero.
+  Lesson: a look is a treatment, not a layout; the real product (CAD, capture, photo) stays the hero.
 - 2026-11-04: **the desk opens from the chat**, for people who aren't technical. `init-project.sh` adds a `desk`
   entry to the project's `.claude/launch.json` (merged into an existing one, never duplicated); `review-desk` opens
   it with `preview_start` in the Claude desktop app's browser pane (elsewhere it starts the server and gives the link)
