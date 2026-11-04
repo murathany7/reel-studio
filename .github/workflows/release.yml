@@ -126,8 +126,13 @@ jobs:
 
   # Runs once npm and PyPI have the version, whether this run published them or an earlier one did.
   github-release:
-    needs: [check, npm, pypi]
-    if: ${{ !cancelled() && !failure() && needs.check.outputs.github == 'true' }}
+    # Only after the tests passed and npm and PyPI each published now or already had the version. !failure() alone
+    # let it run when a test job was dropped (cancelled, not failed) and npm/PyPI were skipped (0.2.6, first run).
+    needs: [check, test, npm, pypi]
+    if: >-
+      ${{ !cancelled() && needs.check.outputs.github == 'true' && needs.test.result == 'success'
+      && (needs.npm.result == 'success' || needs.check.outputs.npm == 'false')
+      && (needs.pypi.result == 'success' || needs.check.outputs.pypi == 'false') }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -158,8 +163,10 @@ jobs:
           )"
 
   homebrew:
-    needs: [check, npm]
-    if: ${{ !cancelled() && !failure() && needs.check.outputs.release == 'true' }}
+    needs: [check, test, npm]
+    if: >-
+      ${{ !cancelled() && needs.check.outputs.release == 'true' && needs.test.result == 'success'
+      && (needs.npm.result == 'success' || needs.check.outputs.npm == 'false') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7

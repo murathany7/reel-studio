@@ -6,6 +6,8 @@ on:
   pull_request:
   workflow_dispatch:
   workflow_call:
+  schedule:
+    - cron: "17 6 * * 1"  # Mondays: the macOS run
 
 permissions:
   contents: read
@@ -20,13 +22,14 @@ jobs:
   test:
     name: test (${{ matrix.os }}, node ${{ matrix.node }})
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - { os: ubuntu-latest, node: 20 }
-          - { os: ubuntu-latest, node: 24 }
-          - { os: macos-latest, node: 24 }
+        # PRs, pushes and releases test on Linux only. GitHub's macOS runners can queue 15+ minutes and then drop the
+        # job ("not acquired by Runner", capacity), which turned whole runs red with nothing wrong in the code.
+        # macOS runs weekly and when started by hand (Actions → CI → Run workflow), never in Release's call.
+        include: ${{ fromJSON(github.workflow == 'CI' && (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && '[{"os":"ubuntu-latest","node":20},{"os":"ubuntu-latest","node":24},{"os":"macos-latest","node":24}]' || '[{"os":"ubuntu-latest","node":20},{"os":"ubuntu-latest","node":24}]') }}
     steps:
       - uses: actions/checkout@v7
 
@@ -72,12 +75,15 @@ jobs:
 
   formula:
     name: Homebrew formula style
-    runs-on: macos-latest
+    # Linux: style and audit are the same there, and Linux runners don't queue like macOS ones
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v7
       - name: brew style and audit, from a local tap like a real formula
         env: { HOMEBREW_NO_AUTO_UPDATE: 1 }
         run: |
+          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
           brew tap-new --no-git local/ci
           cp packaging/homebrew/reel-studio.rb "$(brew --repository local/ci)/Formula/"
           brew trust local/ci  # Homebrew 7 only loads formulae from trusted taps
