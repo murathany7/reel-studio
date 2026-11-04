@@ -13,11 +13,8 @@
 Open source and free. Your Claude subscription does the rest.<br>
 No editor, no timeline, no per-video fees. Every frame is code you own.</p>
 
-<p align="center">
-  <img src="https://raw.githubusercontent.com/murathany7/reel-studio/main/docs/media/bike-logger-reel.gif" width="260" alt="Bike Logger reel">
-</p>
 <p align="center"><sub><b>Bike Logger</b> robotics kit reel: 28 s, made by an agent from the product's own live 3D site.<br>
-Full-quality MP4: <a href="https://github.com/murathany7/reel-studio/releases/latest">Releases</a></sub></p>
+Watch it: <a href="https://github.com/murathany7/reel-studio/releases/latest">Releases</a></sub></p>
 
 ---
 

@@ -4,6 +4,13 @@ The memory of this repo. Read it first, update it last.
 
 ## Now
 
+- 2026-11-04: **no videos in the repo.** README GIFs removed (MP4s live on GitHub Releases; the README links there and
+  keeps its still strips); production renders, covers, stills, contact sheets and QA CSV/logs are untracked and
+  ignored (`productions/**/export/`, `productions/**/qa/**/*.{jpg,png,csv,log}`), so a production in git is its
+  sources and written reports only; `*.gif`, `*.wav`, `*.mp3` and other audio are ignored everywhere. Kept: the two
+  tiny inputs the examples need (`examples/engines-demo/plates/blob.mp4` 40 KB, `examples/reel-layer/audio/music.mp3`
+  128 KB). History holds only 4.4 MB of media in total (these four files), so nothing was rewritten. The unmerged
+  `bike-logger-*` render branches carry covers and QA images, not videos (their MP4s went to the gallery artifact).
 - 2026-11-04: **marketers first, and what makes reels work.** Research (Mosseri's ranking signals: watch time,
   likes and **sends** per reach; Emplifi's 10k brand Reels: speech in the first 3 s ≈ +25% 10 s retention, a face ≈
   +10%, text overlays modest; editors: a change every 0.5–1.5 s, loops; Instagram re-encodes to ≈3.5 Mbit/s; originals
