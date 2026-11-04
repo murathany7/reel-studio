@@ -2,27 +2,35 @@
  * For a character drawn in code (no designer file). Name the parts in the SVG:
  *
  *   #body   whole character (bob, squash)      #eyes   group of eyes (blink)
- *   #mouth-closed, #mouth-open                  mouth shapes (talk)
+ *   #mouth-closed, #mouth-open                  mouth shapes (talk; closed is the resting mouth)
+ *   #mouth-A … #mouth-H, #mouth-X               Rhubarb mouth shapes (lipsync), any subset: a missing one uses the
+ *                                               nearest drawn shape (engines/lipsync.js, FALLBACK)
  *   #arm-l, #arm-r                              arms (wave), pivot at the shoulder (data-pivot to change)
  *
  *   <script src="/engines/svg-rig.js"></script>
  *   const po = SvgRig(document.getElementById("hero"));
  *   po.idle(0, 6);  po.blink([1.2, 3.4]);  po.talk(2.0, 3.6);  po.wave(4.0);
+ *   po.lipsync(LipSync.cues("vo.visemes"), { offset: 1.2 });   // real mouth shapes; needs /engines/lipsync.js
  *
- * Missing parts are skipped, so a simple character can use only #body and #eyes.
+ * Missing parts are skipped, so a simple character can use only #body and #eyes. Use talk() or lipsync() for a
+ * stretch of speech, not both: they swap the same mouths.
  */
 (function () {
   window.SvgRig = function (root) {
     const tl = Studio.tl;
     const $ = (id) => root.querySelector("#" + id);
     const body = $("body"), eyes = $("eyes");
-    const open = $("mouth-open"), closed = $("mouth-closed");
+    const open = $("mouth-open") || $("mouth-D") || $("mouth-C");
+    const closed = $("mouth-closed") || $("mouth-X") || $("mouth-A");
     const armL = $("arm-l"), armR = $("arm-r");
     // GSAP places SVG origins from the bounding box itself; CSS transform-box on top of that shifted the eyes
     // down on every blink.
     if (eyes) gsap.set(eyes, { transformOrigin: "50% 50%" });
     if (body) gsap.set(body, { transformOrigin: "50% 100%" });
-    if (open) gsap.set(open, { opacity: 0 });
+    // Only the resting mouth shows until talk() or lipsync() swaps it.
+    const mouths = ["open", "closed", "A", "B", "C", "D", "E", "F", "G", "H", "X"].map((k) => $("mouth-" + k)).filter(Boolean);
+    const hidden = mouths.filter((m) => m !== closed);
+    if (hidden.length) gsap.set(hidden, { opacity: 0 });
     // Arms pivot at the shoulder: the inner, lower corner of each arm's box (override with data-pivot="x% y%").
     if (armR) gsap.set(armR, { transformOrigin: armR.dataset.pivot || "15% 85%" });
     if (armL) gsap.set(armL, { transformOrigin: armL.dataset.pivot || "85% 85%" });
@@ -48,7 +56,8 @@
         return this;
       },
       /** Flap the mouth between `from` and `to` (about 8 shapes a second, like simple lip flap).
-       *  Pass `beats` (seconds) instead to open the mouth on word starts from a transcript. */
+       *  Pass `beats` (seconds) instead to open the mouth on word starts from a transcript.
+       *  For mouth shapes that follow the voice, use lipsync(). */
       talk(from, to, { rate = 8, beats = null } = {}) {
         if (!open || !closed) return this;
         const ts = beats ?? Array.from({ length: Math.floor((to - from) * rate) }, (_, i) => from + i / rate);
@@ -56,6 +65,14 @@
           tl.set(open, { opacity: 1 }, t).set(closed, { opacity: 0 }, t)
             .set(open, { opacity: 0 }, t + 0.5 / rate).set(closed, { opacity: 1 }, t + 0.5 / rate);
         }
+        return this;
+      },
+      /** Mouth shapes from Rhubarb cues (scripts/lipsync.sh → LipSync.cues). `offset`: the VO's start on the
+       *  timeline (cue times count from the audio file's start); `lead`: show shapes that many seconds early.
+       *  One call per VO line; lines must not overlap. */
+      lipsync(cues, { offset = 0, lead = 0 } = {}) {
+        if (!window.LipSync) throw new Error("SvgRig.lipsync needs /engines/lipsync.js loaded first");
+        LipSync.swapParts(tl, LipSync.cues(cues), LipSync.drawnMouths(root), { offset, lead });
         return this;
       },
       /** Wave the right arm at `at` seconds. */

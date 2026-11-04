@@ -21,6 +21,10 @@ description: Build a 3D shot for a video - live in the composition with Three.js
 - CAD meshes as JSON (vertices + indices): `toNonIndexed()` + `computeVertexNormals()` gives crisp flat facets.
   Render with `threeLayer(..., { pixelRatio: 2 })` for supersampled edges.
 - Physics: bake it (simulate at a fixed 1/120 s step into an array before the first frame) and look up by `t`.
+- Talking character: load `/engines/lipsync.js` and the line's `.visemes.js` (from `scripts/lipsync.sh`) with
+  classic `<script>` tags, then in `update(t)`: `LipSync.paramsAt(cues, t, "mouth", { offset })` → `{ open, wide,
+  round }` (0…1) onto morph targets (`mesh.morphTargetInfluences`) or a mouth mesh's scale. See `engines/README.md`,
+  *Lip sync*.
 
 ## Blender (plate)
 
@@ -32,6 +36,10 @@ description: Build a 3D shot for a video - live in the composition with Three.js
   scene and flattens toon bands.
 - Colour management is set to *Standard* so brand hex colours come out as typed.
 - Physics and simulations: bake them in the scene script before rendering.
+- Talking character: `import lipsync as L` in the scene script (`run.py` puts `engines/blender/` and the script's
+  own folder on the path), `cues = L.load("productions/…/audio/vo.visemes.json")`, then
+  `L.key_shape_keys(head, cues, ctx, offset=VO_START)` keys shape keys `open`, `wide`, `round` on every frame
+  (`names={"open": "Jaw"}` for other names). Anything else: `L.params_at(cues, t, offset=…)` per frame with `ctx["key"]`.
 - In the composition: `<video src="plates/<name>.mp4">` + `Studio.video(el, { start })`. Plates have no alpha; put
   text and characters on top with HTML layers.
 

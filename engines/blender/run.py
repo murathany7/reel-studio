@@ -80,6 +80,8 @@ def main():
         setattr(obj, path, value)
         obj.keyframe_insert(data_path=path, frame=1 + t * a.fps)
 
+    # Scene scripts can import the kit's helpers (import lipsync) and modules next to themselves.
+    sys.path[:0] = [os.path.dirname(os.path.abspath(__file__)), os.path.dirname(os.path.abspath(a.scene))]
     spec = importlib.util.spec_from_file_location("scene", a.scene)
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
