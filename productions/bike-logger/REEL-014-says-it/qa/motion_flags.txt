@@ -1,0 +1,8 @@
+jump:60
+jump:120
+jump:180
+jump:240
+jump:360
+jump:390
+jump:420
+jump:480
