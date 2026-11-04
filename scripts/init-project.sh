@@ -51,7 +51,7 @@ else
     fi
   fi
   mkdir -p "$dest/examples/engines-demo/plates"
-  cp -n "$kit/examples/engines-demo/index.html" "$kit/examples/engines-demo/README.md" "$dest/examples/engines-demo/" 2>/dev/null || true
+  cp -n "$kit/examples/engines-demo/index.html" "$kit/examples/engines-demo/README.md" "$kit/examples/engines-demo/talk.visemes.js" "$dest/examples/engines-demo/" 2>/dev/null || true
   cp -n "$kit/examples/engines-demo/plates/blob.mp4" "$dest/examples/engines-demo/plates/" 2>/dev/null || true
   # The reel-layer demo (captions, beats, transitions, formats); not its fetched Rive sample
   rsync -a --ignore-existing --exclude assets "$kit/examples/reel-layer/" "$dest/examples/reel-layer/" 2>/dev/null || true
@@ -91,4 +91,7 @@ done
 [ -n "$chrome" ] && ok "Chrome ($chrome)" || no "Google Chrome" "install it, or set CHROME_PATH"
 command -v python3 >/dev/null && ok python3 || no python3 "needed for audio mix and QA"
 command -v blender >/dev/null || [ -x /Applications/Blender.app/Contents/MacOS/Blender ] && ok "Blender (optional)" || echo "  ➖ Blender not found (optional, only for 3D plates)"
-command -v whisper-cli >/dev/null && ok "whisper-cpp (optional)" || echo "  ➖ whisper-cpp not found (optional, for captions and lip sync: brew install whisper-cpp)"
+command -v whisper-cli >/dev/null && ok "whisper-cpp (optional)" || echo "  ➖ whisper-cpp not found (optional, for captions and word timings: brew install whisper-cpp)"
+{ [ -n "${RHUBARB:-}" ] || command -v rhubarb >/dev/null || ls "$HOME"/.cache/rhubarb-lip-sync/*/rhubarb >/dev/null 2>&1; } \
+  && ok "Rhubarb Lip Sync (optional)" \
+  || echo "  ➖ Rhubarb Lip Sync not found (optional, for lip sync: see scripts/lipsync.sh)"

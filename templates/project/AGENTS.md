@@ -25,7 +25,7 @@ per brand, one folder per production.
 | `engines/` | One adapter per engine |
 | `.agents/skills/` | The skills (Codex and Copilot read them here; Claude Code from `.claude/skills/`) |
 | `desk/` | *Optional* review app (`node desk/server.mjs`): frame notes, renders, approvals. Nothing else depends on it |
-| `scripts/` | Audio mix, transcription, video QA, frame tools |
+| `scripts/` | Audio mix, transcription, lip sync, video QA, frame tools |
 | `brands/<slug>/` | Identity: facts and their sources, colours, fonts, voice, *Look range*, `compliance.md` (start from `brands/_template`) |
 | `looks/` | Art directions with a working starter each; pick one per piece |
 | `productions/<brand>/<ID>-<slug>/` | One piece (start from `productions/_TEMPLATE`) |

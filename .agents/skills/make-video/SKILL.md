@@ -41,8 +41,8 @@ project (no `review.json` in any production yet), offer the desk in one line: "P
 | Step | How |
 |---|---|
 | Plates | 3D: `scene-3d` skill (Three.js live, or Blender → MP4). Live site: `capture-site` skill. Footage: `Studio.video` |
-| Character | `character-2d` skill (SVG rig, Lottie, Rive) |
-| Audio | ElevenLabs MCP (`.mcp.json`) for VO, SFX and music → `audio/`. Cue sheet `audio/cues.json` → `python3 scripts/mix_audio.py audio/cues.json audio/mix.wav`. Word timings for captions or lip flap: `scripts/transcribe.sh` |
+| Character | `character-2d` skill (SVG rig, Lottie, Rive, lip sync) |
+| Audio | ElevenLabs MCP (`.mcp.json`) for VO, SFX and music → `audio/`. Cue sheet `audio/cues.json` → `python3 scripts/mix_audio.py audio/cues.json audio/mix.wav`. Word timings for captions: `scripts/transcribe.sh`. Mouth shapes for a character who speaks a line: `scripts/lipsync.sh` (one file per line, offset = the line's start in `cues.json`) |
 | Beat grid | Music → `node scripts/beats.mjs audio/music.mp3 audio/beats.json`. In the composition `await Studio.beats("../audio/beats.json", { offset: <music start> })`, then cut on `Studio.bar(n)` / `Studio.beat(n)`. Check the BPM it prints against the track |
 | Captions | VO pieces: `Studio.captions(el, "../audio/vo.json", { offset: <VO start>, style: "karaoke" \| "pop" \| "highlight" })` from the whisper JSON. Check the words against the script (whisper mishears names) |
 | Composition | `composition/index.html`, started from `looks/<look>/starter.html`, **never from an earlier production's composition** (that is how every piece ends up the same). Load `/core/lib/base.css`, then `/brands/<slug>/tokens.css`, then `/looks/<look>/look.css` (+ `/looks/fx.js` for texture). Keep the look's type, motion and texture; bring in the brand's logo, product and copy. Engine patterns: `examples/engines-demo/index.html`; captions, beats, transitions and formats: `examples/reel-layer/index.html`. Text and CTA inside `.safe` (paid) or `.safe-organic` |
@@ -62,7 +62,8 @@ project (no `review.json` in any production yet), offer the desk in one line: "P
    text inside the safe zone, nothing cut off, no half-loaded asset, no overlap, spelling, brand colours, and the
    look held: its type, motion and texture all the way through (no beat drifting back to a previous piece's style).
 4. Determinism spot check when a WebGL or plate engine is used: render one frame twice, the md5s match.
-5. Listen once with sound: VO in sync with text, music ducked under VO, −14 LUFS.
+5. Listen once with sound: VO in sync with text (and with the mouth, if a character speaks), music ducked under
+   VO, −14 LUFS.
 6. Fact check: every claim in section 6 of the README has a source. Compliance list passes.
 
 ## 4. Deliver

@@ -21,7 +21,7 @@ test("init copies the kit and skills, and installs the renderer", { timeout: 180
   assert.equal(r.code, 0, r.out);
   for (const f of [
     "core/render.mjs", "desk/server.mjs", "engines/three.js", "looks/photoreal/starter.html", "scripts/qa-video.sh", "brands/_template/README.md",
-    "productions/_TEMPLATE/README.md", "examples/engines-demo/plates/blob.mp4", ".agents/skills/make-video/SKILL.md",
+    "productions/_TEMPLATE/README.md", "examples/engines-demo/plates/blob.mp4", "examples/engines-demo/talk.visemes.js", ".agents/skills/make-video/SKILL.md",
     ".claude/skills/make-video/SKILL.md", "AGENTS.md", "CLAUDE.md", "STATUS.md", ".gitignore", "core/node_modules/playwright-core/package.json",
   ]) assert.ok(existsSync(path.join(dir, f)), `missing ${f}`);
   assert.doesNotMatch(readFileSync(path.join(dir, "STATUS.md"), "utf8"), /\{\{DATE\}\}/);

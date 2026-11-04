@@ -29,8 +29,14 @@
         <ellipse cx="140" cy="170" rx="120" ry="115" fill="#ed6a18"/>
         <g id="arm-r"><ellipse cx="258" cy="140" rx="20" ry="38" fill="#ed6a18"/></g>
         <g id="eyes"><circle cx="100" cy="150" r="16" fill="#2a1a0e"/><circle cx="180" cy="150" r="16" fill="#2a1a0e"/></g>
+        <!-- Mouths: the smile rests (X); A–F follow the voice (lip sync). No G or H: they fall back to A and C. -->
         <path id="mouth-closed" d="M112 200 Q140 222 168 200" stroke="#2a1a0e" stroke-width="9" fill="none" stroke-linecap="round"/>
-        <ellipse id="mouth-open" cx="140" cy="208" rx="24" ry="20" fill="#2a1a0e"/>
+        <path id="mouth-A" d="M116 206 H164" stroke="#2a1a0e" stroke-width="9" fill="none" stroke-linecap="round"/>
+        <g id="mouth-B"><rect x="114" y="197" width="52" height="19" rx="9.5" fill="#2a1a0e"/><rect x="122" y="200" width="36" height="6" rx="3" fill="#fff"/></g>
+        <ellipse id="mouth-C" cx="140" cy="206" rx="24" ry="13" fill="#2a1a0e"/>
+        <g id="mouth-D"><ellipse cx="140" cy="208" rx="25" ry="21" fill="#2a1a0e"/><ellipse cx="140" cy="220" rx="13" ry="7" fill="#ff8a7a"/></g>
+        <ellipse id="mouth-E" cx="140" cy="207" rx="15" ry="16" fill="#2a1a0e"/>
+        <ellipse id="mouth-F" cx="140" cy="207" rx="9" ry="11" fill="#2a1a0e"/>
       </g>
     </svg>
   </div>
@@ -39,13 +45,15 @@
   <div class="safe">
     <div class="label" id="l1">Blender<small>engines/blender · cel-shaded plate</small></div>
     <div class="label" id="l2">Three.js<small>engines/three.js · toon + outline</small></div>
-    <div class="label" id="l3">SVG rig + Pixi<small>engines/svg-rig.js · engines/pixi.js</small></div>
+    <div class="label" id="l3">SVG rig + Pixi<small>svg-rig.js · lipsync.js · pixi.js</small></div>
   </div>
 </div>
 
 <script src="/core/node_modules/gsap/dist/gsap.min.js"></script>
 <script src="/core/lib/runtime.js"></script>
 <script src="/engines/svg-rig.js"></script>
+<script src="/engines/lipsync.js"></script>
+<script src="talk.visemes.js"></script>
 <script type="module">
   import { threeLayer, toon, outline } from "/engines/three.js";
   import { pixiLayer } from "/engines/pixi.js";
@@ -80,8 +88,10 @@
   scene.add(sun, new THREE.AmbientLight(0xffffff, 0.6));
   camera.position.set(0, 0, 14);
 
-  // SVG rig: hop, blink, talk, wave.
-  SvgRig(document.getElementById("hero")).hop(4.1).blink([4.9, 5.7]).talk(5.0, 5.6).wave(4.9, { times: 2 });
+  // SVG rig: hop, blink, wave, and lip sync from Rhubarb cues ("Bob loves a big wave!" through scripts/lipsync.sh;
+  // the demo itself is silent). The cues count from the line's start, so offset = when the line starts here.
+  SvgRig(document.getElementById("hero")).hop(4.1).blink([4.9, 5.7]).wave(4.9, { times: 2 })
+    .lipsync(LipSync.cues("talk.visemes"), { offset: 4.9 });
 
   // Pixi: seeded confetti burst from 4.1 s; positions computed from t (no state between frames).
   const { app, PIXI } = await pixiLayer(document.getElementById("s-pixi"), {

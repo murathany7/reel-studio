@@ -1,5 +1,5 @@
 // The renderer's promise: every frame is a pure function of t. Renders the engines demo (Blender plate, Three.js,
-// SVG rig + Pixi, GSAP) twice and compares pixels, then a full video through the QA script.
+// SVG rig + Pixi, lip sync, GSAP) twice and compares pixels, then a full video through the QA script.
 // Needs `npm install` in core/, Google Chrome and ffmpeg; skipped when they are missing (CI has them).
 import assert from "node:assert/strict";
 import { existsSync, readFileSync } from "node:fs";
@@ -16,8 +16,8 @@ const missing = [
 const skip = missing.length ? `needs ${missing.join(", ")}` : false;
 const render = (...a) => run(process.execPath, ["core/render.mjs", ...a], { timeout: 300_000 });
 
-// One time per engine: plate, Three.js, SVG rig + Pixi
-for (const t of ["1", "3", "4.6"]) {
+// One time per engine: plate, Three.js, SVG rig + Pixi, lip sync (the B mouth, mid-line)
+for (const t of ["1", "3", "4.6", "5.25"]) {
   test(`still at t=${t} is 1080x1920 and identical across renders`, { skip, timeout: 120_000 }, () => {
     const dir = tmp();
     const a = path.join(dir, "a.png"), b = path.join(dir, "b.png");

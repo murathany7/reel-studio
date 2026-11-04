@@ -4,6 +4,26 @@ The memory of this repo. Read it first, update it last.
 
 ## Now
 
+- 2026-11-04: **the desk opens from the chat**, for people who aren't technical. `init-project.sh` adds a `desk`
+  entry to the project's `.claude/launch.json` (merged into an existing one, never duplicated); `review-desk` opens
+  it with `preview_start` in the Claude desktop app's browser pane (elsewhere it starts the server and gives the link)
+  instead of handing over a command; `make-video` offers it once, at the first storyboard in a project. Tested on
+  scratch projects (fresh, second run, existing `launch.json`) and the copied desk serves them. Not tried yet: "open
+  the desk" in the app on a fresh project, or a clean-machine plugin install. Merged `main` (lip sync, 0.2.5) into
+  `desk`; `make-video`'s lip-sync lines moved to `.agents/skills/`.
+- 2026-11-04: **lip sync** ported from `../marketing-reels-skill` (Rhubarb Lip Sync 1.14.0): `scripts/lipsync.sh`
+  (cues + a `.js` twin), `engines/lipsync.js` (cues, `paramsAt`, `mountMouth` + `addToTimeline` for a mascot PNG),
+  `SvgRig.lipsync()` (draw `#mouth-A`…`#mouth-X`, missing shapes fall back to the nearest drawn one), and
+  `engines/blender/lipsync.py` (`key_shape_keys`; `run.py` now puts `engines/blender/` and the scene's folder on
+  `sys.path`). Made brand-neutral: Yuppo's Po mouth set is `LipSync.mouthSet({ ink, cover, tongue })` (byte-identical
+  to Po's with Po's colours, see Brands), and the Yuppo parent/baby tables gave way to one generic `mouth` table
+  (`open`, `wide`, `round`). The engines demo's character lip-syncs "Bob loves a big wave!" at 4.9 s (cues from a
+  macOS voice; the demo stays silent). Tested: `npm test` (new `test/lipsync.test.mjs`: lookups, JS = Python tables
+  and values, the script end to end when Rhubarb is installed; md5 at the demo's 5.25 s), stills of every mouth in
+  the demo, a mascot-PNG overlay, and Blender shape keys (keyed values = `params_at` on all 45 frames). CI has no
+  Rhubarb, so the script's end-to-end test skips there. Not in the Docker image. Not released yet.
+- 2026-11-04: **SVG rig blink fixed:** `transformBox: "fill-box"` on top of GSAP's own SVG origin moved the eyes far
+  down on every blink (below the mouth in the demo since its first version). Body squash still anchors at the feet.
 - 2026-11-04: **QA checks from the benchmark** (video-director's ideas, our thresholds).
   `qa-video.sh` now fails a black/empty first frame and more than 3 flashes a second (WCAG 2.3.1, per quadrant,
   `scripts/qa_frames.py`). New `node core/render.mjs text-qa <comp> <qa_dir>` (`core/lib/qa-text.mjs`): every
@@ -52,9 +72,17 @@ The memory of this repo. Read it first, update it last.
 - 2026-11-04: **release workflow back** (`release.yml`, `ci.yml` callable again). Each target (npm, PyPI, GHCR,
   GitHub Release) is checked on its own and skipped when it already has the version, so reruns and hand releases mix;
   GitHub Release and Homebrew run when npm/PyPI were published now *or* earlier, and build their own files. npm and
-  PyPI fall back to `NPM_TOKEN` / `PYPI_API_TOKEN` secrets. Still blocked on the maintainer's one-time setup: a
-  trusted publisher (or token secret) on npmjs.com and pypi.org, plus `HOMEBREW_TAP_TOKEN` (`packaging/README.md`).
-  Until then the npm/PyPI jobs fail with an error that names the fix. Not run yet (on `desk`, not on `main`).
+  PyPI fall back to `NPM_TOKEN` / `PYPI_API_TOKEN` secrets. **0.2.5 is the first automated release** (run
+  41737408861): npm (with provenance), PyPI and GHCR published from the workflow, so both trusted publishers are
+  validated. Gotchas on the way: PyPI's publisher had the form's placeholder `workflow.yml` instead of `release.yml`;
+  npm's trusted publisher only allows `npm stage publish` until "Allow npm publish" is ticked (else 403 "OIDC
+  permission denied"). The GitHub Release step failed (`npm pack` into a missing `dist/`, fixed). `HOMEBREW_TAP_TOKEN`
+  not set, so the tap needs `packaging/update-formula.sh` by hand.
+- 2026-11-04: **plate seek flake fixed** (CI run 41737408876, Ubuntu, Node 24: two different Blender plate frames at
+  t=1). Cause: headless Chrome reports the *old* frame once through `requestVideoFrameCallback` right after a fresh
+  page's first seek, then never calls back again. `Studio.video()` took that as "new frame painted". It now only
+  accepts a frame that can be the target's; otherwise the 250 ms fallback (which every later seek always used). Demo
+  stills byte-identical to before; render tests pass on macOS.
 - 2026-11-03: **0.2.4 released by hand** (desk merged into `main` as `2ef2ff8`, then formula `3189519`; CI green):
   npm, PyPI, Homebrew tap (`e07134c`), GitHub Release v0.2.4 (npm tgz + wheel + sdist). `npx` and `uvx` installs of
   0.2.4 tested (`init` copies `desk/`). GHCR `0.2.4` and `latest` pushed by hand (amd64 + arm64,
@@ -153,7 +181,7 @@ The memory of this repo. Read it first, update it last.
 
 | Brand | Folder | State | Open questions |
 |---|---|---|---|
-| Yuppo | `brands/yuppo/` (gitignored: company assets, commercial font) | Ready 2026-11-03, moved from `../marketing-reels-skill/brand/` (full kit in `kit/`); check card `check.html` renders with Pangea Afrikan, Inter and Po | Pangea Afrikan ad licence (paid pieces use Inter Tight meanwhile)? Verified user count and store rating? ElevenLabs MCP needs `/mcp` auth for VO. Other open questions: `../marketing-reels-skill/STATUS.md` |
+| Yuppo | `brands/yuppo/` (gitignored: company assets, commercial font) | Ready 2026-11-03, moved from `../marketing-reels-skill/brand/` (full kit in `kit/`); check card `check.html` renders with Pangea Afrikan, Inter and Po | Pangea Afrikan ad licence (paid pieces use Inter Tight meanwhile)? Verified user count and store rating? ElevenLabs MCP needs `/mcp` auth for VO. Talking Po (REEL-006's provisional mouth, awaiting design sign-off): `LipSync.mountMouth(el, { cx: 0.512, cy: 0.502, w: 0.15, aspect: 893 / 1000, shapes: LipSync.mouthSet({ ink: "#272727", cover: "#FF8133", tongue: "#F6A28E" }) })` over `po-baby.png`; copy into the brand README's *Mascot* when the folder is here. Other open questions: `../marketing-reels-skill/STATUS.md` |
 | Bike Logger | `brands/bike-logger/` | Ready; check card `check.html` renders with the site's fonts and colours | Price, kit contents and skill level for the kit? Is the project licensed publicly (`../bikelog/BENCHMARK_OPENBIKESENSOR.md` says not yet) — until it is, no piece can say "open source"? A voice for VO pieces? Copy Archivo + Plex Mono into `assets/fonts/` so renders work offline? |
 
 ## Productions
@@ -178,6 +206,7 @@ The memory of this repo. Read it first, update it last.
 | Three.js r187 | ✅ | Bumped from r170 2026-11-03: engines demo, REEL-002 and REEL-003 frames match (one REEL-002 frame at 45 dB PSNR). `preserveDrawingBuffer: true`; WebGL needs the GPU flags in `core/render.mjs` (`CHROME_ARGS`) |
 | Blender 5.2 | ✅ | Eevee. Backdrop must be camera-only or it flattens toon bands. 2 s at 540×960 ≈ 17 s. Rigid-body plates work (REEL-005: 14 s at 1080×1920 in 6 min 20 s) |
 | Page capture | ✅ | REEL-001's drive module reproduces the original capture (PSNR ≈41 dB on a 4 s test). Generic `capture.mjs` tested on a rAF test page: frame n = n/fps, two runs identical. Serve pages with HTTP Range support if they seek `<video>` (python's http.server does not) |
+| Lip sync (Rhubarb) | ✅ | Rhubarb 1.14.0 in `~/.cache/rhubarb-lip-sync/`; the macOS build is x86_64 (Rosetta). ~4 s per short line. Tested 2026-11-04 on the SVG rig (demo), a mascot PNG and Blender shape keys; Three.js uses the same `paramsAt` numbers (no Three.js mouth rig built yet). English recogniser; `--phonetic` for other languages (untested) |
 | Rive | ✅ | `engines/rive.js` on `@rive-app/canvas-advanced` 2.37. The instance's `duration`/`fps` getters are empty: use the animation's (frames / fps). The module asks for `canvas_advanced.wasm`, the package ships `rive.wasm` |
 | GL transitions | ✅ | `engines/gl-transitions.js`, a late onSeek hook reading `Studio.pixels(layer)` |
 | beginFrame capture | ✅ Linux | One chrome-headless-shell per page (several begin-frame targets in one shell crashed it). Pixels match the screenshot path except small-text anti-aliasing |
@@ -235,6 +264,11 @@ The memory of this repo. Read it first, update it last.
   A → B → C cleared B's iris. The reset now happens once per seek in the runtime.
 - **beginFrame returns no image without damage:** pumping frames during a slow seek drew the new state, and the
   final capture then got nothing and returned an older image. Every pumped frame now keeps its image.
+- **GSAP and CSS `transform-box` on SVG (2026-11-04):** GSAP already resolves `transformOrigin` percentages on SVG
+  from the bounding box. Adding `transformBox: "fill-box"` applies the origin twice, so a `scaleY` blink slid the
+  eyes down by half the face. Set `transformOrigin` alone.
+- **`__pycache__` in the kit (2026-11-04):** importing `engines/blender/lipsync.py` (tests, Blender) writes
+  `engines/blender/__pycache__/`, which `npm pack` would publish. `package.json` `files` now excludes `**/__pycache__`.
 - **Desk preview drift (2026-11-03):** the desk first loaded compositions in a `display:none` iframe at the default
   300×150 size, and REEL-002's headline came out "therack." (the composition's word splitter ran with no layout).
   The renderer loads in a laid-out 1080×1920 viewport, so the desk now does the same (`visibility:hidden` while
@@ -255,6 +289,9 @@ The memory of this repo. Read it first, update it last.
   render a plate frame and compare a pixel with `ffmpeg -vf select=eq(n\,N)`.
 - **Soft captures (2026-11-02):** the Bike Logger site drops to 1.5x resolution when its first frames average over
   1/40 s, which virtual 1/30 s steps always do. REEL-001 v2 settles at 1/60 s and asserts full canvas resolution.
+- **`requestVideoFrameCallback` lies in headless renders (2026-11-04):** after a seek on a paused plate it fires at
+  most once, with the frame from *before* the seek (`mediaTime` 0 for a seek to 1 s), and never again. Check
+  `mediaTime` before trusting it; the 250 ms fallback is what actually waits for paint.
 - **HTML labels on 3D (2026-11-02):** Three.js refreshes world matrices only inside `render()`. Before projecting
   a point to place a tag, call `camera.updateMatrixWorld()` and the object's parent `updateMatrixWorld()`, or the
   tag follows the previously rendered frame.

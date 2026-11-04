@@ -3,7 +3,8 @@
 Turns an HTML composition into a **frame-exact MP4** or **PNG**. For every frame it calls `window.__seek(t)`,
 waits for every engine to draw, screenshots the stage in Chrome, and pipes the PNGs into ffmpeg.
 
-Requirements: Node 18+, Google Chrome, ffmpeg. Run `npm install` in `core/` once. Blender (optional) for 3D plates.
+Requirements: Node 18+, Google Chrome, ffmpeg. Run `npm install` in `core/` once. Blender (optional) for 3D plates,
+Rhubarb Lip Sync (optional) for characters that speak.
 
 ## Commands (from the repo root)
 
@@ -37,6 +38,9 @@ python3 scripts/mix_audio.py <audio/cues.json> <audio/mix.wav>
 
 # Beat grid of the music, for Studio.beats: bpm, beats, downbeats, onsets
 node scripts/beats.mjs <audio/music.mp3> <audio/beats.json> [--bpm 128]
+
+# Lip sync: mouth shapes from a VO line (Rhubarb) → vo.visemes.json + vo.visemes.js (engines/README.md, Lip sync)
+scripts/lipsync.sh <audio/vo.wav> <audio/vo.visemes.json> --dialog <audio/vo.txt>
 
 # QA: specs, 30 fps CFR, loudness, hitches/jumps, frozen/black, black or empty first frame, flashes (> 3/s),
 # safe-zone sheet
@@ -72,7 +76,7 @@ by another worker.
 </script>
 ```
 
-Engines (Three.js, Pixi, SVG rig, Lottie, plates): see `engines/README.md` and the working example in
+Engines (Three.js, Pixi, SVG rig, Lottie, plates, lip sync): see `engines/README.md` and the working example in
 `examples/engines-demo/index.html`.
 
 | Runtime API | |

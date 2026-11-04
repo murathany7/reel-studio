@@ -25,10 +25,10 @@ renderer, several engines plugged into one clock, one folder per brand, one fold
 |---|---|
 | `core/` | `render.mjs` (HTML → MP4/PNG), `lib/runtime.js` (the `Studio` clock), `lib/base.css` (stage, safe zones). `npm install` here once |
 | `looks/` | Art directions (neon-noir, toon-3d, photoreal, editorial, kinetic-type, retro-film, paper-collage): README, `look.css`, a working `starter.html`; `fx.js` for grain, glitch, scanlines… |
-| `engines/` | One adapter per engine: `three.js`, `pixi.js`, `svg-rig.js`, `capture.mjs`, `blender/` |
+| `engines/` | One adapter per engine: `three.js`, `pixi.js`, `svg-rig.js`, `lipsync.js`, `capture.mjs`, `blender/` |
 | `.agents/skills/` | The skills (SKILL.md). Codex and Copilot read them here; `.claude/skills` is a symlink to it |
 | `desk/` | *Optional* local review app: player, frame notes, renders, approvals, "Send to agent"; `reel-desk` MCP server (not registered by default). Nothing else depends on it |
-| `scripts/` | Audio mix, transcription, video QA, frame extraction, SVG → PNG |
+| `scripts/` | Audio mix, transcription, lip sync (`lipsync.sh`, Rhubarb), video QA, frame extraction, SVG → PNG |
 | `brands/<slug>/` | Identity: facts and their sources, colours and fonts (`tokens.css`), `assets/`, voice, *Look range*, `compliance.md` |
 | `productions/<brand>/<ID>-<slug>/` | One piece: README (storyboard → explainer), `refs/`, `composition/`, `audio/`, `qa/`, `export/` |
 | `examples/engines-demo/` | A 6 s reel using every tested engine; rebuild it to check a machine |
