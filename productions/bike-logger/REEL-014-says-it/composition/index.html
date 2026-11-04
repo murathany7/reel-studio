@@ -29,6 +29,8 @@
           font-variation-settings: "wdth" 62; text-transform: uppercase; letter-spacing: 0;
           text-shadow: 0 0 22px rgba(6,8,10,.9), 0 4px 0 rgba(6,8,10,.9); }
   .card .spec { position: absolute; top: 470px; margin: 0; }
+  /* Organic Reels UI (left 6%, right 11%) with room for the glow */
+  .safe { left: 7.5%; right: 12%; }
   #end { top: 6%; }
   #end .brand { font: 900 200px/.84 var(--font-display); font-variation-settings: "wdth" 62; text-transform: uppercase; color: var(--lamp); }
   #end .nn-tag { margin-top: 44px; font-size: 36px; text-transform: none; letter-spacing: .02em; }
@@ -38,7 +40,7 @@
   #zone svg { width: 100%; height: 100%; overflow: visible; }
   #zone .hud { visibility: hidden; }
   /* Timeline lanes stay above y = 1248 (paid Reels bottom 35%) */
-  .lane-label { font: 500 26px var(--nn-font-mono); letter-spacing: .14em; fill: var(--signal); }
+  .lane-label { font: 500 33px var(--nn-font-mono); letter-spacing: .14em; fill: var(--signal); }
 
   /* 4:5 feed: shorter frame, smaller type, the part lower */
   .fmt-4x5 .nn-title { font-size: 132px; }
@@ -57,7 +59,7 @@
   <div id="zone"><svg viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet">
     <g class="hud" id="h-cam"><path id="fov" d="" fill="url(#fovfill)" stroke="var(--signal)" stroke-width="3"/>
       <defs><radialGradient id="fovfill" cx="500" cy="420" r="520" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#84dcff" stop-opacity=".28"/><stop offset="1" stop-color="#84dcff" stop-opacity="0"/></radialGradient></defs>
-      <text class="lane-label" id="fovlabel" x="500" y="960" text-anchor="middle">102°</text></g>
+      <text class="lane-label" id="fovlabel" x="500" y="700" text-anchor="middle">102°</text></g>
     <g class="hud" id="h-gps"><g id="grid" stroke="#84dcff" stroke-opacity=".18" stroke-width="2"></g>
       <path id="route" d="M110 860 L250 760 L300 640 L470 600 L520 470 L700 430 L760 290 L900 200" fill="none" stroke="var(--lamp)" stroke-width="8" stroke-linejoin="round"/>
       <circle id="fix" cx="900" cy="200" r="16" fill="var(--lamp)"/></g>

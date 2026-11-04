@@ -19,7 +19,7 @@ The memory of this repo. Read it first, update it last.
   they came from). (1) File size: the encoder was CRF 16 with no cap, and `LookFx.grain` redraws full-frame noise
   every frame, so grain looks exploded: retro-film's 5 s starter = 62 Mbit/s, 100 MB (REEL-012 74 MB, REEL-009 65 MB,
   REEL-011 45 MB), and Instagram then recompresses that to mush. Flat looks (kinetic 0.36 Mbit/s, toon) stayed tiny.
-  Fix: `render.mjs` now caps x264 at `-maxrate 16M -bufsize 32M` (`REEL_MAXRATE`/`REEL_BUFSIZE` to change); the
+  Fix: `render.mjs` now caps x264 at `-maxrate 12M -bufsize 24M` (first 16M, lowered after REEL-014 hit it) (`REEL_MAXRATE`/`REEL_BUFSIZE` to change); the
   same retro-film clip is 11.7 Mbit/s, 19 MB, and looks the same at full crop. Clean pieces are unaffected (far under
   the cap). (2) Content: the starters are 5 s placeholders (mostly empty frames, small type, words clipped: "you"
   in editorial, "THE" in kinetic-type, a placeholder cube in toon-3d), and the looks README says to copy a starter

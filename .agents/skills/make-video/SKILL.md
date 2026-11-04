@@ -83,7 +83,7 @@ Length: 15–20 s for most pieces, up to ~40 s when it teaches something with a 
 | Captions | `Studio.captions(el, "../audio/vo.json", { style: "karaoke" \| "pop" \| "highlight", upper, maxChars, lines, gap })`. One spoken phrase per caption page: check the stills for a sentence split across pages |
 | Composition | `composition/index.html`. Start from the chosen look's starter (or blank), not an earlier production, unless the piece is a deliberate variant of one (say so). The starters are 5 s sketches: the product, the voice and the pacing come from this piece's script. Load `/core/lib/base.css`, `/brands/<slug>/tokens.css`, `/looks/<look>/look.css` (+ `/looks/fx.js`). Patterns: `examples/engines-demo/`, `examples/reel-layer/`. Text inside `.safe` (paid) or `.safe-organic` |
 | Formats | `Studio.setup({ …, formats: ["4x5", "1x1", "16x9"] })`; per-format CSS under `.fmt-4x5`; `Studio.pick({...})` |
-| Render | `node core/render.mjs video <comp> export/<ID>-<lang>.mp4 --audio audio/mix.wav` (posts: `still`; other formats `--formats all`). 30 fps. Bitrate is capped at 16 Mbit/s |
+| Render | `node core/render.mjs video <comp> export/<ID>-<lang>.mp4 --audio audio/mix.wav` (posts: `still`; other formats `--formats all`). 30 fps. Bitrate is capped at 12 Mbit/s |
 | Motion blur | For fast moves: `Studio.setup({ …, motionBlur: true })`; `--motion-blur 1` for quick checks |
 
 Send the person something to look at along the way when it helps them steer (a few frames, a rough cut), with one
@@ -115,7 +115,7 @@ learned in *Learnings*.
 
 | | |
 |---|---|
-| Reel / video ad / Story | 1080×1920, 9:16, 30 fps CFR, H.264 ≤ 16 Mbit/s, −14 LUFS. Paid 9–20 s, organic 15–45 s |
+| Reel / video ad / Story | 1080×1920, 9:16, 30 fps CFR, H.264 ≤ 12 Mbit/s, −14 LUFS. Paid 9–20 s, organic 15–45 s |
 | Post / carousel | 1080×1350, 4:5 |
 | Safe zone, paid Reels | top 14%, bottom 35%, sides 6% (`.safe`) |
 | Safe zone, organic Reels | top 11.5%, bottom 22%, left 6%, right 11% (`.safe-organic`) |
