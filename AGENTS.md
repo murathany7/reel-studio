@@ -11,6 +11,7 @@ renderer, several engines plugged into one clock, one folder per brand, one fold
 | Question | Read |
 |---|---|
 | Making a video, reel, ad or post | `.agents/skills/make-video` (the whole path), then the brand folder |
+| The look (art direction) of a piece: cyberpunk, toon 3D, photoreal, editorial… | `looks/README.md`, `node scripts/looks.mjs <brand>` |
 | Which engine for a look | `.agents/skills/pick-engine` and `engines/README.md` |
 | 3D (Three.js, Blender) | `.agents/skills/scene-3d` |
 | A cartoon character or mascot | `.agents/skills/character-2d` |
@@ -23,11 +24,12 @@ renderer, several engines plugged into one clock, one folder per brand, one fold
 | Path | What |
 |---|---|
 | `core/` | `render.mjs` (HTML → MP4/PNG), `lib/runtime.js` (the `Studio` clock), `lib/base.css` (stage, safe zones). `npm install` here once |
+| `looks/` | Art directions (neon-noir, toon-3d, photoreal, editorial, kinetic-type, retro-film, paper-collage): README, `look.css`, a working `starter.html`; `fx.js` for grain, glitch, scanlines… |
 | `engines/` | One adapter per engine: `three.js`, `pixi.js`, `svg-rig.js`, `capture.mjs`, `blender/` |
 | `.agents/skills/` | The skills (SKILL.md). Codex and Copilot read them here; `.claude/skills` is a symlink to it |
 | `desk/` | *Optional* local review app: player, frame notes, renders, approvals, "Send to agent"; `reel-desk` MCP server (not registered by default). Nothing else depends on it |
 | `scripts/` | Audio mix, transcription, video QA, frame extraction, SVG → PNG |
-| `brands/<slug>/` | Facts and their sources, look (`tokens.css`, `assets/`), voice, `compliance.md` |
+| `brands/<slug>/` | Identity: facts and their sources, colours and fonts (`tokens.css`), `assets/`, voice, *Look range*, `compliance.md` |
 | `productions/<brand>/<ID>-<slug>/` | One piece: README (storyboard → explainer), `refs/`, `composition/`, `audio/`, `qa/`, `export/` |
 | `examples/engines-demo/` | A 6 s reel using every tested engine; rebuild it to check a machine |
 | `examples/reel-layer/` | 8 s reel for captions, beat cuts, transitions and the four formats |
@@ -38,7 +40,8 @@ renderer, several engines plugged into one clock, one folder per brand, one fold
 2. Brief → storyboard → **approval** → production → **frame-by-frame QA** → delivery. No production before approval.
 3. Never invent product facts, numbers or testimonials. Every claim traces to a source listed in the brand's README.
    Never copy competitor copy.
-4. Every piece passes its brand's `compliance.md`. Brands never borrow each other's look, facts or voice.
+4. Every piece passes its brand's `compliance.md`. Brands never borrow each other's identity, facts or voice.
+   Looks (`looks/`) are shared art directions: pick one per piece, and don't let a brand's pieces all look alike.
 5. Every frame is a pure function of `t` (rules in `engines/README.md`). If two renders of a frame differ, it is a bug.
 
 ## Related repos (read-only, for facts)

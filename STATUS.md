@@ -4,6 +4,21 @@ The memory of this repo. Read it first, update it last.
 
 ## Now
 
+- 2026-11-04: **REEL-008** (bike-logger, neon-noir) approved in chat ("Approve, own music"), produced, QA passed in 9:16 and
+  4:5, final cut approved ("Approve final cut"): delivered. Not posted yet. Style frames: the real tray CAD as
+  neon edges over dark faces works well; amber neon on headlines softens the glyphs, so the glow stays light (`spread` ≈ 0.2).
+- 2026-11-04: **looks: one brand, many art directions** (committed on `desk`). Every piece so far copied the previous
+  one's layout (Bike Logger: eyebrow + wide headline + chips + glow, `power3.out`; Yuppo: cream pills, `back.out`),
+  because the kit only had brand tokens and "copy the engines demo". Now `looks/` holds 7 art directions, each with a
+  README (palette mapping, type, layout, motion, texture, engines, sound, avoid), `look.css` (brand tokens fill its
+  roles) and a working 5 s `starter.html`: neon-noir (cyberpunk), toon-3d, photoreal, editorial, kinetic-type,
+  retro-film, paper-collage. `looks/fx.js`: seeded grain, scanlines, vignette, halftone, leaks, weave, jitter,
+  flicker, neon, glitch. `engines/three.js` gained `realistic()`, `pbr()`, `emissive()`, `bloom()` (`post` option).
+  `scripts/looks.mjs <brand>` lists the looks a brand used and the ones it has not tried. `make-video` now pitches
+  2–3 different directions (section 0 of the production README, style frames in `qa/directions/`) before the
+  storyboard, and compositions start from a look's starter, never from an earlier production. Brand READMEs have a
+  *Look range* (signature, fits, ask first, never); earlier productions are recorded as `signature`.
+  `test/looks.test.mjs`: every starter deterministic, no two looks alike. Contact sheet `docs/media/looks.jpg`.
 - 2026-11-04: **Codex and Copilot support, same repo**. `AGENTS.md` is now the instructions file
   (`CLAUDE.md` is `@AGENTS.md` plus a Claude-only note); the skills moved to `.agents/skills/` (Codex and Copilot read
   it; `.claude/skills` is a symlink; the plugin points there). `init` adds `AGENTS.md`, `.agents/skills/` and links
@@ -129,6 +144,7 @@ The memory of this repo. Read it first, update it last.
 | REEL-004 | yuppo | 3 a.m. question? Ask Po (Pixi night sky + Lottie Po + GSAP, silent, 16 s) | QA passed, silent cut (VO + music pending) | `productions/yuppo/REEL-004-ask-po-3am/export/REEL-004-ask-po-3am-en.mp4` |
 | REEL-005 | yuppo | What Star parents get, 7-day trial ad (Blender physics plate + GSAP, silent, 14 s) | QA passed, silent cut (music + SFX pending) | `productions/yuppo/REEL-005-star-trial/export/REEL-005-star-trial-en.mp4` |
 | REEL-002 | bike-logger | Engines sampler: Three.js tray, Blender camera housing, Pixi sensor streams (silent, 14.8 s) | QA passed, draft for review | `productions/bike-logger/REEL-002-engines/export/REEL-002-engines-en.mp4` |
+| REEL-008 | bike-logger | Night signal: boot sequence of the five sensors, first piece in `looks/neon-noir` (Three.js CAD as neon edges + HUD, music, 16.9 s, 9:16 + 4:5) | delivered (final cut approved 2026-11-04); music and SFX are our own synth | `productions/bike-logger/REEL-008-night-signal/export/REEL-008-night-signal-en-9x16.mp4` (and `-4x5.mp4`) |
 
 ## Engines
 
@@ -179,6 +195,14 @@ The memory of this repo. Read it first, update it last.
 
 ## Learnings
 
+- **beats.mjs and a quiet first bar (2026-11-04, REEL-008):** with no kick in bar 1, it found the right tempo (128 BPM) but
+  put beat 1 a beat late (0.464 s) even with `--downbeat 0`. For music we generate, write the grid from the generator.
+- **Looks (2026-11-04):** `Studio.transition` owns visibility only: a layer also hidden with `gsap.set(…, { autoAlpha: 0 })`
+  stays at opacity 0 after the transition, so don't pre-hide transitioned layers. Bloom: keep `threshold` ≥ 0.2 and
+  emissive ≤ 2, or the whole frame washes white and text drowns (neon-noir also needs a dark scrim behind its text).
+  Photoreal: glossy faces at grazing camera angles reflect the studio environment and turn white; keep the camera
+  higher. Lathe geometry + `anisotropy` shows facet bands (no tangents). CSS `padding: 14%` is a share of the *width*,
+  so safe-zone insets go on an absolutely positioned child. `gsap.utils.random` is unseeded: use `Studio.random`.
 - **Frames depended on the frame before (2026-11-03):** Chrome reuses raster from the previous frame, so a frame
   rendered right after its neighbour differed (SVG edges, up to 48 levels) from the same frame rendered alone: video
   frames didn't match stills, and parallel workers didn't match one worker. The runtime now forces a fresh paint per

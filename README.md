@@ -52,6 +52,16 @@ A robotics kit reel, built by capturing the product's own 3D web page and laying
 <td width="50%"><img src="docs/media/qa-contact-sheet.jpg" alt="QA contact sheet with safe zones"><br><sub><b>Frame QA</b>: a contact sheet with the platform's safe zones drawn over it, plus a motion check that flags jumps.</sub></td>
 </tr></table>
 
+## One brand, many looks
+
+<p align="center"><img src="docs/media/looks.jpg" alt="Seven looks from the same five-second script: neon noir, toon 3D, photoreal, editorial, kinetic type, retro film, paper collage"></p>
+
+The brand folder holds the identity (facts, colours, fonts, logo, voice). The look holds the art direction (type,
+layout, motion, texture, engines, sound), picked per piece from [`looks/`](looks): neon noir, toon 3D, photoreal,
+editorial, kinetic type, retro film, paper collage, each with a working starter. Before a storyboard, the agent
+checks what the brand's earlier pieces used and pitches 2–3 different directions, so a brand's pieces don't all
+look alike.
+
 ## Engines, all on one clock
 
 <p align="center"><img src="docs/media/engines-strip.jpg" alt="Blender, Three.js, SVG rig and Pixi frames"></p>
@@ -132,6 +142,7 @@ Nothing else needs it, and nothing changes if you never open it. See [`desk/READ
 ```
 core/          renderer (HTML → MP4/PNG) and the Studio clock
 engines/       one adapter per engine
+looks/         art directions: neon noir, toon 3D, photoreal, editorial, kinetic type, retro film, paper collage
 brands/        one folder per brand  (_template to start)
 productions/   one folder per piece  (brief, composition, audio, QA, export)
 scripts/       audio mix, transcription, QA, frame tools

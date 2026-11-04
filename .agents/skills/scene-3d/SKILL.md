@@ -1,6 +1,6 @@
 ---
 name: scene-3d
-description: Build a 3D shot for a video - live in the composition with Three.js (engines/three.js) or as a pre-rendered Blender plate (engines/blender). Covers toon/cartoon looks, product and CAD models, camera moves, physics, and keeping every frame deterministic.
+description: Build a 3D shot for a video - live in the composition with Three.js (engines/three.js) or as a pre-rendered Blender plate (engines/blender). Covers toon, photoreal and neon looks, product and CAD models, camera moves, physics, and keeping every frame deterministic.
 ---
 
 # 3D shots
@@ -13,7 +13,14 @@ description: Build a 3D shot for a video - live in the composition with Three.js
   (`tl.to(cam, { x: 4, z: 8, duration: 2 }, 3)`) and copy it into `camera.position` in `update`.
 - Models: `GLTFLoader` from `three/addons/loaders/GLTFLoader.js` (add `"three/addons/": "/core/node_modules/three/examples/jsm/"`
   to the import map). Wrap the load in `Studio.wait(...)`. Put model files in the brand's `assets/models/` or the production's `composition/`.
-- Cartoon look: `toon(color, { steps })` + `outline(mesh, { thickness })`. Hard light: one `DirectionalLight` + low `AmbientLight`.
+- The look (`looks/README.md`) decides the rendering style; the same model can go any of these ways:
+  - Cartoon (`looks/toon-3d`): `toon(color, { steps })` + `outline(mesh, { thickness })`. Hard light: one `DirectionalLight` + low `AmbientLight`.
+  - Realistic (`looks/photoreal`): `await realistic(renderer, scene)` (wrap in `Studio.wait`: ACES tone mapping, a
+    studio environment for reflections, soft shadows) + `pbr(color, { metalness, roughness, clearcoat })`. A key light
+    with `castShadow`, a cool rim light from behind, a `ShadowMaterial` floor over a CSS gradient. Keep the camera
+    above grazing angles (glossy faces turn white), move slowly, render the final with `Studio.setup({ motionBlur: true })`.
+  - Neon (`looks/neon-noir`): `emissive(color, intensity)` + `threeLayer(el, { post: bloom({ strength, threshold }) })`,
+    `scene.fog`. Keep `threshold` ≥ 0.2 and emissive ≤ 2 or everything blooms white.
 - Animated GLB clips: create an `AnimationMixer`, then in `update` call `mixer.setTime(t - start)`. Never `mixer.update(delta)`.
 - HTML tags that follow 3D points: in `update(t)`, call `camera.updateMatrixWorld()` and the parent's
   `updateMatrixWorld()` before `vector.applyMatrix4(obj.matrixWorld).project(camera)`. Three.js refreshes these only
@@ -30,7 +37,9 @@ description: Build a 3D shot for a video - live in the composition with Three.js
   Draft at `--size 540x960`, final at full size.
 - Backdrop colour: show it to the camera only (Light Path "Is Camera Ray" mix, as in the example), or it lights the
   scene and flattens toon bands.
-- Colour management is set to *Standard* so brand hex colours come out as typed.
+- Colour management is set to *Standard* so brand hex colours come out as typed. For a photoreal plate, switch to
+  `ctx["scene"].view_settings.view_transform = "AgX"` in `build`, render with `--engine CYCLES`, and use area lights
+  and camera depth of field.
 - Physics and simulations: bake them in the scene script before rendering.
 - In the composition: `<video src="plates/<name>.mp4">` + `Studio.video(el, { start })`. Plates have no alpha; put
   text and characters on top with HTML layers.

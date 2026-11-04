@@ -7,6 +7,10 @@ description: Choose the rendering engine(s) for a video beat or a whole piece - 
 
 The full table and the determinism rules are in `engines/README.md`. Read it first.
 
+Pick the look first (`looks/README.md`): it names its usual engines (neon-noir → Three.js `emissive` + `bloom`,
+photoreal → `realistic` + `pbr` or Blender Cycles, toon-3d → `toon` + `outline`, editorial and kinetic-type → GSAP).
+Then use the questions below for each beat.
+
 ## Decide by asking, in order
 
 1. **Is it mostly text, UI or layout?** → GSAP only. Most ads are this. Stop here unless a hero visual is needed.
@@ -15,7 +19,8 @@ The full table and the determinism rules are in `engines/README.md`. Read it fir
    - A designer gave a Rive (`.riv`) → Rive (`engines/rive.js`; state machines take timed inputs).
    - No designer file → SVG rig (`engines/svg-rig.js`). Draw it from simple shapes in the brand colours.
 3. **Is the hero a physical product or a 3D object?**
-   - Real CAD or a GLB model, or camera moves around an object → Three.js.
+   - Real CAD or a GLB model, or camera moves around an object → Three.js. Realistic: `realistic()` + `pbr()`;
+     glowing: `emissive()` + `bloom()`.
    - Wants soft light, a premium look, or physics (cloth, liquid, many falling objects) → Blender plate.
    - Cartoon 3D: Three.js `toon()` + `outline()` for speed; Blender `toon()` for quality.
 4. **Does the brand already have a live web page with the visual (a 3D scene, a web app)?** → page capture. It reuses

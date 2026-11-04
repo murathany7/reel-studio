@@ -14,6 +14,7 @@
     "core/render.mjs",
     "core/lib/",
     "engines/",
+    "looks/",
     "scripts/",
     "templates/",
     "brands/_template/",

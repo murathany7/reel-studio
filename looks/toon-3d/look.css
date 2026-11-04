@@ -1,0 +1,26 @@
+/* Toon 3D (playful cartoon 3D). Load after base.css and the brand's tokens.css.
+ * Brand colours fill the toys; the sky and the ink line are the look's own. */
+:root {
+  --t3-sky-top: var(--toon-sky-top, #7fd3ff);
+  --t3-sky-bottom: var(--toon-sky-bottom, #d9f3ff);
+  --t3-a: var(--accent, #ff6b3d);
+  --t3-b: var(--accent-2, #ffd23f);
+  --t3-c: var(--accent-3, #6c5cff);
+  --t3-ink: #1d1b3a;
+  --t3-font: var(--font-display-rounded, "Arial Rounded MT Bold", "Nunito", "Baloo 2", system-ui, sans-serif);
+  --caption-font: var(--t3-font);
+  --caption-stroke: var(--t3-ink);
+  --caption-accent: var(--t3-b);
+}
+#stage { background: linear-gradient(var(--t3-sky-top), var(--t3-sky-bottom)); color: var(--t3-ink); }
+
+/* Sticker type: fat rounded letters, thick ink outline painted under the fill, a hard drop shadow. */
+.t3-title { font: 900 150px/0.95 var(--t3-font); letter-spacing: -0.01em; color: #fff;
+            -webkit-text-stroke: 22px var(--t3-ink); paint-order: stroke fill;
+            text-shadow: 0 14px 0 var(--t3-ink); }
+.t3-title .a { color: var(--t3-a); } .t3-title .b { color: var(--t3-b); }
+.t3-word { display: inline-block; transform-origin: 50% 90%; }
+.t3-bubble { display: inline-block; font: 900 52px/1.1 var(--t3-font); color: var(--t3-ink); background: #fff;
+             padding: 22px 34px; border-radius: 48px; border: 8px solid var(--t3-ink); box-shadow: 0 10px 0 var(--t3-ink); }
+.t3-button { display: inline-block; font: 900 60px/1 var(--t3-font); color: var(--t3-ink); background: var(--t3-b);
+             padding: 30px 56px; border-radius: 999px; border: 9px solid var(--t3-ink); box-shadow: 0 14px 0 var(--t3-ink); }

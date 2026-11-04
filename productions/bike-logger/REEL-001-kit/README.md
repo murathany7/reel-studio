@@ -15,6 +15,7 @@
 | Frame rate / length | 30 fps · 28 s |
 | Language | EN |
 | Placement | Organic (copy inside the organic Reels safe zone; for paid placements the bottom lines fall in Meta's 35% caption zone) |
+| Look | signature (night stage, mono eyebrow, wide headline, spec chips, lamp glow); recorded 2026-11-04 |
 | Engines | Page capture of the live site's 3D scene (the real CAD parts, already built) + GSAP copy on top |
 | Sound | Silent: all meaning carried by on-screen text |
 | Approved by / date | Murathan, 2026-11-02 |

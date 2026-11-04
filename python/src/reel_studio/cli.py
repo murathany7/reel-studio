@@ -12,7 +12,7 @@ KIT = Path(__file__).resolve().parent / "kit"
 USAGE = f"""Reel Studio {__version__}: marketing videos made with code, run by your coding agent (Claude Code, Codex, Copilot).
 
   reel-studio init [dir]           copy the kit and skills into dir (default: here) and install it
-  reel-studio init [dir] --update  refresh core/, engines/, scripts/ and skills from this version
+  reel-studio init [dir] --update  refresh core/, engines/, looks/, scripts/ and skills from this version
 
 Needs Node 18+, Google Chrome and ffmpeg (the renderer runs on Node).
 Claude Code plugin instead:  /plugin marketplace add murathany7/reel-studio

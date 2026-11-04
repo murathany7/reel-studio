@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Look starter: retro film</title>
+<link rel="stylesheet" href="/core/lib/base.css">
+<!-- <link rel="stylesheet" href="/brands/<slug>/tokens.css"> -->
+<link rel="stylesheet" href="/looks/retro-film/look.css">
+<style>
+  #film { position: absolute; inset: 0; }
+  #sun { position: absolute; left: 50%; top: 58%; width: 2600px; height: 2600px; margin: -1300px 0 0 -1300px; }
+  #disc { position: absolute; left: 50%; top: 58%; width: 520px; height: 520px; margin: -260px 0 0 -260px; border-radius: 50%; background: var(--rf-mustard);
+          box-shadow: 0 0 0 28px var(--rf-cream), 0 0 0 56px var(--rf-hot); }
+  .card { position: absolute; left: 0; right: 0; text-align: center; }
+  #c1 { top: 6%; } #c2 { top: 6%; } #c3 { top: 8%; }
+  #c2 .rf-badge { margin-top: 40px; }
+  .rf-script.light { color: var(--rf-brown); background: var(--rf-cream); display: inline-block; padding: 4px 26px 10px; border-radius: 40px; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="film">
+    <svg id="sun" viewBox="-100 -100 200 200"></svg>
+    <div id="disc"></div>
+    <div class="safe">
+      <div class="card" id="c1"><div class="rf-script light">good morning,</div><div class="rf-title">sunshine</div></div>
+      <div class="card" id="c2"><div class="rf-title">easy<br>does it</div><div class="rf-badge" id="badge">3 taps<br>that's all</div></div>
+      <div class="card" id="c3"><div class="rf-title">Brand</div><div class="rf-script light" style="margin-top:30px">say hello to slow mornings</div></div>
+    </div>
+  </div>
+  <div class="rf-gate"></div>
+</div>
+
+<script src="/core/node_modules/gsap/dist/gsap.min.js"></script>
+<script src="/core/lib/runtime.js"></script>
+<script src="/looks/fx.js"></script>
+<script>
+  const tl = Studio.setup({ width: 1080, height: 1920, fps: 30, duration: 5 });
+  // Sunburst: alternating wedges in the look's warm colours.
+  const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+  const rays = 24, cols = [css("--rf-hot"), css("--rf-cream"), css("--rf-mustard"), css("--rf-cream")];
+  document.getElementById("sun").innerHTML = Array.from({ length: rays }, (_, i) => {
+    const a0 = (i / rays) * 2 * Math.PI, a1 = ((i + 1) / rays) * 2 * Math.PI, r = 150;
+    return `<path d="M0 0 L${r * Math.cos(a0)} ${r * Math.sin(a0)} L${r * Math.cos(a1)} ${r * Math.sin(a1)} Z" fill="${cols[i % 4]}"/>`;
+  }).join("");
+  tl.fromTo("#sun", { rotation: 0 }, { rotation: 40, duration: 5, ease: "none" }, 0)
+    .fromTo("#film", { scale: 1.08 }, { scale: 1, duration: 5, ease: "none" }, 0); // slow zoom out, like a lens pull
+
+  // Soft, slow motion: titles drift up and settle; dissolves between scenes (film has no hard UI cuts).
+  gsap.set(["#c2", "#c3"], { autoAlpha: 0 });
+  const drift = (sel, at) => tl.from(sel, { y: 70, autoAlpha: 0, duration: 0.9, ease: "power2.out", stagger: 0.15 }, at);
+  drift("#c1 > *", 0.15);
+  tl.to("#c1", { autoAlpha: 0, duration: 0.4 }, 1.6).set("#c2", { autoAlpha: 1 }, 1.8);
+  drift("#c2 .rf-title", 1.8);
+  tl.from("#badge", { scale: 0, rotation: -90, duration: 0.8, ease: "back.out(1.6)" }, 2.2)
+    .to("#badge", { rotation: 8, duration: 1.2, ease: "sine.inOut" }, 3.0);
+  tl.to("#c2", { autoAlpha: 0, duration: 0.4 }, 3.3).set("#c3", { autoAlpha: 1 }, 3.5);
+  drift("#c3 > *", 3.5);
+
+  const stage = document.getElementById("stage");
+  LookFx.weave(document.getElementById("film"), { px: 2.5, deg: 0.12, fps: 18 });
+  LookFx.leaks(stage, { colors: [css("--rf-hot"), "#ffd27a"], opacity: 0.5, speed: 0.15 });
+  LookFx.flicker(document.getElementById("film"), { rate: 4, depth: 0.08, fps: 18 }); // exposure breathing
+  LookFx.vignette(stage, { amount: 0.5, color: "40,20,5" });
+  LookFx.grain(stage, { amount: 0.13, size: 2, fps: 18 });
+</script>
+</body>
+</html>

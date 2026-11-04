@@ -38,7 +38,7 @@ if (cmd === "desk") {
 console.log(`Reel Studio: marketing videos made with code, run by your coding agent (Claude Code, Codex, Copilot).
 
   npx reel-studio init [dir]           copy the kit and skills into dir (default: here) and install it
-  npx reel-studio init [dir] --update  refresh core/, engines/, scripts/, desk/ and skills from this version
+  npx reel-studio init [dir] --update  refresh core/, engines/, looks/, scripts/, desk/ and skills from this version
   npx reel-studio desk [--port 4100]   optional review page: play, pin notes, send them to your agent, approve
 
 Claude Code plugin instead:  /plugin marketplace add murathany7/reel-studio

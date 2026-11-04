@@ -31,8 +31,19 @@ Where true product facts come from, in order of trust. Anything not found here i
 | Fonts | in `assets/fonts/` + `tokens.css` |
 | Logo | `assets/logo.svg` (+ rules: clear space, min size, on dark/light) |
 | Mascot / characters | (if any: files, engine — SVG rig, Lottie or Rive, what it may and may not do) |
-| Default engines | (e.g. GSAP + SVG rig for a cartoon mascot, Three.js for a product) |
+| Assets for looks | (GLB/CAD models, product photos with alpha, footage: what each look can use) |
 | References | `assets/reference/` (what to take from each) |
+
+### Look range
+
+The identity above goes into every piece. The art direction is picked per piece from `looks/` (see `looks/README.md`).
+
+| | |
+|---|---|
+| Signature | (optional: the brand's own look, once it has one. One option, not the default) |
+| Fits | (looks from `looks/` that suit the brand, and how its colours map into them) |
+| Ask first | (looks that might work with care) |
+| Never | (looks the brand's compliance or character rules out, and why) |
 
 ## Voice
 

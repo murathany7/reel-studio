@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Copy the Reel Studio kit into a project so its skills can render there.
 #   scripts/init-project.sh <kit_root> [project_dir] [--update] [--with-skills]
-# Copies core/, engines/, scripts/, desk/ (the optional review app), the engines and reel-layer demos and the brand/production templates, adds AGENTS.md
+# Copies core/, engines/, looks/ (art directions), scripts/, desk/ (the optional review app), the engines and reel-layer demos and the brand/production templates, adds AGENTS.md
 # (read by Codex, Copilot and, through CLAUDE.md's @import, Claude Code), CLAUDE.md, STATUS.md and .gitignore if missing,
 # then runs npm install in core/ and checks the tools.
 # Existing files are kept; --update refreshes core/, engines/ and scripts/ (and the skills) from the kit (brands and
@@ -36,6 +36,7 @@ else
   mode=""; [ "$update" = "--update" ] && mode=overwrite
   copy core core $mode
   copy engines engines $mode
+  copy looks looks $mode
   copy scripts scripts $mode
   copy desk desk $mode
   copy brands/_template brands/_template

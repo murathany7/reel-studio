@@ -1,0 +1,24 @@
+/* Retro film (70s Super 8 warmth). Load after base.css and the brand's tokens.css.
+ * The brand accent becomes the hot colour of the sunburst; the cream, brown and mustard are the look's. */
+:root {
+  --rf-cream: #f3e2c2;
+  --rf-brown: #3b2414;
+  --rf-hot: var(--accent, #e2582b);
+  --rf-mustard: var(--accent-2, #e9a630);
+  --rf-teal: #2f6f68;
+  --rf-font: var(--font-display-retro, "Cooper Black", "Cooper Std", "Bookman Old Style", "Georgia", serif);
+  --caption-font: var(--rf-font);
+  --caption-ink: var(--rf-cream);
+  --caption-stroke: var(--rf-brown);
+  --caption-accent: var(--rf-mustard);
+}
+#stage { background: var(--rf-cream); color: var(--rf-brown); }
+
+.rf-title { font: 900 150px/0.92 var(--rf-font); letter-spacing: -0.02em; color: var(--rf-cream);
+            text-shadow: 6px 6px 0 var(--rf-hot), 12px 12px 0 var(--rf-mustard), 18px 18px 0 var(--rf-brown); }
+.rf-script { font: italic 400 64px/1.1 var(--font-script, "Snell Roundhand", "Brush Script MT", "Georgia", cursive); color: var(--rf-brown); }
+.rf-badge { display: inline-flex; align-items: center; justify-content: center; width: 300px; height: 300px; border-radius: 50%;
+            background: var(--rf-mustard); color: var(--rf-brown); font: 900 64px/0.95 var(--rf-font); text-align: center;
+            border: 8px dashed var(--rf-brown); }
+/* Rounded film-frame corners (Super 8 gate) */
+.rf-gate { position: absolute; inset: 0; pointer-events: none; z-index: 8200; border-radius: 60px; box-shadow: 0 0 0 80px #120a05, inset 0 0 120px rgba(18,10,5,.55); }
