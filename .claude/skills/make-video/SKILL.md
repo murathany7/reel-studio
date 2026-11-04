@@ -26,8 +26,8 @@ the optional desk, they may approve there instead: `review-desk` skill. Never ti
 | Step | How |
 |---|---|
 | Plates | 3D: `scene-3d` skill (Three.js live, or Blender → MP4). Live site: `capture-site` skill. Footage: `Studio.video` |
-| Character | `character-2d` skill (SVG rig, Lottie, Rive) |
-| Audio | ElevenLabs MCP (`.mcp.json`) for VO, SFX and music → `audio/`. Cue sheet `audio/cues.json` → `python3 scripts/mix_audio.py audio/cues.json audio/mix.wav`. Word timings for captions or lip flap: `scripts/transcribe.sh` |
+| Character | `character-2d` skill (SVG rig, Lottie, Rive, lip sync) |
+| Audio | ElevenLabs MCP (`.mcp.json`) for VO, SFX and music → `audio/`. Cue sheet `audio/cues.json` → `python3 scripts/mix_audio.py audio/cues.json audio/mix.wav`. Word timings for captions: `scripts/transcribe.sh`. Mouth shapes for a character who speaks a line: `scripts/lipsync.sh` (one file per line, offset = the line's start in `cues.json`) |
 | Composition | `composition/index.html`. Load `/core/lib/base.css`, then `/brands/<slug>/tokens.css`. Copy the pattern from `examples/engines-demo/index.html`. Text and CTA inside `.safe` (paid) or `.safe-organic` |
 | Render | `node core/render.mjs video <comp> export/<ID>-<lang>.mp4 --audio audio/mix.wav` (posts: `still`) |
 
@@ -38,7 +38,8 @@ the optional desk, they may approve there instead: `review-desk` skill. Never ti
 2. `node core/render.mjs stills <comp> qa/beats --at <every beat start and end> --safe`, then **look at each one**:
    text inside the safe zone, nothing cut off, no half-loaded asset, no overlap, spelling, brand colours.
 3. Determinism spot check when a WebGL or plate engine is used: render one frame twice, the md5s match.
-4. Listen once with sound: VO in sync with text, music ducked under VO, −14 LUFS.
+4. Listen once with sound: VO in sync with text (and with the mouth, if a character speaks), music ducked under
+   VO, −14 LUFS.
 5. Fact check: every claim in section 6 of the README has a source. Compliance list passes.
 
 ## 4. Deliver

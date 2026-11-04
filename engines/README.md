@@ -8,7 +8,8 @@ That is what makes every frame deterministic and checkable, whatever drew it.
 | Look | Engine | File | Status |
 |---|---|---|---|
 | Moving text, app UI demos, ad layouts, end cards | **HTML/CSS + GSAP** | built into `core/lib/runtime.js` (`Studio.tl`) | ✅ tested |
-| Flat 2D cartoon character drawn in code | **SVG rig + GSAP** | `svg-rig.js` (`idle`, `blink`, `talk`, `wave`, `hop`) | ✅ tested |
+| Flat 2D cartoon character drawn in code | **SVG rig + GSAP** | `svg-rig.js` (`idle`, `blink`, `talk`, `lipsync`, `wave`, `hop`) | ✅ tested |
+| A character that speaks a voiceover (SVG rig, mascot PNG, Three.js, Blender) | **Lip sync** (Rhubarb Lip Sync) | `lipsync.js`, `blender/lipsync.py`, `scripts/lipsync.sh` | ✅ tested |
 | 2D animation from a designer (After Effects) | **Lottie** | `Studio.lottie(el, path)` in the runtime | ✅ ported from the Yuppo renderer |
 | 2D character with states, from Rive | **Rive** | — | 🔜 planned: needs a `.riv` file to build and test against |
 | Particles, confetti, many sprites, 2D game-like motion | **Pixi.js v8** | `pixi.js` (`pixiLayer`) | ✅ tested |
@@ -25,6 +26,39 @@ That is what makes every frame deterministic and checkable, whatever drew it.
   They can be stacked freely (`<div class="layer">` per engine) and all share the GSAP timeline for cuts and fades.
 - **Plates** are rendered first, then played as a `<video>` layer with `Studio.video(el, { start })`: Blender,
   page capture, footage. Encode plates with `-g 1` (every frame a keyframe) so seeking is frame-exact.
+
+## Lip sync
+
+Rhubarb Lip Sync turns a voice track into mouth shapes over time. One cue file then drives any character. Install
+Rhubarb once (one binary, see the header of `scripts/lipsync.sh`), then per VO line:
+
+```bash
+scripts/lipsync.sh audio/vo.wav audio/vo.visemes.json --dialog audio/vo.txt   # → vo.visemes.json + vo.visemes.js
+```
+
+Load the cues with `<script src="../audio/vo.visemes.js">` and `<script src="/engines/lipsync.js">`, then
+`const cues = LipSync.cues("vo.visemes")`:
+
+| Character | How |
+|---|---|
+| SVG rig | Draw `#mouth-A` … `#mouth-H` and `#mouth-X` (any subset), then `SvgRig(svg).lipsync(cues, { offset })` |
+| Mascot that only exists as an image | `const m = LipSync.mountMouth(el, { cx, cy, w, aspect, shapes: LipSync.mouthSet({ ink, cover }) })`, then `LipSync.addToTimeline(Studio.tl, cues, m, { offset })` |
+| Three.js | In `update(t)`: `LipSync.paramsAt(cues, t, "mouth", { offset })` gives `{ open, wide, round }` (0…1) for morph targets or scales |
+| Blender | In the scene script: `import lipsync as L`, then `L.key_shape_keys(obj, L.load("…/vo.visemes.json"), ctx, offset=…)` keys shape keys `open`, `wide`, `round` on every frame |
+
+- **Shapes** (Rhubarb's Preston Blair set): A closed (M B P) · B slightly open, teeth · C open · D wide open ·
+  E rounded (O) · F puckered (OO, W) · G teeth on lip (F V) · H tongue up (L) · X rest. A rig can leave any of them
+  out: `FALLBACK` in `lipsync.js` uses the nearest one drawn (G→A, H→C, X→A…), so a two-mouth rig
+  (`#mouth-closed`, `#mouth-open`) works too. The engines demo draws A–F and lets G and H fall back.
+- **`offset`** is where the line starts on the timeline (the same number as in `audio/cues.json`): cue times count
+  from the start of the audio file. One cue file per VO line; lines must not overlap on one character.
+- **Accuracy:** `--dialog` with the approved script makes the English recogniser much better. Other languages:
+  `--phonetic` (less accurate).
+- **Tables:** `TABLES.mouth` in `lipsync.js` and `blender/lipsync.py` must stay equal (`npm test` checks). Pass your
+  own table for a rig with other controls.
+- **Life around the mouth** (blinks, a nod on a stressed word, gestures) is still animated by hand.
+  `LipSync.talking(cues, t, offset)` says when the character is speaking.
+- **QA:** render stills at a few cue times and check each mouth against the cue file, then listen once with the mix.
 
 ## Determinism rules (all engines)
 

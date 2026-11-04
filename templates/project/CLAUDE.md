@@ -23,7 +23,7 @@ per brand, one folder per production.
 | `core/` | `render.mjs` (HTML → MP4/PNG), `lib/runtime.js` (the `Studio` clock), `lib/base.css` |
 | `engines/` | One adapter per engine |
 | `desk/` | *Optional* review app (`node desk/server.mjs`): frame notes, renders, approvals. Nothing else depends on it |
-| `scripts/` | Audio mix, transcription, video QA, frame tools |
+| `scripts/` | Audio mix, transcription, lip sync, video QA, frame tools |
 | `brands/<slug>/` | Facts and their sources, look, voice, `compliance.md` (start from `brands/_template`) |
 | `productions/<brand>/<ID>-<slug>/` | One piece (start from `productions/_TEMPLATE`) |
 

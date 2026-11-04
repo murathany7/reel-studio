@@ -14,6 +14,8 @@ The full table and the determinism rules are in `engines/README.md`. Read it fir
    - A designer gave a Lottie (`.json`) → Lottie.
    - A designer gave a Rive (`.riv`) → Rive (not built yet: say so and plan the adapter, see `engines/README.md`).
    - No designer file → SVG rig (`engines/svg-rig.js`). Draw it from simple shapes in the brand colours.
+   - It speaks the voiceover → add lip sync (`scripts/lipsync.sh` + `engines/lipsync.js`) to whatever draws it: SVG
+     rig, the brand's mascot PNG, Three.js or Blender. Seconds per line; it is not an extra engine to justify.
 3. **Is the hero a physical product or a 3D object?**
    - Real CAD or a GLB model, or camera moves around an object → Three.js.
    - Wants soft light, a premium look, or physics (cloth, liquid, many falling objects) → Blender plate.

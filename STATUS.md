@@ -4,6 +4,19 @@ The memory of this repo. Read it first, update it last.
 
 ## Now
 
+- 2026-11-04: **lip sync** ported from `../marketing-reels-skill` (Rhubarb Lip Sync 1.14.0): `scripts/lipsync.sh`
+  (cues + a `.js` twin), `engines/lipsync.js` (cues, `paramsAt`, `mountMouth` + `addToTimeline` for a mascot PNG),
+  `SvgRig.lipsync()` (draw `#mouth-A`…`#mouth-X`, missing shapes fall back to the nearest drawn one), and
+  `engines/blender/lipsync.py` (`key_shape_keys`; `run.py` now puts `engines/blender/` and the scene's folder on
+  `sys.path`). Made brand-neutral: Yuppo's Po mouth set is `LipSync.mouthSet({ ink, cover, tongue })` (byte-identical
+  to Po's with Po's colours, see Brands), and the Yuppo parent/baby tables gave way to one generic `mouth` table
+  (`open`, `wide`, `round`). The engines demo's character lip-syncs "Bob loves a big wave!" at 4.9 s (cues from a
+  macOS voice; the demo stays silent). Tested: `npm test` (new `test/lipsync.test.mjs`: lookups, JS = Python tables
+  and values, the script end to end when Rhubarb is installed; md5 at the demo's 5.25 s), stills of every mouth in
+  the demo, a mascot-PNG overlay, and Blender shape keys (keyed values = `params_at` on all 45 frames). CI has no
+  Rhubarb, so the script's end-to-end test skips there. Not in the Docker image. Not released yet.
+- 2026-11-04: **SVG rig blink fixed:** `transformBox: "fill-box"` on top of GSAP's own SVG origin moved the eyes far
+  down on every blink (below the mouth in the demo since its first version). Body squash still anchors at the feet.
 - 2026-11-04: **release workflow back** (`release.yml`, `ci.yml` callable again). Each target (npm, PyPI, GHCR,
   GitHub Release) is checked on its own and skipped when it already has the version, so reruns and hand releases mix;
   GitHub Release and Homebrew run when npm/PyPI were published now *or* earlier, and build their own files. npm and
@@ -79,7 +92,7 @@ The memory of this repo. Read it first, update it last.
 
 | Brand | Folder | State | Open questions |
 |---|---|---|---|
-| Yuppo | `brands/yuppo/` (gitignored: company assets, commercial font) | Ready 2026-11-03, moved from `../marketing-reels-skill/brand/` (full kit in `kit/`); check card `check.html` renders with Pangea Afrikan, Inter and Po | Pangea Afrikan ad licence (paid pieces use Inter Tight meanwhile)? Verified user count and store rating? ElevenLabs MCP needs `/mcp` auth for VO. Other open questions: `../marketing-reels-skill/STATUS.md` |
+| Yuppo | `brands/yuppo/` (gitignored: company assets, commercial font) | Ready 2026-11-03, moved from `../marketing-reels-skill/brand/` (full kit in `kit/`); check card `check.html` renders with Pangea Afrikan, Inter and Po | Pangea Afrikan ad licence (paid pieces use Inter Tight meanwhile)? Verified user count and store rating? ElevenLabs MCP needs `/mcp` auth for VO. Talking Po (REEL-006's provisional mouth, awaiting design sign-off): `LipSync.mountMouth(el, { cx: 0.512, cy: 0.502, w: 0.15, aspect: 893 / 1000, shapes: LipSync.mouthSet({ ink: "#272727", cover: "#FF8133", tongue: "#F6A28E" }) })` over `po-baby.png`; copy into the brand README's *Mascot* when the folder is here. Other open questions: `../marketing-reels-skill/STATUS.md` |
 | Bike Logger | `brands/bike-logger/` | Ready; check card `check.html` renders with the site's fonts and colours | Price, kit contents and skill level for the kit? A voice for VO pieces? Copy Archivo + Plex Mono into `assets/fonts/` so renders work offline? |
 
 ## Productions
@@ -103,6 +116,7 @@ The memory of this repo. Read it first, update it last.
 | Three.js r170 | ✅ | `preserveDrawingBuffer: true`; WebGL needs the GPU flags in `core/render.mjs` (`CHROME_ARGS`) |
 | Blender 5.2 | ✅ | Eevee. Backdrop must be camera-only or it flattens toon bands. 2 s at 540×960 ≈ 17 s. Rigid-body plates work (REEL-005: 14 s at 1080×1920 in 6 min 20 s) |
 | Page capture | ✅ | REEL-001's drive module reproduces the original capture (PSNR ≈41 dB on a 4 s test). Generic `capture.mjs` tested on a rAF test page: frame n = n/fps, two runs identical. Serve pages with HTTP Range support if they seek `<video>` (python's http.server does not) |
+| Lip sync (Rhubarb) | ✅ | Rhubarb 1.14.0 in `~/.cache/rhubarb-lip-sync/`; the macOS build is x86_64 (Rosetta). ~4 s per short line. Tested 2026-11-04 on the SVG rig (demo), a mascot PNG and Blender shape keys; Three.js uses the same `paramsAt` numbers (no Three.js mouth rig built yet). English recogniser; `--phonetic` for other languages (untested) |
 | Rive | 🔜 | Needs a `.riv` to build and test the adapter |
 
 ## Decisions
@@ -128,6 +142,11 @@ The memory of this repo. Read it first, update it last.
 
 ## Learnings
 
+- **GSAP and CSS `transform-box` on SVG (2026-11-04):** GSAP already resolves `transformOrigin` percentages on SVG
+  from the bounding box. Adding `transformBox: "fill-box"` applies the origin twice, so a `scaleY` blink slid the
+  eyes down by half the face. Set `transformOrigin` alone.
+- **`__pycache__` in the kit (2026-11-04):** importing `engines/blender/lipsync.py` (tests, Blender) writes
+  `engines/blender/__pycache__/`, which `npm pack` would publish. `package.json` `files` now excludes `**/__pycache__`.
 - **Desk preview drift (2026-11-03):** the desk first loaded compositions in a `display:none` iframe at the default
   300×150 size, and REEL-002's headline came out "therack." (the composition's word splitter ran with no layout).
   The renderer loads in a laid-out 1080×1920 viewport, so the desk now does the same (`visibility:hidden` while

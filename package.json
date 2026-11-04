@@ -14,6 +14,7 @@
     "core/render.mjs",
     "core/lib/",
     "engines/",
+    "!**/__pycache__",
     "scripts/",
     "templates/",
     "brands/_template/",
@@ -21,6 +22,7 @@
     "examples/engines-demo/index.html",
     "examples/engines-demo/README.md",
     "examples/engines-demo/plates/blob.mp4",
+    "examples/engines-demo/talk.visemes.js",
     ".claude/skills/"
   ],
   "scripts": {

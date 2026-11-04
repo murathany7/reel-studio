@@ -59,6 +59,7 @@ A robotics kit reel, built by capturing the product's own 3D web page and laying
 |---|---|
 | Text, UI, layouts | HTML/CSS + GSAP |
 | Cartoon character | SVG rig · Lottie |
+| Character that speaks the VO | Lip sync (Rhubarb mouth shapes) on an SVG rig, a mascot PNG, Three.js or Blender |
 | Particles | Pixi.js |
 | 3D, toon 3D | Three.js |
 | Premium 3D, physics | Blender (pre-rendered plate) |
@@ -129,7 +130,7 @@ core/          renderer (HTML → MP4/PNG) and the Studio clock
 engines/       one adapter per engine
 brands/        one folder per brand  (_template to start)
 productions/   one folder per piece  (brief, composition, audio, QA, export)
-scripts/       audio mix, transcription, QA, frame tools
+scripts/       audio mix, transcription, lip sync, QA, frame tools
 desk/          optional local review app (and its optional reel-desk MCP server)
 .claude/skills setup · make-video · new-brand · pick-engine · scene-3d · character-2d · capture-site · review-desk (optional)
 ```
