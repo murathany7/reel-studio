@@ -33,6 +33,9 @@ node core/render.mjs still  <composition.html> <out.png> --t 2.4 [--safe]
 node core/render.mjs stills <composition.html> <out_dir> --every 0.5
 node core/render.mjs stills <composition.html> <out_dir> --at 0,0.4,1.2,3.0 --safe
 
+# Free AI voiceover (Kokoro, local): script.json lines with start times → vo.wav + vo.json (word times for captions)
+python3 scripts/voice.py <audio/script.json> <audio/vo>
+
 # Audio: VO + music (auto-ducked) + SFX → one track at -14 LUFS
 python3 scripts/mix_audio.py <audio/cues.json> <audio/mix.wav>
 

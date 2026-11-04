@@ -1,6 +1,6 @@
 # Launch posts (drafts)
 
-Attach: the Bike Logger MP4 from the v0.1.0 release (or `docs/media/bike-logger-reel.gif`), and the engines demo.
+Attach: the Bike Logger MP4 from the v0.1.0 release, and the engines demo.
 Repo: https://github.com/murathany7/reel-studio
 
 ---

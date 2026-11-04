@@ -17,13 +17,8 @@ No editor, no timeline, no per-video fees. Every frame is code you own.</p>
 <p align="center"><sub>Plain HTML pages on one clock → headless Chrome → MP4, for any brand. Every frame is reproducible.<br>
 AI voiceover (ElevenLabs) is optional and billed by its provider.</sub></p>
 
-<p align="center">
-  <img src="docs/media/bike-logger-reel.gif" width="240" alt="Bike Logger reel">
-  &nbsp;&nbsp;
-  <img src="docs/media/engines-demo.gif" width="240" alt="Engines demo reel">
-</p>
-<p align="center"><sub>Left: <b>Bike Logger</b> kit reel (28 s, made by an agent from the product's live site) · Right: one 6 s reel using every engine<br>
-Full-quality MP4s: <a href="https://github.com/murathany7/reel-studio/releases/latest">Releases</a></sub></p>
+<p align="center"><sub>Watch the example reels (Bike Logger kit reel, 28 s · one 6 s reel using every engine): <a href="https://github.com/murathany7/reel-studio/releases/latest">Releases</a>.<br>
+Videos never go in the repo; frames below are stills.</sub></p>
 
 ---
 

@@ -34,6 +34,13 @@ renderer, several engines plugged into one clock, one folder per brand, one fold
 | `examples/engines-demo/` | A 6 s reel using every tested engine; rebuild it to check a machine |
 | `examples/reel-layer/` | 8 s reel for captions, beat cuts, transitions and the four formats |
 
+## Who you're talking to
+
+The people using this kit are mostly **marketers, founders and creators, not developers**. Once it's installed, be
+a creative partner in a conversation: ask back (2–3 questions at a time, each with options and your pick), show
+pictures instead of describing, give opinions on what will work, and keep commands, file paths and engine names out
+of the chat unless they ask. Report outcomes, not process. Details: `make-video`, *How to talk*.
+
 ## Golden rules
 
 1. Read `STATUS.md` before starting and update it before finishing.
@@ -43,6 +50,8 @@ renderer, several engines plugged into one clock, one folder per brand, one fold
 4. Every piece passes its brand's `compliance.md`. Brands never borrow each other's identity, facts or voice.
    Looks (`looks/`) are shared art directions: pick one per piece, and don't let a brand's pieces all look alike.
 5. Every frame is a pure function of `t` (rules in `engines/README.md`). If two renders of a frame differ, it is a bug.
+6. Check every idea against *What makes a reel work* (`make-video`): hook in the first second, a voice, a face, the
+   real product, a change every second, worth sending. A look is a treatment on the real product, not a template.
 
 ## Related repos (read-only, for facts)
 

@@ -5,7 +5,16 @@ node_modules/
 **/qa/desk/
 desk/.state.json
 
-# Big media stays out of git; keep small example plates only if needed
+# No videos, audio renders or GIFs in git: they go on GitHub Releases (or stay local). The only exceptions are the
+# two tiny inputs the examples need to run (a 40 KB Blender plate, a 128 KB synth loop).
+*.gif
+*.wav
+*.mp3
+*.m4a
+*.aac
+*.flac
+*.ogg
+!examples/reel-layer/audio/music.mp3
 *.mp4
 *.MP4
 *.mov
@@ -20,6 +29,17 @@ desk/.state.json
 # Generated QA evidence for examples (rebuild with the commands in each README)
 examples/*/qa/
 __pycache__/
+
+# Productions: only sources and written reports go in git (README, composition, audio scripts and cue sheets,
+# qa/*.md). Renders, covers, stills and contact sheets are rebuilt from the README's commands.
+productions/**/export/
+productions/**/qa/**/*.jpg
+productions/**/qa/**/*.png
+productions/**/qa/**/*.csv
+productions/**/qa/**/*.log
+productions/**/qa/beats/
+productions/**/refs/*.jpg
+productions/**/refs/*.png
 
 # Yuppo is a company brand: its kit, fonts (Pangea Afrikan is commercial) and productions stay out of the public repo
 brands/yuppo/
@@ -38,3 +58,5 @@ scripts/.npmignore
 
 # Third-party sample files fetched for checks (see examples/reel-layer/rive.html)
 examples/reel-layer/assets/
+!productions/_TEMPLATE/export/
+!productions/_TEMPLATE/export/.gitkeep

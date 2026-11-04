@@ -1,0 +1,23 @@
+{
+ "duration": 18,
+ "tracks": [
+  {
+   "file": "vo.wav",
+   "role": "vo",
+   "start": 0
+  },
+  {
+   "file": "music.wav",
+   "role": "music",
+   "start": 0,
+   "volume": 0.55,
+   "fade_out": 0.6
+  },
+  {
+   "file": "sfx.wav",
+   "role": "sfx",
+   "start": 0,
+   "volume": 0.5
+  }
+ ]
+}

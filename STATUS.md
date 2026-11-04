@@ -4,6 +4,35 @@ The memory of this repo. Read it first, update it last.
 
 ## Now
 
+- 2026-11-04: **no videos in the repo.** README GIFs removed (MP4s live on GitHub Releases; the README links there and
+  keeps its still strips); production renders, covers, stills, contact sheets and QA CSV/logs are untracked and
+  ignored (`productions/**/export/`, `productions/**/qa/**/*.{jpg,png,csv,log}`), so a production in git is its
+  sources and written reports only; `*.gif`, `*.wav`, `*.mp3` and other audio are ignored everywhere. Kept: the two
+  tiny inputs the examples need (`examples/engines-demo/plates/blob.mp4` 40 KB, `examples/reel-layer/audio/music.mp3`
+  128 KB). History holds only 4.4 MB of media in total (these four files), so nothing was rewritten. The unmerged
+  `bike-logger-*` render branches carry covers and QA images, not videos (their MP4s went to the gallery artifact).
+- 2026-11-04: **marketers first, and what makes reels work.** Research (Mosseri's ranking signals: watch time,
+  likes and **sends** per reach; Emplifi's 10k brand Reels: speech in the first 3 s ≈ +25% 10 s retention, a face ≈
+  +10%, text overlays modest; editors: a change every 0.5–1.5 s, loops; Instagram re-encodes to ≈3.5 Mbit/s; originals
+  only) is now `make-video`'s *What makes a reel work* (10 rules) and a *Hit check* row in the production template.
+  The skills talk like a producer to marketers: `AGENTS.md` *Who you're talking to*; `make-video` *How to talk* and
+  a conversation (what and who → 2–3 ideas that pass "would someone send this?" → voice and face → look as pictures →
+  script → yes); `new-brand` reads the site first, plays it back, asks only what's missing; `setup` hands over in
+  one plain line. `looks/README.md`: a starter is a sketch, not a template; texture light. New `scripts/voice.py`:
+  free local AI voice (Kokoro 1.0 int8, Apache 2.0, weights from GitHub releases → `~/.cache/reel-studio/kokoro`),
+  lines placed at their start times, word times for `Studio.captions`, warns when a line overruns. **REEL-014** (test):
+  REEL-008's visuals with voice from 0.05 s, captions as the headline, a cut every second, 120 BPM, light texture.
+- 2026-11-04: **why REEL-009–013 looked bad** (made off-repo, not on any branch, so judged from the starters
+  they came from). (1) File size: the encoder was CRF 16 with no cap, and `LookFx.grain` redraws full-frame noise
+  every frame, so grain looks exploded: retro-film's 5 s starter = 62 Mbit/s, 100 MB (REEL-012 74 MB, REEL-009 65 MB,
+  REEL-011 45 MB), and Instagram then recompresses that to mush. Flat looks (kinetic 0.36 Mbit/s, toon) stayed tiny.
+  Fix: `render.mjs` now caps x264 at `-maxrate 12M -bufsize 24M` (first 16M, lowered after REEL-014 hit it) (`REEL_MAXRATE`/`REEL_BUFSIZE` to change); the
+  same retro-film clip is 11.7 Mbit/s, 19 MB, and looks the same at full crop. Clean pieces are unaffected (far under
+  the cap). (2) Content: the starters are 5 s placeholders (mostly empty frames, small type, words clipped: "you"
+  in editorial, "THE" in kinetic-type, a placeholder cube in toon-3d), and the looks README says to copy a starter
+  and "replace the copy". Stretched to 15 s with no real product, that reads as a template, and 4 of the 7 starters
+  are GSAP + DOM, so the pieces all felt like one engine. REEL-008 (good) had the real tray CAD as its hero.
+  Lesson: a look is a treatment, not a layout; the real product (CAD, capture, photo) stays the hero.
 - 2026-11-04: **the desk opens from the chat**, for people who aren't technical. `init-project.sh` adds a `desk`
   entry to the project's `.claude/launch.json` (merged into an existing one, never duplicated); `review-desk` opens
   it with `preview_start` in the Claude desktop app's browser pane (elsewhere it starts the server and gives the link)
@@ -193,6 +222,7 @@ The memory of this repo. Read it first, update it last.
 | REEL-004 | yuppo | 3 a.m. question? Ask Po (Pixi night sky + Lottie Po + GSAP, silent, 16 s) | QA passed, silent cut (VO + music pending) | `productions/yuppo/REEL-004-ask-po-3am/export/REEL-004-ask-po-3am-en.mp4` |
 | REEL-005 | yuppo | What Star parents get, 7-day trial ad (Blender physics plate + GSAP, silent, 14 s) | QA passed, silent cut (music + SFX pending) | `productions/yuppo/REEL-005-star-trial/export/REEL-005-star-trial-en.mp4` |
 | REEL-002 | bike-logger | Engines sampler: Three.js tray, Blender camera housing, Pixi sensor streams (silent, 14.8 s) | QA passed, draft for review | `productions/bike-logger/REEL-002-engines/export/REEL-002-engines-en.mp4` |
+| REEL-014 | bike-logger | Says it: REEL-008's visuals + AI voice, captions, a cut every second (test of the hit rules, 18 s) | test render, not approved for posting; AI voice to disclose or replace with the maker's | `productions/bike-logger/REEL-014-says-it/export/REEL-014-says-it-en.mp4` |
 | REEL-008 | bike-logger | Night signal: boot sequence of the five sensors, first piece in `looks/neon-noir` (Three.js CAD as neon edges + HUD, music, 16.9 s, 9:16 + 4:5) | delivered (final cut approved 2026-11-04); music and SFX are our own synth | `productions/bike-logger/REEL-008-night-signal/export/REEL-008-night-signal-en-9x16.mp4` (and `-4x5.mp4`) |
 
 ## Engines

@@ -372,7 +372,10 @@ async function renderOne(ses, format, output) {
           "-f", "image2pipe", "-framerate", String(meta.fps), "-c:v", "png", "-i", "-",
           ...(opts.audio ? ["-i", opts.audio] : []),
           // aq-mode=3 + light deblock keeps smooth brand gradients from banding/shifting between frames.
+          // maxrate/bufsize: clean frames stay at CRF 16 (far under the cap); animated grain/noise alone pushed
+          // retro-film to 62 Mbit/s (100 MB for 5 s). Instagram re-encodes to ~3.5 Mbit/s anyway; upload guides say 8–12.
           "-c:v", "libx264", "-profile:v", "high", "-preset", "slow", "-crf", "16",
+          "-maxrate", process.env.REEL_MAXRATE || "12M", "-bufsize", process.env.REEL_BUFSIZE || "24M",
           "-x264-params", "aq-mode=3:aq-strength=0.9:deblock=-1,-1", "-g", String(meta.fps * 2),
           "-pix_fmt", "yuv420p", "-r", String(meta.fps), "-fps_mode", "cfr",
           "-color_primaries", "bt709", "-color_trc", "bt709", "-colorspace", "bt709",

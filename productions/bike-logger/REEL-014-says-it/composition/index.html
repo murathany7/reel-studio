@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Bike Logger — says it</title>
+<!-- REEL-014: a test of the hit-reel findings (STATUS.md, 2026-11-04) on REEL-008's visuals, kept on purpose so the
+     two can be compared: voice from frame 0, captions as the headline, a cut every beat pair (1 s), 120 BPM, loops. -->
+<link rel="stylesheet" href="/core/lib/base.css">
+<link rel="stylesheet" href="/brands/bike-logger/tokens.css">
+<style>:root { --neon-b: var(--signal); --font-display-condensed: "Archivo"; }</style>
+<link rel="stylesheet" href="/looks/neon-noir/look.css">
+<style>
+  .nn-title { font-variation-settings: "wdth" 62; font-weight: 900; font-size: 172px; }
+  /* Lamp glow kept outside the glyphs so the condensed letters stay sharp */
+  .nn-title .a, #end .brand { text-shadow: 0 0 22px rgba(255,196,110,.42), 0 0 60px rgba(255,196,110,.22); }
+  .nn-mono.rec::before { content: "● "; color: var(--brake); opacity: 1; }
+  #rain { position: absolute; inset: 0; width: 100%; height: 100%; }
+  #scrim { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(6,8,10,.88) 0%, rgba(6,8,10,.55) 34%, transparent 56%); }
+
+  .card { position: absolute; left: 0; right: 0; top: 4%; visibility: hidden; }
+  .card .nn-title { margin-top: 20px; }
+  .spec { margin-top: 34px; display: flex; gap: 14px; flex-wrap: wrap; }
+  .spec span { font: 500 32px/1 var(--nn-font-mono); letter-spacing: .05em; padding: 13px 17px; border: 2px solid var(--nn-neon-b);
+               color: var(--nn-neon-b); background: rgba(6,8,10,.7); }
+  .sub { font: 500 40px/1.25 var(--nn-font-mono); color: var(--ink); margin-top: 26px; letter-spacing: .02em; }
+  /* The voice's words are the headline: big condensed caps under the eyebrow, said words in lamp */
+  #caps { top: 92px; bottom: auto; left: 0; right: 0; text-align: left; --caption-font: "Archivo"; --caption-weight: 900;
+          --caption-size: 124px; --caption-ink: var(--ink); --caption-accent: var(--lamp); line-height: .9;
+          font-variation-settings: "wdth" 62; text-transform: uppercase; letter-spacing: 0;
+          text-shadow: 0 0 22px rgba(6,8,10,.9), 0 4px 0 rgba(6,8,10,.9); }
+  .card .spec { position: absolute; top: 470px; margin: 0; }
+  /* Organic Reels UI (left 6%, right 11%) with room for the glow */
+  .safe { left: 7.5%; right: 12%; }
+  #end { top: 6%; }
+  #end .brand { font: 900 200px/.84 var(--font-display); font-variation-settings: "wdth" 62; text-transform: uppercase; color: var(--lamp); }
+  #end .nn-tag { margin-top: 44px; font-size: 36px; text-transform: none; letter-spacing: .02em; }
+
+  /* Where the part and its HUD sit: the lower middle (the 3D camera is offset to the same centre) */
+  #zone { position: absolute; left: 40px; right: 40px; top: 830px; height: 940px; }
+  #zone svg { width: 100%; height: 100%; overflow: visible; }
+  #zone .hud { visibility: hidden; }
+  /* Timeline lanes stay above y = 1248 (paid Reels bottom 35%) */
+  .lane-label { font: 500 33px var(--nn-font-mono); letter-spacing: .14em; fill: var(--signal); }
+
+  /* 4:5 feed: shorter frame, smaller type, the part lower */
+  .fmt-4x5 .nn-title { font-size: 132px; }
+  .fmt-4x5 .card { top: 0; }
+  .fmt-4x5 .spec span { font-size: 28px; }
+  .fmt-4x5 #zone { top: 640px; height: 640px; left: 140px; right: 140px; }
+  .fmt-4x5 #end .brand { font-size: 170px; }
+</style>
+<script type="importmap">{ "imports": { "three": "/core/node_modules/three/build/three.module.js" } }</script>
+</head>
+<body>
+<div id="stage">
+  <div class="layer" id="scene"></div>
+  <canvas id="rain"></canvas>
+  <div id="scrim"></div>
+  <div id="zone"><svg viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet">
+    <g class="hud" id="h-cam"><path id="fov" d="" fill="url(#fovfill)" stroke="var(--signal)" stroke-width="3"/>
+      <defs><radialGradient id="fovfill" cx="500" cy="420" r="520" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#84dcff" stop-opacity=".28"/><stop offset="1" stop-color="#84dcff" stop-opacity="0"/></radialGradient></defs>
+      <text class="lane-label" id="fovlabel" x="500" y="700" text-anchor="middle">102°</text></g>
+    <g class="hud" id="h-gps"><g id="grid" stroke="#84dcff" stroke-opacity=".18" stroke-width="2"></g>
+      <path id="route" d="M110 860 L250 760 L300 640 L470 600 L520 470 L700 430 L760 290 L900 200" fill="none" stroke="var(--lamp)" stroke-width="8" stroke-linejoin="round"/>
+      <circle id="fix" cx="900" cy="200" r="16" fill="var(--lamp)"/></g>
+    <g class="hud" id="h-imu"><g id="horizon"><line x1="40" y1="500" x2="960" y2="500" stroke="var(--lamp)" stroke-width="5"/>
+      <line x1="440" y1="500" x2="440" y2="530" stroke="var(--lamp)" stroke-width="4"/><line x1="560" y1="500" x2="560" y2="530" stroke="var(--lamp)" stroke-width="4"/></g>
+      <path d="M380 560 L500 520 L620 560" fill="none" stroke="var(--signal)" stroke-width="5"/></g>
+    <g class="hud" id="h-hall"></g>
+    <g class="hud" id="h-sonar"></g>
+    <g class="hud" id="h-lanes"></g>
+  </svg></div>
+  <div class="safe">
+    <div class="nn-hud"><i></i><i></i><i></i><i></i></div>
+    <div class="card" id="c0">
+      <div class="nn-mono rec type">02:47 · ride 01 · recording</div>
+    </div>
+    <div class="card" id="c1">
+      <div class="nn-mono type">01 · brain · raspberry pi 5</div>
+      <div class="spec"><span>8 GB</span><span>IP65</span><span>200 × 120 × 75 mm</span></div>
+    </div>
+    <div class="card" id="c2">
+      <div class="nn-mono type">02 · camera · module 3 wide</div>
+      <div class="spec"><span>102° wide</span><span>rear-facing</span><span>sealed window</span></div>
+    </div>
+    <div class="card" id="c3">
+      <div class="nn-mono type">03 · position · usb gps</div>
+      <div class="spec"><span>u-blox</span><span>antenna up</span></div>
+    </div>
+    <div class="card" id="c4">
+      <div class="nn-mono type">04 · motion · bno085</div>
+      <div class="spec"><span>9-axis</span><span>lean</span><span>pitch</span><span>acceleration</span></div>
+    </div>
+    <div class="card" id="c5">
+      <div class="nn-mono type">05 · wheel · a3144 hall</div>
+      <div class="spec"><span>1 pulse per turn</span><span>speed without GPS</span></div>
+    </div>
+    <div class="card" id="c6">
+      <div class="nn-mono type">06 · behind · ultrasonic</div>
+      <div class="spec"><span>waterproof probes</span><span>logged in metres</span><span>with the video</span></div>
+    </div>
+    <div class="card" id="c7">
+      <div class="nn-mono type">all sensors · logging</div>
+            <div class="spec"><span>dashboard</span><span>Android + iPhone app</span></div>
+    </div>
+    <div id="caps" data-qa-name="captions"></div>
+    <div class="card" id="end">
+      <div class="brand" id="wordmark">Bike<br>Logger</div>
+      <div class="nn-title" style="font-size:112px; margin-top:34px"><span class="a">Wire it<br>yourself.</span></div>
+      <div class="nn-mono" style="margin-top:30px; font-size:30px">runs offline · your rides stay with you</div>
+      <div class="nn-tag">murathanyildirim.com/bike-logger</div>
+    </div>
+  </div>
+</div>
+
+<script src="/core/node_modules/gsap/dist/gsap.min.js"></script>
+<script src="/core/lib/runtime.js"></script>
+<script src="/looks/fx.js"></script>
+<script type="module">
+  import { threeLayer, emissive, bloom } from "/engines/three.js";
+  const tl = Studio.setup({ width: 1080, height: 1920, fps: 30, duration: 18 });
+  const { width: W, height: H } = Studio.meta;
+  // Our own 120 BPM track (audio/make_music.py); the grid is exact (see audio/beats.json "note")
+  await Studio.beats("../audio/beats.json");
+  const bar = (n) => Studio.bar(n), beat = (n) => Studio.beat(n), P = beat(1) - beat(0);
+  const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+  const clamp01 = (x) => Math.min(1, Math.max(0, x)), smooth = (x) => x * x * (3 - 2 * x);
+  const rnd = Studio.random(8);
+  const LAMP = css("--lamp"), SIGNAL = css("--signal");
+
+  // ---------- Three.js: neon corridor + the real CAD parts as neon edges ----------
+  const shot = (t) => Math.max(0, Math.min(8, Math.floor((t + 1e-6) / (bar(1) - bar(0)))));
+  const { scene, camera, THREE } = threeLayer(document.getElementById("scene"), {
+    background: 0x06080a, post: bloom({ strength: 0.9, radius: 0.5, threshold: 0.2 }), pixelRatio: 1,
+    update(t) { pose(t); },
+  });
+  scene.fog = new THREE.Fog(0x06080a, 2, 22);
+  const lamp = new THREE.Color(LAMP), signal = new THREE.Color(SIGNAL);
+
+  const corridor = new THREE.Group(); scene.add(corridor);
+  for (let i = 0; i < 16; i++) {
+    const z = -i * 2.2, mat = emissive(i % 3 ? lamp : signal, 0.9 + rnd() * 0.8);
+    for (const [x, y, sx, sy] of [[0, 2.7, 3.2, .03], [0, -2.7, 3.2, .03], [-1.6, 0, .03, 5.4], [1.6, 0, .03, 5.4]]) {
+      const m = new THREE.Mesh(new THREE.BoxGeometry(sx, sy, .03), mat); m.position.set(x, y, z); corridor.add(m);
+    }
+  }
+
+  // A CAD model: dark faces, every crease a glowing line. lines[id] lets a beat light one component in lamp.
+  const load = (name) => fetch(`/brands/bike-logger/assets/models/${name}.json`).then((r) => r.json());
+  const [trayCad, camCad, usCad, wheelCad] = await Studio.wait(Promise.all(["tray", "camera_housing", "ultrasonic_box", "wheel_sensor"].map(load)));
+  const dark = new THREE.MeshBasicMaterial({ color: 0x0b0e12, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1 });
+  function neon(cad, size) {
+    const g = new THREE.Group(), inner = new THREE.Group(), lines = {}, meshes = {};
+    inner.rotation.x = -Math.PI / 2; inner.scale.setScalar(0.01); g.add(inner);   // CAD is z-up, in mm
+    for (const c of cad.components) {
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute("position", new THREE.Float32BufferAttribute(c.v, 3)); geo.setIndex(c.t);
+      const ghost = c.kind === "ghost";
+      if (!ghost) inner.add(meshes[c.id] = new THREE.Mesh(geo, dark));
+      const line = new THREE.LineSegments(new THREE.EdgesGeometry(geo, 25), new THREE.LineBasicMaterial({ color: signal.clone(), transparent: true, opacity: ghost ? 0.45 : 1 }));
+      inner.add(lines[c.id] = line);
+      if (ghost) meshes[c.id] = line;
+    }
+    g.updateMatrixWorld(true);
+    const box = new THREE.Box3().setFromObject(g);
+    inner.position.copy(box.getCenter(new THREE.Vector3()).multiplyScalar(-1));
+    g.scale.setScalar(size / box.getSize(new THREE.Vector3()).length());
+    g.visible = false; scene.add(g);
+    // Centre of some components, in the group's space, for close-ups
+    g.centre = (ids) => { g.updateMatrixWorld(true); const b = new THREE.Box3(); ids.forEach((id) => meshes[id] && b.expandByObject(meshes[id])); return b.getCenter(new THREE.Vector3()); };
+    return { g, lines, meshes };
+  }
+  const tray = neon(trayCad, 3.6), cam = neon(camCad, 3.2), us = neon(usCad, 3.2), wheel = neon(wheelCad, 3.2);
+  const light = (part, ids, k = 1.6) => { for (const [id, l] of Object.entries(part.lines)) l.material.color.copy(ids.includes(id) ? lamp : signal).multiplyScalar(ids.includes(id) ? k : 0.75); };
+  const PI_IDS = ["pi", "pi_case"], GPS_IDS = ["gps", "gps_rx"], IMU_IDS = ["imu", "imu_board", "imu_lid"];
+  const focus = { 1: tray.g.centre(PI_IDS), 3: tray.g.centre(GPS_IDS), 4: tray.g.centre(IMU_IDS) };
+  const magnet = wheel.meshes.magnet, magnetHome = magnet.position.clone();
+  // The four models in a row down the corridor for the timeline bar
+  const ROW = [[tray, -1.0, 0.2, -3], [cam, 1.0, 0.0, -6], [wheel, -1.0, -0.4, -9], [us, 1.0, 0.3, -12]];
+
+  function orbit(target, r, az, el) {
+    camera.position.set(target.x + Math.sin(az) * Math.cos(el) * r, target.y + Math.sin(el) * r, target.z + Math.cos(az) * Math.cos(el) * r);
+    camera.lookAt(target);
+  }
+  function pose(t) {
+    const n = shot(t), u = clamp01((t - bar(n)) / (bar(n + 1) - bar(n)));
+    const push = [0, 1, 2, 3].reduce((s, j) => s + smooth(clamp01((t - beat(n * 4 + j)) / 0.25)), 0); // a small push on every beat
+    corridor.visible = n === 0 || n === 8;
+    for (const p of [tray, cam, us, wheel]) { p.g.visible = false; p.g.position.set(0, 0, 0); p.g.rotation.set(0, 0, 0); }
+    camera.rotation.set(0, 0, 0); camera.up.set(0, 1, 0);
+    if (n === 0 || n === 8) {
+      const k = n === 0 ? t : 0.6 * (t - bar(8));
+      camera.position.set(Math.sin(k * 0.7) * 0.25, 0.2, 6 - k * 2.4); camera.lookAt(0, 0.2, -20);
+      camera.rotation.z = Math.sin(t * 0.5) * 0.04;
+      return;
+    }
+    if (n === 7) {
+      for (const [p, x, y, z] of ROW) { p.g.visible = true; p.g.position.set(x, y, z); p.g.rotation.y = t * 0.6 + x; light(p, Object.keys(p.lines), t < beat(29) ? 1.8 : 1.0); }
+      camera.position.set(0, 0.2, 5 - (t - bar(7)) * 3.2); camera.lookAt(0, 0, -30);
+      return;
+    }
+    // Two angles per shot: a hard cut on beat 2, so the picture changes every second
+    const B2 = u >= 0.5;
+    const az0 = (B2 ? [0, 0.8, -0.7, 0.6, -0.6, -0.9, 0.7] : [0, -0.9, 0.6, -0.5, 0.35, 0.7, -0.4])[n];
+    const el = (B2 ? [0, 0.15, -0.3, 0.35, 0.2, 0.75, -0.2] : [0, 0.5, 0.25, 0.9, 0.55, 0.3, -0.65])[n];
+    const az = az0 + 0.5 * (smooth((u % 0.5) * 2) - 0.5);
+    if (n === 1 || n === 3 || n === 4) {
+      tray.g.visible = true;
+      light(tray, n === 1 ? PI_IDS : n === 3 ? GPS_IDS : IMU_IDS);
+      const f = focus[n].clone().lerp(new THREE.Vector3(), n === 1 ? 0.7 : 0);
+      if (n === 4) tray.g.rotation.z = 0.2 * Math.sin(Math.PI * (t - bar(4)) / (2 * P));   // leans left, then right
+      orbit(f, (n === 1 ? (B2 ? 4.2 : 6.4) : (B2 ? 2.6 : 3.6)) * (1.04 - 0.03 * push), az, el);
+    } else if (n === 2) {
+      cam.g.visible = true; light(cam, ["window", "tube", "board"]);
+      orbit(new THREE.Vector3(), 6.0 * (1.04 - 0.03 * push), az, el);
+    } else if (n === 5) {
+      wheel.g.visible = true;
+      const x = ((Studio.beatPhase(t) + 0.5) % 1) - 0.5;    // 0 on the beat: the magnet passes the board
+      magnet.position.copy(magnetHome); magnet.position.y += x * 110; magnet.visible = Math.abs(x) < 0.32;
+      light(wheel, Math.abs(x) < 0.08 ? ["board", "magnet", "holder"] : ["magnet"], 2.2);
+      orbit(new THREE.Vector3(), 6.0 * (1.04 - 0.03 * push), az, el);
+    } else if (n === 6) {
+      us.g.visible = true; light(us, ["probe_hole", "board"]);
+      orbit(new THREE.Vector3(), 6.0 * (1.04 - 0.03 * push), az, el);
+    }
+  }
+  // Put the scene's centre where #zone's centre is (the part sits under the copy)
+  const zone = document.getElementById("zone").getBoundingClientRect(), stageBox = document.getElementById("stage").getBoundingClientRect();
+  camera.setViewOffset(W, H, 0, Math.round(H / 2 - (zone.top - stageBox.top + zone.height / 2)) * (W / stageBox.width), W, H);
+
+  // ---------- Rain (seeded streaks, positions from t) ----------
+  const rain = document.getElementById("rain"), ctx = rain.getContext("2d");
+  rain.width = W; rain.height = H;
+  const drops = Array.from({ length: 240 }, () => ({ x: rnd() * (W + 220) - 110, y: rnd() * H, v: 1800 + rnd() * 1400, l: 30 + rnd() * 70, a: .1 + rnd() * .28 }));
+  Studio.onSeek((t) => {
+    ctx.clearRect(0, 0, W, H); ctx.lineWidth = 2;
+    for (const d of drops) { const y = (d.y + d.v * t) % (H + 80) - 40, x = d.x - y * .12; ctx.strokeStyle = `rgba(200,225,255,${d.a})`; ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x - d.l * .12, y + d.l); ctx.stroke(); }
+  });
+
+  // ---------- Copy: one card per bar, hard cut on the downbeat ----------
+  const cards = ["#c0", "#c1", "#c2", "#c3", "#c4", "#c5", "#c6", "#c7", "#end"];
+  cards.forEach((id, n) => {
+    const c = document.querySelector(id), t0 = bar(n);
+    tl.set(c, { visibility: "visible" }, t0); if (n < 8) tl.set(c, { visibility: "hidden" }, bar(n + 1));
+    const type = c.querySelector(".type");
+    if (type) tl.from(type, { clipPath: "inset(0 100% 0 0)", duration: 0.45, ease: `steps(${type.textContent.length})` }, t0);
+    const title = c.querySelector(".nn-title"); if (title) tl.from(title, { autoAlpha: 0, duration: 0.01 }, t0 + (n === 0 ? 0.12 : 0.06));
+    c.querySelectorAll(".spec span").forEach((s, j) => tl.from(s, { autoAlpha: 0, x: -24, duration: 0.2, ease: "expo.out" }, beat(n * 4 + 1 + Math.min(j, 2) * 0.5)));
+    const sub = c.querySelector(".sub"); if (sub) tl.from(sub, { clipPath: "inset(0 100% 0 0)", duration: 0.4, ease: "steps(28)" }, beat(n * 4 + 1));
+  });
+  tl.from("#wordmark", { scale: 1.12, transformOrigin: "0 0", duration: 0.5, ease: "expo.out" }, bar(8));
+  tl.from("#end .nn-tag", { autoAlpha: 0, duration: 0.01 }, beat(33));
+
+  // ---------- Captions: the voice, word by word ----------
+  Studio.captions(document.getElementById("caps"), "../audio/vo.json", { style: "karaoke", upper: true, maxChars: 15, lines: 3, gap: 0.15, hold: 0.1 });
+  tl.set("#caps", { visibility: "hidden" }, bar(8));
+
+  // ---------- HUD (illustrative shapes, no values) ----------
+  const hud = (id, n) => { tl.set(id, { visibility: "visible" }, bar(n)).set(id, { visibility: "hidden" }, bar(n + 1)); };
+  hud("#h-cam", 2); hud("#h-gps", 3); hud("#h-imu", 4); hud("#h-hall", 5); hud("#h-sonar", 6); hud("#h-lanes", 7);
+  // 102° wedge from the camera, opening downwards (away from the rider)
+  const wedge = (deg) => { const a = (deg / 2) * Math.PI / 180, r = 520, cx = 500, cy = 420;
+    return `M${cx} ${cy} L${cx - Math.sin(a) * r} ${cy + Math.cos(a) * r} A${r} ${r} 0 0 0 ${cx + Math.sin(a) * r} ${cy + Math.cos(a) * r} Z`; };
+  const fov = document.getElementById("fov"), wd = { d: 0 };
+  tl.to(wd, { d: 102, duration: 0.7, ease: "expo.out", onUpdate: () => fov.setAttribute("d", wedge(wd.d)) }, beat(9));
+  fov.setAttribute("d", wedge(0));
+  tl.from("#fovlabel", { autoAlpha: 0, duration: 0.01 }, beat(10));
+  // GPS: a grid and a route drawing itself (no real place)
+  const grid = document.getElementById("grid");
+  for (let i = 0; i <= 10; i++) grid.insertAdjacentHTML("beforeend", `<line x1="${i * 100}" y1="80" x2="${i * 100}" y2="920"/><line x1="0" y1="${80 + i * 84}" x2="1000" y2="${80 + i * 84}"/>`);
+  const route = document.getElementById("route"), len = route.getTotalLength();
+  gsap.set(route, { strokeDasharray: len });
+  tl.fromTo(route, { strokeDashoffset: len }, { strokeDashoffset: 0, duration: 4 * P * 0.9, ease: "none" }, bar(3));
+  tl.from("#fix", { scale: 0, transformOrigin: "50% 50%", duration: 0.3, ease: "back.out(3)" }, bar(3) + 4 * P * 0.9);
+  // IMU: the horizon tilts with the lean (matches the tray's roll)
+  Studio.onSeek((t) => { if (shot(t) === 4) document.getElementById("horizon").setAttribute("transform", `rotate(${-11.5 * Math.sin(Math.PI * (t - bar(4)) / (2 * P))} 500 500)`); });
+  // Hall: a pulse ring on every beat
+  const hall = document.getElementById("h-hall");
+  for (let j = 0; j < 4; j++) {
+    hall.insertAdjacentHTML("beforeend", `<circle id="ring${j}" cx="500" cy="500" r="120" fill="none" stroke="${LAMP}" stroke-width="8"/>`);
+    tl.fromTo(`#ring${j}`, { attr: { r: 60 }, opacity: 1 }, { attr: { r: 430 }, opacity: 0, duration: P * 0.95, ease: "power2.out" }, beat(20 + j));
+  }
+  // Ultrasonic: arcs ripple out downwards on every beat
+  const sonar = document.getElementById("h-sonar");
+  for (let j = 0; j < 8; j++) {
+    sonar.insertAdjacentHTML("beforeend", `<path id="arc${j}" d="M260 600 Q500 800 740 600" fill="none" stroke="${SIGNAL}" stroke-width="6"/>`);
+    tl.fromTo(`#arc${j}`, { y: -120, scale: 0.6, opacity: 1, transformOrigin: "50% 0%" }, { y: 300, scale: 1.5, opacity: 0, duration: P * 1.6, ease: "power1.out" }, beat(24) + j * P / 2);
+  }
+  // Timeline: five lanes of abstract signal and one scrubber across them all
+  const lanes = document.getElementById("h-lanes");
+  lanes.insertAdjacentHTML("beforeend", `<rect x="-20" y="40" width="1040" height="450" fill="rgba(6,8,10,.82)" stroke="${SIGNAL}" stroke-opacity=".35" stroke-width="2"/>`);
+  const NAMES = ["camera", "gps", "motion", "wheel", "behind"];
+  NAMES.forEach((name, i) => {
+    const y = 100 + i * 82; let d = `M220 ${y}`;
+    for (let x = 220; x <= 980; x += 20) d += ` L${x} ${y - (i === 3 ? (x % 80 < 20 ? 30 : 0) : Math.round((rnd() - 0.5) * 52 * (i === 0 ? 0.4 : 1)))}`;
+    lanes.insertAdjacentHTML("beforeend", `<text class="lane-label" x="0" y="${y + 9}">${name.toUpperCase()}</text><path class="lane" d="${d}" fill="none" stroke="${i === 2 ? LAMP : SIGNAL}" stroke-width="4"/>`);
+  });
+  lanes.insertAdjacentHTML("beforeend", `<line id="scrub" x1="0" y1="55" x2="0" y2="475" stroke="${LAMP}" stroke-width="6"/>`);
+  lanes.querySelectorAll(".lane").forEach((p, i) => { const l = p.getTotalLength(); gsap.set(p, { strokeDasharray: l }); tl.fromTo(p, { strokeDashoffset: l }, { strokeDashoffset: 0, duration: 0.5, ease: "expo.out" }, beat(29) + i * P / 4); });
+  tl.fromTo("#scrub", { x: 260 }, { x: 940, duration: 2 * P, ease: "power2.inOut" }, beat(30));
+
+  // ---------- Texture: glitch on every cut, neon, flicker ----------
+  LookFx.flicker(document.getElementById("wordmark"), { rate: 3, from: bar(8) + 0.5 });
+  LookFx.glitch(document.querySelector(".safe"), { at: [0.05, ...[1, 2, 3, 4, 5, 6, 7, 8].map((n) => bar(n) - 0.05)], dur: .18 });
+  LookFx.glitch(document.getElementById("zone"), { at: [1, 2, 3, 4, 5, 6, 7].flatMap((n) => [bar(n) - 0.05, beat(n * 4 + 2) - 0.04]), dur: .14, seed: 23 });
+  const stage = document.getElementById("stage");
+  LookFx.scanlines(stage, { gap: 6, opacity: .14, roll: 700 });
+  LookFx.vignette(stage, { amount: .7 });
+  LookFx.grain(stage, { amount: .03, size: 3, fps: 15 });
+</script>
+</body>
+</html>

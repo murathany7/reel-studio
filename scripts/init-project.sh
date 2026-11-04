@@ -95,3 +95,5 @@ command -v whisper-cli >/dev/null && ok "whisper-cpp (optional)" || echo "  ➖ 
 { [ -n "${RHUBARB:-}" ] || command -v rhubarb >/dev/null || ls "$HOME"/.cache/rhubarb-lip-sync/*/rhubarb >/dev/null 2>&1; } \
   && ok "Rhubarb Lip Sync (optional)" \
   || echo "  ➖ Rhubarb Lip Sync not found (optional, for lip sync: see scripts/lipsync.sh)"
+python3 -c "import kokoro_onnx, soundfile" 2>/dev/null && ok "Kokoro voice (optional)" \
+  || echo "  ➖ Kokoro not found (optional, free AI voiceover: pip install kokoro-onnx soundfile)"
