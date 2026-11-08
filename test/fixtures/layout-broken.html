@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Layout QA fixture (broken on purpose)</title>
+<link rel="stylesheet" href="/core/lib/base.css">
+<style>
+  :root { --bg: #f4f1ea; --ink: #1b1b1b; }
+  .safe > * { position: absolute; left: 0; font: 700 64px/1.1 system-ui, sans-serif; }
+  /* A category tile too small for its label: the label is cut by the rounded tile */
+  .tile { top: 0; width: 220px; height: 120px; border-radius: 28px; overflow: hidden; background: #fff; }
+  .tile span { display: block; padding: 30px 24px; white-space: nowrap; font-size: 56px; }
+  /* Two lines placed on top of each other (the class clash seen in a checkout card) */
+  .line { top: 260px; }
+  /* A short price tag that wraps, and a heading marked as one line that wraps */
+  .tag { top: 420px; width: 200px; font-size: 52px; }
+  .one { top: 600px; width: 420px; }
+  /* A word broken across lines by a narrow column */
+  .narrow { top: 760px; width: 150px; overflow-wrap: anywhere; font-size: 48px; }
+  /* A CTA pushed below the paid safe zone */
+  .cta { top: 1000px; }
+  /* Fine: fits, on its own, never flagged */
+  .ok { left: auto; right: 0; top: 0; font-size: 40px; }
+  /* Fine: a mask reveal mid-tween, and an intentional overlap marked as such */
+  .mask { right: 0; left: auto; top: 140px; height: 60px; overflow: hidden; font-size: 40px; }
+  .mask div { line-height: 60px; }
+  .stamp { top: 250px; left: 160px; font-size: 40px; color: #c0392b; }
+  /* Fine: hidden text under a visible line */
+  .ghost { top: 260px; opacity: 0; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="safe">
+    <div class="tile" id="tile"><span>Jewellery</span></div>
+    <div class="ok">All good</div>
+    <div class="mask"><div id="reveal">Coming up</div></div>
+    <div class="line" id="pay-full">Pay in full</div>
+    <div class="line" id="split">Split it later</div>
+    <div class="ghost">Hidden line</div>
+    <div class="tag" id="tag">up to 10%</div>
+    <div class="one" id="one" data-qa-lines="1">One line headline</div>
+    <div class="narrow" id="narrow">Instalments</div>
+    <div class="stamp" data-qa-ignore="overlap">Stamp</div>
+    <div class="cta" id="cta">Get the app</div>
+    <img id="broken" src="data:image/png;base64,AAAA" alt="" style="top: 860px; left: 700px; width: 80px; height: 80px">
+  </div>
+</div>
+
+<script src="/core/node_modules/gsap/dist/gsap.min.js"></script>
+<script src="/core/lib/runtime.js"></script>
+<script>
+  const tl = Studio.setup({ width: 1080, height: 1920, fps: 30, duration: 1 });
+  tl.fromTo("#reveal", { y: 60 }, { y: 0, duration: 1, ease: "none" }, 0);
+</script>
+</body>
+</html>

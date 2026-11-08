@@ -88,7 +88,8 @@ All of it in an 8-second demo: [`examples/reel-layer/`](examples/reel-layer).
 **Checked before you see it.** Every piece goes through frame QA: specs, 30 fps, loudness, jumps, frozen or black
 frames, a blank first frame, flashing (WCAG), and the safe zones. Text QA (`node core/render.mjs text-qa`) checks
 every text block for size, contrast against what is actually behind it, the 3-second hook, and text hidden under
-the Reels buttons. Commands: [`core/README.md`](core/README.md).
+the Reels buttons. Layout QA (`node core/render.mjs layout-qa`) flags text that is cut off or overlapping, words split
+across lines and broken images. Commands: [`core/README.md`](core/README.md).
 
 ## Install
 

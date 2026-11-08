@@ -8,6 +8,9 @@
  *   node core/render.mjs text-qa <composition.html> <qa_dir> [--every 0.25]
  *                         text size, contrast, the 3 s hook and Reels safe zones → <qa_dir>/text.md (core/lib/qa-text.mjs);
  *                         exits 1 when something fails
+ *   node core/render.mjs layout-qa <composition.html> <qa_dir> [--every 0.25 | --at 0,1.2,3] [--strict]
+ *                         text cut off or overlapping, words split across lines, things outside .safe, broken images
+ *                         → <qa_dir>/layout.md (core/lib/qa-layout.mjs); exits 1 when something fails
  *
  *   --format 4x5          render one of the formats the composition declares (Studio.setup({ formats }))
  *   --formats all|4x5,1x1 render several: <out>-<format>.mp4 / .png / <out_dir>-<format>
@@ -340,6 +343,42 @@ async function textQa(pg, qaDir) {
   if (failed) process.exitCode = 1;
 }
 
+// Layout QA: inspect the DOM at sampled times, write <qa_dir>/layout.md + layout.json + a crop of each problem
+async function layoutQa(pg, qaDir) {
+  const qa = await import("./lib/qa-layout.mjs");
+  const { meta, page } = pg;
+  const every = parseFloat(opts.every ?? 0.25), last = meta.duration - 1 / meta.fps;
+  const times = opts.at
+    ? String(opts.at).split(",").map(Number)
+    : Array.from({ length: Math.floor(last / every) + 1 }, (_, i) => +(i * every).toFixed(3));
+  await mkdir(path.join(qaDir, "flagged"), { recursive: true });
+  const groups = [];
+  for (const t of times) {
+    const at = Math.min(t, last);
+    await page.evaluate(`window.__seek(${at})`);
+    for (const issue of await page.evaluate(qa.INSPECT(at))) {
+      const g = qa.record(groups, issue, t, !!opts.strict);
+      if (!g || !g.boxes.length) continue;
+      await page.evaluate(qa.DRAW(g));
+      const shot = await page.screenshot(meta);
+      await page.evaluate(qa.ERASE);
+      const png = path.join(qaDir, "flagged", `layout_${String(g.id).padStart(3, "0")}_${g.type}_t${t}.png`);
+      const { x, y, w, h } = qa.cropOf(g, meta.width, meta.height);
+      await writeFile(png, shot);
+      await run("ffmpeg", ["-v", "error", "-y", "-i", png, "-vf", `crop=${w}:${h}:${x}:${y}`, "-q:v", "2", "-update", "1", "-frames:v", "1", png.replace(/\.png$/, ".jpg")]);
+      await rm(png);
+      g.evidence = path.join("flagged", path.basename(png).replace(/\.png$/, ".jpg"));
+    }
+    process.stdout.write(`\rlayout-qa ${t.toFixed(2)}/${last.toFixed(2)} s`);
+  }
+  const summary = { fail: groups.filter((g) => g.severity === "fail").length, warn: groups.filter((g) => g.severity === "warn").length };
+  await writeFile(path.join(qaDir, "layout.json"), JSON.stringify({ meta, times, summary, issues: groups.map(({ key, ...g }) => g) }, null, 2));
+  const md = qa.report(path.relative(ROOT, path.resolve(input)), meta, groups, times);
+  await writeFile(path.join(qaDir, "layout.md"), md);
+  console.log("\r" + md);
+  if (summary.fail) process.exitCode = 1;
+}
+
 const suffixed = (out, fmt) => {
   const ext = path.extname(out);
   return ext ? out.slice(0, -ext.length) + `-${fmt}` + ext : `${out}-${fmt}`;
@@ -404,6 +443,8 @@ async function renderOne(ses, format, output) {
       } else console.log(`${n} stills → ${output}`);
     } else if (mode === "text-qa") {
       await textQa(first, output);
+    } else if (mode === "layout-qa") {
+      await layoutQa(first, output);
     } else {
       throw new Error("unknown mode " + mode);
     }

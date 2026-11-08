@@ -94,6 +94,9 @@ question at most.
 1. `scripts/qa-video.sh export/<ID>.mp4 qa` → `qa/report.md`. Every ❌ fixed. Every jump an intended cut or fixed.
 2. `node core/render.mjs text-qa <comp> qa` → `qa/text.md`: hook readable at once, text ≥ 28 px (aim 40+),
    contrast, nothing under the Reels UI. Every ❌ fixed or explained. Look at `qa/flagged/text_*.jpg`.
+   `node core/render.mjs layout-qa <comp> qa` → `qa/layout.md`: text cut off by its box or the stage, words split
+   across lines, text over text or over the logo, things outside `.safe`, broken images. Every ❌ fixed; mark an
+   intended case on the element (`data-qa-lines="2"`, `data-qa-ignore="overlap"`) and say why in the README.
 3. `node core/render.mjs stills <comp> qa/beats --at <beats> --safe`, and **look at each one**: safe zone, nothing
    cut off, no half-loaded asset, no overlap, spelling, captions whole, the look held throughout.
 4. Determinism spot check with WebGL or plates: one frame twice, same md5.

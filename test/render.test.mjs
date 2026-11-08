@@ -83,6 +83,26 @@ test("text-qa finds the hook, small, faint and covered text, and skips decoratio
   assert.ok(existsSync(path.join(dir, "text.md")));
 });
 
+test("layout-qa catches every planted bug and leaves the fine cases alone", { skip, timeout: 120_000 }, () => {
+  const dir = tmp();
+  const r = render("layout-qa", "test/fixtures/layout-broken.html", dir, "--at", "0.5");
+  assert.equal(r.code, 1, "problems must exit 1\n" + r.out);
+  const { issues } = JSON.parse(readFileSync(path.join(dir, "layout.json"), "utf8"));
+  assert.deepEqual(issues.filter((i) => i.severity === "fail").map((i) => `${i.type} ${i.selector}`).sort(), [
+    "broken-word #narrow", "clipped #tile > span", "image #broken", "overlap #pay-full", "safe #cta", "wrap #one",
+  ]);
+  // A short text that wraps only warns; the mask mid-reveal, the hidden line, the marked stamp and "All good" stay out
+  assert.deepEqual(issues.filter((i) => i.severity === "warn").map((i) => `${i.type} ${i.selector}`), ["wrap #tag"]);
+  for (const i of issues) assert.ok(existsSync(path.join(dir, i.evidence)), `no crop for ${i.type}`);
+});
+
+test("layout-qa finds nothing wrong in the demo", { skip, timeout: 120_000 }, () => {
+  const dir = tmp();
+  const r = render("layout-qa", DEMO, dir, "--every", "0.5");
+  assert.equal(r.code, 0, r.out);
+  assert.deepEqual(JSON.parse(readFileSync(path.join(dir, "layout.json"), "utf8")).summary, { fail: 0, warn: 0 });
+});
+
 test("video QA fails a strobe and a black first frame", { skip: skip || (!has("python3") && "needs python3"), timeout: 120_000 }, () => {
   const dir = tmp();
   const mp4 = path.join(dir, "strobe.mp4");
