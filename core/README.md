@@ -52,6 +52,11 @@ scripts/qa-video.sh <video.mp4> <qa_dir> [1080x1920] [30]
 # Text QA on the composition: hook by 3 s, size, contrast against what is behind each glyph, text under the Reels UI
 # → <qa_dir>/text.md, text.json, flagged/text_*.jpg. Exits 1 on a ❌. data-qa-skip opts decoration out
 node core/render.mjs text-qa <composition.html> <qa_dir> [--every 0.25] [--format 4x5]
+
+# Layout QA on the composition: text cut off or overlapping (or over the logo), words split across lines, things
+# outside .safe, broken images → <qa_dir>/layout.md, layout.json, flagged/layout_*.jpg. Exits 1 on a ❌.
+# data-qa-lines="2" allows a wrap; data-qa-ignore="overlap safe" opts an element out of those checks
+node core/render.mjs layout-qa <composition.html> <qa_dir> [--every 0.25 | --at 1,2.5] [--strict] [--format 4x5]
 ```
 
 Preview live: serve the repo root (`python3 -m http.server 8080`) and open the composition.

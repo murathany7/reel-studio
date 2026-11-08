@@ -4,6 +4,13 @@ The memory of this repo. Read it first, update it last.
 
 ## Now
 
+- 2026-11-08: **layout QA** (`node core/render.mjs layout-qa <comp> <qa_dir>`, `core/lib/qa-layout.mjs`): every 0.25 s
+  the live DOM is checked for text cut off by an `overflow` box or the stage, words split across lines, short text
+  that wraps, text over text or over the logo, things outside their `.safe` / `.safe-organic` box, broken images and
+  blank frames; `layout.md`, `layout.json`, a crop per problem in `flagged/`, exit 1 on ❌. It came from bugs that
+  passed `qa-video.sh` in two real reels (a class clash overlapping checkout rows, a tile label cut off, an end-card
+  headline over the logo). Complements `text-qa` (size, contrast, hook, Reels UI). `test/fixtures/layout-broken.html`
+  plants each bug. Tested on macOS only.
 - 2026-11-04: **0.2.7 released** (bump on `main` → Release workflow): ships the marketer-first skills
   (`make-video`, `new-brand`, `setup`), `scripts/voice.py` (free local AI voice), the `render.mjs` 12M bitrate cap and
   the desk's `launch.json` entry from `init-project.sh`. Tests pass locally (the `init` test needs `rsync` installed).
@@ -345,3 +352,7 @@ The memory of this repo. Read it first, update it last.
   characters before adding a chip, or shorten it ("Waterproof", not "Waterproof probes").
 - `qa-video.sh` flags dark-brand frames (>98 % near-black) as "black" even with content on screen: look before fixing.
 - Hard cuts show up as "jumps" in `qa-video.sh`; note them as intended in the QA report.
+- **Layout QA tuning (2026-11-04):** a Range rect is the font's content area, taller than the line box when
+  line-height < ~1.2, so stacked tight lines "overlap" and top-aligned text "leaves" `.safe` unless rects are cut to
+  the line height. Slide-ins, marquees and mask reveals are clipped on purpose: measure motion (box/opacity change
+  ±1 frame on `Studio.tl`) rather than asking GSAP which tweens are active (one starting at exactly t is not).

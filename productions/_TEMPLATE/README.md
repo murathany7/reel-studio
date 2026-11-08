@@ -103,7 +103,7 @@ real hook (`qa/directions/<look>.png`).
 | Mix | `audio/mix.wav` (`audio/cues.json`) | |
 | Composition | `composition/index.html` | |
 | Render | `export/<ID>-<lang>.mp4` / `.png` | |
-| QA | `qa/report.md` | hitches / jumps / safe zone / loudness, frame review notes |
+| QA | `qa/report.md`, `qa/layout.md` | hitches / jumps / safe zone / loudness, layout (cut-off, overlapping text), frame review notes |
 
 ## 6. Fact check
 
