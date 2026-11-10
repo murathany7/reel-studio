@@ -7,11 +7,11 @@
     "render": "node render.mjs"
   },
   "dependencies": {
-    "@rive-app/canvas-advanced": "^2.37.4",
-    "gsap": "^3.12.5",
+    "@rive-app/canvas-advanced": "^2.49.4",
+    "gsap": "^3.15.1",
     "lottie-web": "^5.12.2",
     "pixi.js": "^8.6.0",
-    "playwright-core": "1.64.1",
+    "playwright-core": "1.65.0",
     "three": "^0.187.0"
   }
 }
